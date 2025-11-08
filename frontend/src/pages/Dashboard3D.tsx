@@ -21,12 +21,13 @@ export function Dashboard3D() {
       <mesh scale={size}>
         <planeGeometry />
         <meshPhysicalMaterial
-          roughness={0.1}
+          roughness={0.3}
+          metalness={0.1}
           transmission={1}
           thickness={10}
           ior={1.1}
           chromaticAberration={0.06}
-          color="#a2d2ff"
+          color="#ffffff"
         />
       </mesh>
       <Html
