@@ -1,0 +1,28 @@
+.dashboardContainer {
+  background: transparent;
+  padding: 2.5rem;
+  border-radius: 12px;
+  color: var(--text-color);
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+/* ... existing styles ... */
+
+@media (max-width: 768px) {
+  .dashboardContainer {
+    padding: 1.5rem;
+    /* width: 100%; Removed */
+    /* height: 100%; Removed */
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
