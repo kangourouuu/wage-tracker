@@ -20,22 +20,27 @@ envVarGroups:
   - name: wage-tracker-env
     envVars:
       - key: DB_HOST
+        value: ""
         fromDatabase:
           name: wage-tracker-db
           property: host
       - key: DB_PORT
+        value: ""
         fromDatabase:
           name: wage-tracker-db
           property: port
       - key: DB_USERNAME
+        value: ""
         fromDatabase:
           name: wage-tracker-db
           property: user
       - key: DB_PASSWORD
+        value: ""
         fromDatabase:
           name: wage-tracker-db
           property: password
       - key: DB_DATABASE
+        value: ""
         fromDatabase:
           name: wage-tracker-db
           property: database
