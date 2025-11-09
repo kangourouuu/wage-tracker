@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -8,6 +8,16 @@ const PARTICLE_COUNT = 500;
 function Swarm() {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  const mouse = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const particles = useMemo(() => {
     const temp = [];
@@ -33,10 +43,31 @@ function Swarm() {
       const b = Math.sin(t) + Math.cos(t * 2) / 10;
       const s = Math.cos(t);
       
+      const baseX = (particle.mx / 10) * a + xFactor + Math.cos((t / 10) * factor) + (Math.sin(t * 1) * factor) / 10;
+      const baseY = (particle.my / 10) * b + yFactor + Math.sin((t / 10) * factor) + (Math.cos(t * 2) * factor) / 10;
+      const baseZ = (particle.my / 10) * b + zFactor + Math.cos((t / 10) * factor) + (Math.sin(t * 3) * factor) / 10;
+
+      // Apply mouse interaction
+      const mouseInfluence = 0.5; // How much the mouse affects particles
+      const mouseRadius = 15; // Radius of mouse influence
+
+      const distanceX = baseX - mouse.current.x * mouseRadius;
+      const distanceY = baseY - mouse.current.y * mouseRadius;
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+      let repulsionX = 0;
+      let repulsionY = 0;
+
+      if (distance < mouseRadius) {
+        const repulsionForce = (1 - distance / mouseRadius) * mouseInfluence;
+        repulsionX = (distanceX / distance) * repulsionForce;
+        repulsionY = (distanceY / distance) * repulsionForce;
+      }
+
       dummy.position.set(
-        (particle.mx / 10) * a + xFactor + Math.cos((t / 10) * factor) + (Math.sin(t * 1) * factor) / 10,
-        (particle.my / 10) * b + yFactor + Math.sin((t / 10) * factor) + (Math.cos(t * 2) * factor) / 10,
-        (particle.my / 10) * b + zFactor + Math.cos((t / 10) * factor) + (Math.sin(t * 3) * factor) / 10
+        baseX + repulsionX,
+        baseY + repulsionY,
+        baseZ
       );
 
       dummy.scale.setScalar(s);

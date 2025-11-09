@@ -14,5 +14,8 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  background-color: rgba(240, 242, 245, 0.6); /* Subtle background to make content pop */
+  background-color: rgba(255, 255, 255, 0.15); /* More transparent background for glassmorphism */
+  backdrop-filter: blur(10px); /* Ensure blur is applied */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
