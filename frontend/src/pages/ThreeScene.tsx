@@ -89,12 +89,11 @@ function Swarm() {
 
 function ThreeScene() {
   return (
-    <Canvas camera={{ position: [0, 0, 10], fov: 75 }} style={{ position: 'fixed', top: 0, left: 0, zIndex: -1, background: 'var(--background-color)' }}>
+    <Canvas camera={{ position: [0, 0, 10], fov: 75 }} style={{ position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
       <ambientLight intensity={0.8} />
       <directionalLight position={[5, 5, 5]} intensity={1} />
       <pointLight position={[-10, -10, -10]} color="#673ab7" intensity={1.5} /> {/* Updated color */}
       <pointLight position={[0, 10, 0]} color="#00bcd4" intensity={1.5} /> {/* Updated color */}
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
       <Swarm />
     </Canvas>
   );

@@ -1,6 +1,4 @@
 .dashboardContainer {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
   padding: 2rem;
   border-radius: var(--border-radius-md);
   color: var(--text-color);
@@ -95,20 +93,21 @@
 }
 
 .summaryCard {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   padding: 1.5rem;
   border-radius: var(--border-radius-md);
   text-align: center;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease-in-out;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transform: translateZ(0);
 }
 
 .summaryCard:hover {
   transform: translateY(-5px) translateZ(10px);
   box-shadow: var(--shadow-lg);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .summaryCard h3 {
@@ -145,9 +144,9 @@
 }
 
 .calendarWrapper {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--border-radius-md);
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
@@ -161,18 +160,29 @@
 .calendarWrapper::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+  animation: liquid-flow 10s linear infinite;
   pointer-events: none;
   z-index: 1;
+}
+
+@keyframes liquid-flow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .calendarWrapper:hover {
   box-shadow: var(--shadow-lg);
   transform: translateZ(10px) translateY(-5px); /* Lift and bring forward */
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* React Calendar Overrides for Glassmorphism */
@@ -180,7 +190,7 @@
   width: 100% !important;
   background: transparent !important;
   border: none !important;
-  font-family: var(--font-family) !important; /* Use app font */
+  font-family: 'Space Mono', monospace !important; /* Use app font */
   z-index: 2; /* Ensure calendar content is above liquid glass effect */
 }
 
@@ -232,7 +242,7 @@
 
 .addEntryButton {
   padding: 0.7rem 1.4rem;
-  border-radius: var(--border-radius-md); /* Changed to md for more rounded */
+  border-radius: 2rem; /* Changed to md for more rounded */
   border: none;
   background: var(--gradient-accent-1);
   color: #fff;
