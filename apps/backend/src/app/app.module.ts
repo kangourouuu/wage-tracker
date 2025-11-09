@@ -11,6 +11,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { UserModule } from './features/user/user.module';
 import { WageModule } from './features/wage/wage.module';
 import { CalendarModule } from './features/calendar/calendar.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { CalendarModule } from './features/calendar/calendar.module';
       }),
       inject: [ConfigService],
     }),
+    CommonModule,
     AuthModule,
     UserModule,
     WageModule,
