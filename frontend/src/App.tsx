@@ -7,12 +7,11 @@ import ThreeScene from './pages/ThreeScene';
 import './App.css';
 
 function Root() {
-  // const { accessToken } = useAuthStore();
-  // if (accessToken) {
-  //   return <Navigate to="/dashboard" />;
-  // }
-  // return <Navigate to="/login" />;
-  return <Navigate to="/dashboard" />; // Temporarily navigate directly to dashboard
+  const { accessToken } = useAuthStore();
+  if (accessToken) {
+    return <Navigate to="/dashboard" />;
+  }
+  return <Navigate to="/login" />;
 }
 
 function App() {

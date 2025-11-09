@@ -5,7 +5,7 @@
 .input {
   width: 100%;
   padding: 0.85rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--border-radius-sm);
   border: 1px solid var(--border-color);
   background: var(--surface-color);
   color: var(--text-color);
