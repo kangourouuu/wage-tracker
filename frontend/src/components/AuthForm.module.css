@@ -1,12 +1,13 @@
 .authFormContainer {
-  background: var(--surface-color);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
   padding: 2.5rem;
-  border-radius: 12px;
+  border-radius: 1rem;
   color: var(--text-color);
   width: 100%;
-  max-width: 400px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 10px 25px var(--shadow-color);
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   transition: all 0.3s ease-in-out;
 }
 
@@ -15,6 +16,7 @@
   margin-bottom: 2rem;
   color: var(--text-color);
   font-weight: 700;
+  font-size: 1.75rem;
 }
 
 .form {
@@ -30,19 +32,18 @@
   border-radius: 8px;
   border: none;
   background: var(--primary-color);
-  color: var(--text-color);
+  color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
-  box-shadow: 0 4px 15px rgba(162, 210, 255, 0.4);
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   font-family: var(--font-family);
   font-size: 1rem;
 }
 
 .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(162, 210, 255, 0.5);
-  background-color: #b1d9ff;
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
 .button:disabled {
@@ -56,6 +57,9 @@
   color: var(--error-color);
   text-align: center;
   margin-top: 1rem;
+  background: rgba(245, 54, 92, 0.1);
+  padding: 0.75rem;
+  border-radius: 8px;
 }
 
 .switchButton {
