@@ -1,17 +1,18 @@
 :root {
   /* Base Colors */
-  --background-color: #eef2f5; /* Light background */
+  --background-color: #1a1a2e; /* Darker background for better contrast */
   --surface-color: #ffffff;   /* White for cards/forms */
-  --text-color: #32325d;      /* Dark text for readability */
-  --text-light-color: #8898aa; /* Lighter text for secondary info */
-  --border-color: #e9ecef;    /* Light grey border */
-  --error-color: #f5365c;     /* Red for errors */
+  --text-color: #e0e0e0;      /* Lighter text for dark background */
+  --text-light-color: #a0a0a0; /* Lighter text for secondary info */
+  --border-color: rgba(255, 255, 255, 0.1); /* Lighter border for dark background */
+  --error-color: #ff6b6b;     /* More vibrant red for errors */
+  --error-color-rgb: 255, 107, 107; /* RGB for transparent error backgrounds */
   --success-color: #2dce89;   /* Green for success */
 
   /* Primary Palette - More vibrant and elegant */
-  --primary-color: #673ab7;    /* Deep Purple */
-  --primary-color-light: #9575cd; /* Lighter Purple */
-  --primary-color-dark: #512da8;  /* Darker Purple */
+  --primary-color: #7b1fa2;    /* Deeper Purple */
+  --primary-color-light: #ae52d4; /* Lighter Purple */
+  --primary-color-dark: #4a0072;  /* Darker Purple */
 
   /* Accent Palette - Complementary and vibrant */
   --accent-color-1: #00bcd4;   /* Cyan */
@@ -28,14 +29,14 @@
   --gradient-accent-2: linear-gradient(to right, var(--accent-color-2-dark), var(--accent-color-2));
 
   /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.1); /* Lighter for light theme */
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-backdrop-filter: blur(10px);
+  --glass-bg: rgba(255, 255, 255, 0.08); /* More transparent */
+  --glass-border: rgba(255, 255, 255, 0.15); /* Slightly more visible border */
+  --glass-backdrop-filter: blur(12px); /* Slightly more blur */
 
   /* Shadows */
-  --shadow-sm: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 30px rgba(50, 50, 93, 0.15), 0 5px 15px rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 7px 14px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2);
 
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
