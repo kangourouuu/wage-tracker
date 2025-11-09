@@ -1,7 +1,7 @@
 services:
   - type: web
     name: wage-tracker-backend
-    env: node
+    runtime: node
     plan: free
     buildCommand: "cd apps/backend && yarn install && yarn build"
     startCommand: "cd apps/backend && yarn start:prod"
