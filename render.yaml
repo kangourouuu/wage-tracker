@@ -3,8 +3,8 @@ services:
     name: wage-tracker-backend
     env: node
     plan: free
-    buildCommand: "yarn install && yarn build"
-    startCommand: "yarn start:prod"
+    buildCommand: "cd apps/backend && yarn install && yarn build"
+    startCommand: "cd apps/backend && yarn start:prod"
     envVars:
       - key: NODE_ENV
         value: production
@@ -51,4 +51,4 @@ envVarGroups:
       - key: JWT_REFRESH_EXP
         value: 30d
       - key: FRONTEND_URL
-        value: "https://your-frontend-url.vercel.app"
+        value: "https://wage-tracker-fe.vercel.app"
