@@ -18,24 +18,28 @@ services:
     value: 30d
   - key: FRONTEND_URL
     value: "https://wage-tracker-fe.vercel.app"
-  - fromGroup: wage-tracker-env # ⬅️ now we attach DB vars via group
-
-databases:
-- name: wage-tracker-db
-  databaseName: wage_tracker_db
-  plan: free
-  region: oregon
-
-envVarGroups:
-- name: wage-tracker-env
-  envVars:
   - key: DB_HOST
-    value: wage-tracker-db
+    fromService:
+      type: pserv
+      name: wage-tracker-db
+      property: host
   - key: DB_PORT
-    value: ${wage-tracker-db.PORT}
+    fromService:
+      type: pserv
+      name: wage-tracker-db
+      property: port
   - key: DB_USERNAME
-    value: ${wage-tracker-db.USER}
+    fromService:
+      type: pserv
+      name: wage-tracker-db
+      property: user
   - key: DB_PASSWORD
-    value: ${wage-tracker-db.PASSWORD}
+    fromService:
+      type: pserv
+      name: wage-tracker-db
+      property: password
   - key: DB_DATABASE
-    value: ${wage-tracker-db.DATABASE}
+    fromService:
+      type: pserv
+      name: wage-tracker-db
+      property: database
