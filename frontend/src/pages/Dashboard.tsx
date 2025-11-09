@@ -3,8 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
 import type { WorkEntry } from '../types/work-entry';
 import styles from './Dashboard.module.css';
-import AddEntryModal from '../components/AddEntryModal'; // Import the modal component
-import { useState } from 'react'; // Import useState
+import AddEntryModal from '../components/AddEntryModal';
+import { useState } from 'react';
+import Calendar from 'react-calendar'; // Import Calendar component
+import 'react-calendar/dist/Calendar.css'; // Import calendar CSS
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -33,7 +35,8 @@ const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
 
 export const Dashboard = () => {
   const { user, logout } = useAuthStore();
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date()); // State for selected date
 
   const { data: workEntries, isLoading, isError } = useQuery<WorkEntry[]>({
     queryKey: ['workEntries'],
@@ -41,6 +44,11 @@ export const Dashboard = () => {
   });
 
   const summary = user && workEntries ? calculateSummary(workEntries, user.wagePerHour) : { totalHours: '0.00', totalEarnings: '0.00' };
+
+  const handleDateClick = (date: Date) => {
+    setSelectedDate(date);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className={styles.dashboardContainer}>
@@ -68,7 +76,16 @@ export const Dashboard = () => {
 
       <div className={styles.entriesHeader}>
         <h2 className={styles.entriesTitle}>Your Work Entries</h2>
-        <button className={styles.addEntryButton} onClick={() => setIsModalOpen(true)}>+ Add Entry</button>
+        <button className={styles.addEntryButton} onClick={() => handleDateClick(new Date())}>+ Add Entry</button>
+      </div>
+
+      <div className={styles.calendarContainer}>
+        <Calendar
+          onChange={(value) => setSelectedDate(value as Date)}
+          value={selectedDate}
+          onClickDay={handleDateClick}
+          locale="en-US"
+        />
       </div>
 
       <div>
@@ -104,7 +121,7 @@ export const Dashboard = () => {
         )}
       </div>
 
-      <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </div>
   );
 };

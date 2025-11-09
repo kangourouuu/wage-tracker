@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './AddEntryModal.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
@@ -7,24 +7,39 @@ import type { CreateWorkEntryDto } from '../types/work-entry.ts'; // Assuming th
 interface AddEntryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  selectedDate: Date | null; // Add selectedDate prop
 }
 
-const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose }) => {
+const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selectedDate }) => {
   const queryClient = useQueryClient();
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [breakDuration, setBreakDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (isOpen && selectedDate) {
+      // Format selectedDate to 'YYYY-MM-DDTHH:mm' for datetime-local input
+      const year = selectedDate.getFullYear();
+      const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = selectedDate.getDate().toString().padStart(2, '0');
+      const hours = new Date().getHours().toString().padStart(2, '0');
+      const minutes = new Date().getMinutes().toString().padStart(2, '0');
+      setStartTime(`${year}-${month}-${day}T${hours}:${minutes}`);
+    } else if (!isOpen) {
+      // Reset form fields when modal closes
+      setStartTime('');
+      setEndTime('');
+      setBreakDuration(0);
+      setError(null);
+    }
+  }, [isOpen, selectedDate]);
+
   const addWorkEntryMutation = useMutation({
     mutationFn: (newEntry: CreateWorkEntryDto) => api.post('/work-entries', newEntry),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workEntries'] });
       onClose();
-      setStartTime('');
-      setEndTime('');
-      setBreakDuration(0);
-      setError(null);
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || 'Failed to add work entry.');
