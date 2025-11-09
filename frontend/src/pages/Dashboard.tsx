@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
 import type { WorkEntry } from '../types/work-entry';
 import styles from './Dashboard.module.css';
+import AddEntryModal from '../components/AddEntryModal'; // Import the modal component
+import { useState } from 'react'; // Import useState
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/wage');
@@ -31,6 +33,8 @@ const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
 
 export const Dashboard = () => {
   const { user, logout } = useAuthStore();
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+
   const { data: workEntries, isLoading, isError } = useQuery<WorkEntry[]>({
     queryKey: ['workEntries'],
     queryFn: fetchWorkEntries,
@@ -64,7 +68,7 @@ export const Dashboard = () => {
 
       <div className={styles.entriesHeader}>
         <h2 className={styles.entriesTitle}>Your Work Entries</h2>
-        <button className={styles.addEntryButton} onClick={() => console.log('Add Entry clicked!')}>+ Add Entry</button>
+        <button className={styles.addEntryButton} onClick={() => setIsModalOpen(true)}>+ Add Entry</button>
       </div>
 
       <div>
@@ -99,6 +103,8 @@ export const Dashboard = () => {
           </ul>
         )}
       </div>
+
+      <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
