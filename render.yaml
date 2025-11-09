@@ -3,17 +3,48 @@ services:
   name: wage-tracker-backend
   runtime: node
   plan: free
-  buildCommand: "cd apps/backend && yarn install --frozen-lockfile && ./node_modules/.bin/nest build"
+  buildCommand: "cd apps/backend && yarn install --frozen-lockfile && yarn tsc -p tsconfig.build.json"
   startCommand: "cd apps/backend && yarn start:prod"
   envVars:
-  - key: NODE_OPTIONS
-    value: --max_old_space_size=1024
   - key: NODE_ENV
     value: production
   - key: PORT
     value: 3000
   - fromGroup: wage-tracker-env
+
 databases:
 - name: wage-tracker-db
   databaseName: wage_tracker_db
   plan: free
+
+envVarGroups:
+- name: wage-tracker-env
+  envVars:
+  - key: DB_HOST
+    fromDatabase:
+      name: wage-tracker-db
+      property: host
+  - key: DB_PORT
+    fromDatabase:
+      name: wage-tracker-db
+      property: port
+  - key: DB_USERNAME
+    fromDatabase:
+      name: wage-tracker-db
+      property: user
+  - key: DB_PASSWORD
+    fromDatabase:
+      name: wage-tracker-db
+      property: password
+  - key: DB_DATABASE
+    fromDatabase:
+      name: wage-tracker-db
+      property: database
+  - key: JWT_SECRET
+    generateValue: true
+  - key: JWT_ACCESS_EXP
+    value: 15m
+  - key: JWT_REFRESH_EXP
+    value: 30d
+  - key: FRONTEND_URL
+    value: "https://wage-tracker-fe.vercel.app"
