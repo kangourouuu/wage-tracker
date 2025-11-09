@@ -7,7 +7,7 @@ import AddEntryModal from '../components/AddEntryModal'; // Import the modal com
 import { useState } from 'react'; // Import useState
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
-  const { data } = await api.get('/wage');
+  const { data } = await api.get('/work-entries');
   return data;
 };
 
