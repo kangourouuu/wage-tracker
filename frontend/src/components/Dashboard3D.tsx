@@ -74,7 +74,7 @@ const WorkEntry3D = ({ entry, position, t }: { entry: any; position: [number, nu
 };
 
 
-const Dashboard3D: React.FC<Dashboard3DProps> = ({ summary, workEntries, selectedDate, onDateClick, onAddEntryClick, t, i18n }) => {
+const Dashboard3D: React.FC<Dashboard3DProps> = ({ summary, workEntries, selectedDate, onDateClick, onAddEntryClick, t }) => {
   return (
     <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
       <ambientLight intensity={0.5} />

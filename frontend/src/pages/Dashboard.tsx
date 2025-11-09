@@ -37,7 +37,7 @@ export const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
-  const { data: workEntries, isLoading, isError } = useQuery<WorkEntry[]>({
+  const { data: workEntries } = useQuery<WorkEntry[]>({
     queryKey: ['workEntries'],
     queryFn: fetchWorkEntries,
   });
