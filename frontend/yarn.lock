@@ -896,6 +896,11 @@ camera-controls@^3.0.1:
   resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-3.0.1.tgz#19ef5aa5377f4af1dc5f860fd45e886017c9d6d6"
   integrity sha512-73DqkvhH5QM6rABBqPqWVvjgH7H4RtFC7dRwb6cMQk6Xi41Tl1tp6+Fq1mjmej7C/tQVoHbz3oZFYWPhqjBVqA==
 
+camera-controls@^3.1.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-3.1.1.tgz#31467f5143053f46b60454782858285283c5b6a3"
+  integrity sha512-zC3DcoQPJ0CbTZ8WHthzi8nMvVF71cppOTBcH4cMLreMkU3y3fzBPViGvz1BefWPo9+kv9BP41tvIsabsXTz+Q==
+
 caniuse-lite@^1.0.30001751:
   version "1.0.30001754"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001754.tgz#7758299d9a72cce4e6b038788a15b12b44002759"
