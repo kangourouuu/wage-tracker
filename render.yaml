@@ -6,6 +6,8 @@ services:
     buildCommand: "cd apps/backend && yarn install && yarn build"
     startCommand: "cd apps/backend && yarn start:prod"
     envVars:
+      - key: NODE_OPTIONS
+        value: --max_old_space_size=1024
       - key: NODE_ENV
         value: production
       - key: PORT
