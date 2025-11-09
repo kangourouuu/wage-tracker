@@ -35,6 +35,30 @@
   text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5); /* Subtle glow */
 }
 
+.headerActions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.languageSwitcher {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.languageSwitcher:hover {
+  border-color: var(--primary-color-light);
+  box-shadow: var(--shadow-sm);
+}
+
 .logoutButton {
   padding: 0.6rem 1.2rem;
   border-radius: var(--border-radius-sm);
@@ -64,22 +88,20 @@
 }
 
 .mainContent {
-  display: flex;
-  flex-grow: 1;
+  display: grid; /* Use grid for more control */
+  grid-template-columns: 1fr 2fr; /* Calendar on left, entries on right */
   gap: 2rem;
   margin-top: 1rem;
+  flex-grow: 1;
 }
 
 .leftPanel {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  min-width: 300px;
 }
 
 .rightPanel {
-  flex: 2;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -94,6 +116,7 @@
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease-in-out;
   transform: translateZ(0); /* Ensure 3D context */
+  flex-grow: 1; /* Allow calendar to take available space */
 }
 
 .calendarWrapper:hover {
@@ -157,19 +180,19 @@
 
 .summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjusted for smaller panel */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1.5rem;
 }
 
 .summaryCard {
-  background: var(--glass-bg); /* Use glass background */
+  background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   padding: 1.5rem;
   border-radius: var(--border-radius-md);
   text-align: center;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease-in-out;
-  border: 1px solid var(--glass-border); /* Use glass border */
+  border: 1px solid var(--glass-border);
   transform: translateZ(0);
 }
 
@@ -185,9 +208,10 @@
 }
 
 .summaryCard p {
-  font-size: 1.5rem;
+  font-size: 1.8rem; /* Increased font size for prominence */
   font-weight: 700;
   color: var(--accent-color-1);
+  text-shadow: 0 0 10px rgba(var(--accent-color-1-rgb), 0.5); /* Subtle glow */
 }
 
 .entriesHeader {
@@ -206,7 +230,7 @@
 }
 
 .addEntryButton {
-  padding: 0.7rem 1.4rem; /* Slightly larger button */
+  padding: 0.7rem 1.4rem;
   border-radius: var(--border-radius-sm);
   border: none;
   background: var(--gradient-accent-1);
@@ -236,7 +260,7 @@
 .entryListContainer {
   flex-grow: 1;
   overflow-y: auto;
-  padding-right: 0.5rem; /* For scrollbar */
+  padding-right: 0.5rem;
 }
 
 .entryList {
@@ -253,7 +277,7 @@
   border-radius: var(--border-radius-md);
   border: 1px solid var(--glass-border);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjusted for more columns */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
   align-items: center;
   box-shadow: var(--shadow-sm);
@@ -301,7 +325,7 @@
 
 @media (max-width: 992px) { /* Adjusted breakpoint for tablet */
   .mainContent {
-    flex-direction: column;
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
   }
 
   .leftPanel, .rightPanel {

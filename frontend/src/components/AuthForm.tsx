@@ -5,12 +5,14 @@ import api from '../services/api';
 import { useAuthStore } from '../store/authStore';
 import styles from './AuthForm.module.css';
 import { Input } from './Input';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 interface AuthFormProps {
   isLogin: boolean;
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
+  const { t } = useTranslation(); // Initialize useTranslation
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -29,7 +31,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
       navigate('/dashboard');
     },
     onError: (err: any) => {
-      setError(err.response?.data?.message || 'An error occurred.');
+      setError(err.response?.data?.message || (isLogin ? t('failedToLogin') : t('failedToRegister')));
     },
   });
 
@@ -44,12 +46,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   return (
     <div className={styles.authFormContainer}>
-      <h2 className={styles.title}>{isLogin ? 'Login' : 'Register'}</h2>
+      <h2 className={styles.title}>{isLogin ? t('login') : t('register')}</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         {!isLogin && (
           <Input
             id="name"
-            label="Name"
+            label={t('name')}
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -58,7 +60,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
         )}
         <Input
           id="email"
-          label="Email"
+          label={t('email')}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +68,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
         />
         <Input
           id="password"
-          label="Password"
+          label={t('password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +77,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
         {!isLogin && (
           <Input
             id="wagePerHour"
-            label="Wage Per Hour"
+            label={t('wagePerHour')}
             type="number"
             value={wagePerHour}
             onChange={(e) => setWagePerHour(e.target.value)}
@@ -83,12 +85,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
           />
         )}
         <button type="submit" className={styles.button} disabled={mutation.isPending}>
-          {mutation.isPending ? 'Submitting...' : (isLogin ? 'Login' : 'Register')}
+          {mutation.isPending ? t('submitting') : (isLogin ? t('loginButton') : t('registerButton'))}
         </button>
         {error && <p className={styles.error}>{error}</p>}
       </form>
       <button onClick={() => navigate(isLogin ? '/register' : '/login')} className={styles.switchButton}>
-        {isLogin ? 'Need an account? Register' : 'Have an account? Login'}
+        {isLogin ? t('dontHaveAccount') : t('alreadyHaveAccount')}
       </button>
     </div>
   );

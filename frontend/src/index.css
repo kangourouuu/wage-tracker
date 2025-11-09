@@ -18,10 +18,7 @@
   --accent-color-1: #00bcd4;   /* Cyan */
   --accent-color-1-light: #84ffff; /* Lighter Cyan */
   --accent-color-1-dark: #00838f;  /* Darker Cyan */
-
-  --accent-color-2: #ff9800;   /* Orange */
-  --accent-color-2-light: #ffcc80; /* Lighter Orange */
-  --accent-color-2-dark: #f57c00;  /* Darker Orange */
+  --purple-pastel: #e0b0ff; /* New purple pastel color */
 
   /* Gradients */
   --gradient-primary: linear-gradient(to right, var(--primary-color-dark), var(--primary-color));
@@ -63,7 +60,7 @@ body,
 }
 
 body {
-  background-color: var(--background-color);
+  background: radial-gradient(circle at top left, white 0%, var(--accent-color-1-light) 30%, var(--purple-pastel) 60%, var(--background-color) 100%);
   color: var(--text-color);
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;

@@ -7,6 +7,7 @@ import AddEntryModal from '../components/AddEntryModal';
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -32,6 +33,7 @@ const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
 };
 
 export const Dashboard = () => {
+  const { t, i18n } = useTranslation(); // Initialize useTranslation
   const { user, logout } = useAuthStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -48,13 +50,23 @@ export const Dashboard = () => {
     setIsModalOpen(true);
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div className={styles.dashboardContainer}>
       <header className={styles.header}>
-        <h1 className={styles.welcomeTitle}>Welcome, {user?.name}</h1>
-        <button onClick={logout} className={styles.logoutButton}>
-          Logout
-        </button>
+        <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
+        <div className={styles.headerActions}>
+          <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
+            <option value="en">English</option>
+            <option value="vn">Tiếng Việt</option>
+          </select>
+          <button onClick={logout} className={styles.logoutButton}>
+            {t('logout')}
+          </button>
+        </div>
       </header>
 
       <div className={styles.mainContent}>
@@ -64,21 +76,21 @@ export const Dashboard = () => {
               onChange={(value) => setSelectedDate(value as Date)}
               value={selectedDate}
               onClickDay={handleDateClick}
-              locale="en-US"
+              locale={i18n.language === 'vn' ? 'vi' : 'en-US'} // Adjust locale for calendar
             />
           </div>
 
           <section className={styles.summary}>
             <div className={styles.summaryCard}>
-              <h3>Total Hours</h3>
+              <h3>{t('totalHours')}</h3>
               <p>{summary.totalHours}</p>
             </div>
             <div className={styles.summaryCard}>
-              <h3>Total Entries</h3>
+              <h3>{t('totalEntries')}</h3>
               <p>{workEntries?.length || 0}</p>
             </div>
             <div className={styles.summaryCard}>
-              <h3>Estimated Earnings</h3>
+              <h3>{t('estimatedEarnings')}</h3>
               <p>${summary.totalEarnings}</p>
             </div>
           </section>
@@ -86,38 +98,38 @@ export const Dashboard = () => {
 
         <div className={styles.rightPanel}>
           <div className={styles.entriesHeader}>
-            <h2 className={styles.entriesTitle}>Your Work Entries</h2>
-            <button className={styles.addEntryButton} onClick={() => handleDateClick(new Date())}>+ Add Entry</button>
+            <h2 className={styles.entriesTitle}>{t('yourWorkEntries')}</h2>
+            <button className={styles.addEntryButton} onClick={() => handleDateClick(new Date())}>{t('addEntry')}</button>
           </div>
 
           <div className={styles.entryListContainer}>
-            {isLoading && <p className={styles.loadingText}>Loading entries...</p>}
-            {isError && <p className={styles.errorText}>Error fetching entries.</p>}
+            {isLoading && <p className={styles.loadingText}>{t('loadingEntries')}</p>}
+            {isError && <p className={styles.errorText}>{t('errorFetchingEntries')}</p>}
             {workEntries && (
               <ul className={styles.entryList}>
                 {workEntries.length > 0 ? (
                   workEntries.map(entry => (
                     <li key={entry.id} className={styles.entryItem}>
                       <div>
-                        <p><strong>Date</strong></p>
+                        <p><strong>{t('date')}</strong></p>
                         <p>{new Date(entry.startTime).toLocaleDateString()}</p>
                       </div>
                       <div>
-                        <p><strong>Start Time</strong></p>
+                        <p><strong>{t('startTime')}</strong></p>
                         <p>{new Date(entry.startTime).toLocaleTimeString()}</p>
                       </div>
                       <div>
-                        <p><strong>End Time</strong></p>
+                        <p><strong>{t('endTime')}</strong></p>
                         <p>{new Date(entry.endTime).toLocaleTimeString()}</p>
                       </div>
                       <div>
-                        <p><strong>Break</strong></p>
+                        <p><strong>{t('break')}</strong></p>
                         <p>{entry.breakDuration} min</p>
                       </div>
                     </li>
                   ))
                 ) : (
-                  <p className={styles.noEntriesText}>No work entries found. Time to get to work! 💸</p>
+                  <p className={styles.noEntriesText}>{t('noEntriesFound')}</p>
                 )}
               </ul>
             )}

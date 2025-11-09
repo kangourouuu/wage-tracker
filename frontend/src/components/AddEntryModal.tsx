@@ -3,6 +3,7 @@ import styles from './AddEntryModal.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
 import type { CreateWorkEntryDto } from '../types/work-entry.ts';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 interface AddEntryModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface AddEntryModalProps {
 }
 
 const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selectedDate }) => {
+  const { t } = useTranslation(); // Initialize useTranslation
   const queryClient = useQueryClient();
   const [startTime, setStartTime] = useState('');
   const [hoursWorked, setHoursWorked] = useState(8); // Default to 8 hours
@@ -40,7 +42,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
       onClose();
     },
     onError: (err: any) => {
-      setError(err.response?.data?.message || 'Failed to add work entry.');
+      setError(err.response?.data?.message || t('failedToAddWorkEntry'));
     },
   });
 
@@ -49,7 +51,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
     setError(null);
 
     if (!startTime || hoursWorked <= 0) {
-      setError('Start time and hours worked are required and must be positive.');
+      setError(t('startTimeAndHoursRequired'));
       return;
     }
 
@@ -70,11 +72,11 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2 className={styles.modalTitle}>Add New Work Entry</h2>
+        <h2 className={styles.modalTitle}>{t('addWorkEntry')}</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.formGroup}>
-            <label htmlFor="startTime">Start Time:</label>
+            <label htmlFor="startTime">{t('startTime')}:</label>
             <input
               type="datetime-local"
               id="startTime"
@@ -84,7 +86,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="hoursWorked">Hours Worked:</label>
+            <label htmlFor="hoursWorked">{t('hoursWorked')}:</label>
             <input
               type="number"
               id="hoursWorked"
@@ -96,7 +98,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="breakDuration">Break Duration (minutes):</label>
+            <label htmlFor="breakDuration">{t('breakDuration')}:</label>
             <input
               type="number"
               id="breakDuration"
@@ -107,10 +109,10 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
           </div>
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.submitButton} disabled={addWorkEntryMutation.isPending}>
-              {addWorkEntryMutation.isPending ? 'Adding...' : 'Add Entry'}
+              {addWorkEntryMutation.isPending ? t('submitting') : t('addEntryButton')}
             </button>
             <button type="button" className={styles.cancelButton} onClick={onClose} disabled={addWorkEntryMutation.isPending}>
-              Cancel
+              {t('cancelButton')}
             </button>
           </div>
         </form>
