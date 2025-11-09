@@ -30,7 +30,7 @@ envVarGroups:
 - name: wage-tracker-env
   envVars:
   - key: DB_HOST
-    value: ${wage-tracker-db.HOST}
+    value: wage-tracker-db
   - key: DB_PORT
     value: ${wage-tracker-db.PORT}
   - key: DB_USERNAME
