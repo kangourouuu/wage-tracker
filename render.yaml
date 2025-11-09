@@ -3,7 +3,7 @@ services:
   name: wage-tracker-backend
   runtime: node
   plan: free
-  buildCommand: "cd apps/backend && yarn install --frozen-lockfile && yarn nest build"
+  buildCommand: "cd apps/backend && yarn install --frozen-lockfile && ./node_modules/.bin/nest build"
   startCommand: "cd apps/backend && yarn start:prod"
   envVars:
   - key: NODE_OPTIONS

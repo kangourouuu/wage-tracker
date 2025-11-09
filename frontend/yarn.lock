@@ -891,6 +891,11 @@ callsites@^3.0.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
+camera-controls@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-3.0.1.tgz#19ef5aa5377f4af1dc5f860fd45e886017c9d6d6"
+  integrity sha512-73DqkvhH5QM6rABBqPqWVvjgH7H4RtFC7dRwb6cMQk6Xi41Tl1tp6+Fq1mjmej7C/tQVoHbz3oZFYWPhqjBVqA==
+
 camera-controls@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-3.1.1.tgz#31467f5143053f46b60454782858285283c5b6a3"
