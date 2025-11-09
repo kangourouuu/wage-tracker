@@ -32,5 +32,6 @@
   "alreadyHaveAccount": "Đã có tài khoản?",
   "failedToLogin": "Đăng nhập thất bại.",
   "failedToRegister": "Đăng ký thất bại.",
-  "submitting": "Đang gửi..."
+  "submitting": "Đang gửi...",
+  "authDescription": "Theo dõi giờ làm và thu nhập của bạn một cách dễ dàng. Nắm bắt năng suất và quản lý thời gian hiệu quả."
 }

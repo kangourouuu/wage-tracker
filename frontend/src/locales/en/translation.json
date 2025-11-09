@@ -32,5 +32,6 @@
   "alreadyHaveAccount": "Already have an account?",
   "failedToLogin": "Failed to login.",
   "failedToRegister": "Failed to register.",
-  "submitting": "Submitting..."
+  "submitting": "Submitting...",
+  "authDescription": "Track your work hours and earnings effortlessly. Get insights into your productivity and manage your time effectively."
 }

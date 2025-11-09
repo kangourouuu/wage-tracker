@@ -47,6 +47,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
   return (
     <div className={styles.authFormContainer}>
       <h2 className={styles.title}>{isLogin ? t('login') : t('register')}</h2>
+      <p className={styles.description}>{t('authDescription')}</p>
       <form onSubmit={handleSubmit} className={styles.form}>
         {!isLogin && (
           <Input
