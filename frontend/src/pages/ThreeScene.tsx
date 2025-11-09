@@ -2,8 +2,6 @@ import { useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-import { useLocation } from 'react-router-dom';
-import { Dashboard3D } from './Dashboard3D';
 
 const PARTICLE_COUNT = 500;
 
@@ -59,18 +57,14 @@ function Swarm() {
 }
 
 function ThreeScene() {
-  const location = useLocation();
-  const isDashboard = location.pathname === '/dashboard';
-
   return (
-    <Canvas camera={{ position: [0, 0, isDashboard ? 10 : 15], fov: 75 }} style={{ position: 'fixed', top: 0, left: 0, zIndex: -1, background: 'var(--background-color)' }}>
+    <Canvas camera={{ position: [0, 0, 15], fov: 75 }} style={{ position: 'fixed', top: 0, left: 0, zIndex: -1, background: 'var(--background-color)' }}>
       <ambientLight intensity={0.8} />
       <directionalLight position={[5, 5, 5]} intensity={1} />
       <pointLight position={[-10, -10, -10]} color="#5e72e4" intensity={1.5} />
       <pointLight position={[0, 10, 0]} color="#f7797d" intensity={1.5} />
       <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.2} />
       <Swarm />
-      {isDashboard && <Dashboard3D />}
     </Canvas>
   );
 }

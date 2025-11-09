@@ -23,15 +23,14 @@ function App() {
         <Routes>
           <Route path="/login" element={<AuthForm isLogin />} />
           <Route path="/register" element={<AuthForm isLogin={false} />} />
-          {/* Dashboard is now rendered within ThreeScene */}
-          {/* <Route 
+          <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
             } 
-          /> */}
+          />
           <Route path="/*" element={<Root />} />
         </Routes>
       </div>
