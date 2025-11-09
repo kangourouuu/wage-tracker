@@ -1,5 +1,5 @@
 import { useMemo, useRef, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber'; // Import useThree
+import { Canvas, useFrame } from '@react-three/fiber'; // Removed useThree
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
