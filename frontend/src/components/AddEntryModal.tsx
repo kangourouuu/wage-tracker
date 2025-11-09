@@ -2,24 +2,23 @@ import React, { useState, useEffect } from 'react';
 import styles from './AddEntryModal.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
-import type { CreateWorkEntryDto } from '../types/work-entry.ts'; // Assuming this DTO exists
+import type { CreateWorkEntryDto } from '../types/work-entry.ts';
 
 interface AddEntryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedDate: Date | null; // Add selectedDate prop
+  selectedDate: Date | null;
 }
 
 const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selectedDate }) => {
   const queryClient = useQueryClient();
   const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [hoursWorked, setHoursWorked] = useState(8); // Default to 8 hours
   const [breakDuration, setBreakDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen && selectedDate) {
-      // Format selectedDate to 'YYYY-MM-DDTHH:mm' for datetime-local input
       const year = selectedDate.getFullYear();
       const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
       const day = selectedDate.getDate().toString().padStart(2, '0');
@@ -27,9 +26,8 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
       const minutes = new Date().getMinutes().toString().padStart(2, '0');
       setStartTime(`${year}-${month}-${day}T${hours}:${minutes}`);
     } else if (!isOpen) {
-      // Reset form fields when modal closes
       setStartTime('');
-      setEndTime('');
+      setHoursWorked(8);
       setBreakDuration(0);
       setError(null);
     }
@@ -50,14 +48,17 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
     e.preventDefault();
     setError(null);
 
-    if (!startTime || !endTime) {
-      setError('Start time and End time are required.');
+    if (!startTime || hoursWorked <= 0) {
+      setError('Start time and hours worked are required and must be positive.');
       return;
     }
 
+    const startDateTime = new Date(startTime);
+    const endDateTime = new Date(startDateTime.getTime() + (hoursWorked * 60 * 60 * 1000) + (breakDuration * 60 * 1000));
+
     const newEntry: CreateWorkEntryDto = {
-      startTime: new Date(startTime).toISOString(),
-      endTime: new Date(endTime).toISOString(),
+      startTime: startDateTime.toISOString(),
+      endTime: endDateTime.toISOString(),
       breakDuration: breakDuration,
     };
 
@@ -83,12 +84,14 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="endTime">End Time:</label>
+            <label htmlFor="hoursWorked">Hours Worked:</label>
             <input
-              type="datetime-local"
-              id="endTime"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
+              type="number"
+              id="hoursWorked"
+              value={hoursWorked}
+              onChange={(e) => setHoursWorked(Number(e.target.value))}
+              min="0.1"
+              step="0.1"
               required
             />
           </div>

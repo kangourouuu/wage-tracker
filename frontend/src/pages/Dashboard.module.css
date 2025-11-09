@@ -5,14 +5,17 @@
   border-radius: var(--border-radius-md);
   color: var(--text-color);
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px; /* Increased max-width for more content */
   height: 90%;
-  max-height: 700px;
+  max-height: 800px; /* Increased max-height */
   overflow-y: auto;
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
+  position: relative; /* For potential absolute positioning of elements */
+  transform-style: preserve-3d; /* Enable 3D transformations for children */
+  perspective: 1000px; /* Define perspective for 3D effects */
 }
 
 .header {
@@ -22,19 +25,21 @@
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--border-color);
+  z-index: 10; /* Ensure header is above other elements */
 }
 
 .welcomeTitle {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--primary-color-dark);
+  color: var(--primary-color-light); /* Lighter primary color for welcome */
+  text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5); /* Subtle glow */
 }
 
 .logoutButton {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: var(--border-radius-sm);
   border: none;
-  background: var(--gradient-accent-2); /* Use accent gradient for logout */
+  background: var(--gradient-accent-2);
   color: #fff;
   cursor: pointer;
   font-weight: bold;
@@ -42,39 +47,135 @@
   box-shadow: var(--shadow-md);
   font-family: var(--font-family);
   font-size: 0.9rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .logoutButton:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02); /* More pronounced lift and slight scale */
   box-shadow: var(--shadow-lg);
-  background: var(--gradient-accent-2); /* Ensure gradient persists on hover */
+  background: var(--gradient-accent-2);
 }
 
 .logoutButton:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
   box-shadow: var(--shadow-sm);
+}
+
+.mainContent {
+  display: flex;
+  flex-grow: 1;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.leftPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 300px;
+}
+
+.rightPanel {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.calendarWrapper {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease-in-out;
+  transform: translateZ(0); /* Ensure 3D context */
+}
+
+.calendarWrapper:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateZ(10px) translateY(-5px); /* Lift and bring forward */
+}
+
+/* React Calendar Overrides for Glassmorphism */
+.react-calendar {
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  font-family: var(--font-family) !important;
+}
+
+.react-calendar__navigation button {
+  color: var(--text-color) !important;
+  font-weight: bold !important;
+  transition: color 0.2s ease-in-out;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--border-radius-sm);
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  color: var(--text-light-color) !important;
+  font-size: 0.8rem !important;
+}
+
+.react-calendar__tile {
+  color: var(--text-color) !important;
+  border-radius: var(--border-radius-sm) !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  transform: scale(1.05);
+}
+
+.react-calendar__tile--now {
+  background: rgba(var(--accent-color-1-rgb), 0.2) !important; /* Subtle accent for today */
+  color: var(--accent-color-1) !important;
+}
+
+.react-calendar__tile--active {
+  background: var(--gradient-primary) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-md);
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: var(--gradient-primary) !important;
+  transform: scale(1.05);
 }
 
 .summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjusted for smaller panel */
   gap: 1.5rem;
-  margin-bottom: 2rem;
 }
 
 .summaryCard {
-  background: var(--surface-color); /* Use surface color */
+  background: var(--glass-bg); /* Use glass background */
+  backdrop-filter: var(--glass-backdrop-filter);
   padding: 1.5rem;
   border-radius: var(--border-radius-md);
   text-align: center;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease-in-out;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border); /* Use glass border */
+  transform: translateZ(0);
 }
 
 .summaryCard:hover {
-  transform: translateY(-5px); /* More pronounced lift effect on hover */
-  box-shadow: var(--shadow-lg); /* Larger shadow on hover */
+  transform: translateY(-5px) translateZ(10px);
+  box-shadow: var(--shadow-lg);
 }
 
 .summaryCard h3 {
@@ -86,7 +187,7 @@
 .summaryCard p {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--accent-color-1); /* Use an accent color for values */
+  color: var(--accent-color-1);
 }
 
 .entriesHeader {
@@ -94,37 +195,48 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  z-index: 10;
 }
 
 .entriesTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color-dark);
+  color: var(--primary-color-light);
+  text-shadow: 0 0 8px rgba(var(--primary-color-rgb), 0.3);
 }
 
 .addEntryButton {
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.4rem; /* Slightly larger button */
   border-radius: var(--border-radius-sm);
   border: none;
-  background: var(--gradient-accent-1); /* Use accent gradient for add button */
+  background: var(--gradient-accent-1);
   color: #fff;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease-in-out;
   box-shadow: var(--shadow-md);
   font-family: var(--font-family);
-  font-size: 0.9rem;
+  font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .addEntryButton:hover {
-  background: var(--gradient-accent-1); /* Ensure gradient persists on hover */
-  transform: translateY(-2px);
+  background: var(--gradient-accent-1);
+  transform: translateY(-3px) scale(1.02);
   box-shadow: var(--shadow-lg);
 }
 
 .addEntryButton:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
   box-shadow: var(--shadow-sm);
+}
+
+.entryListContainer {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem; /* For scrollbar */
 }
 
 .entryList {
@@ -135,21 +247,23 @@
 }
 
 .entryItem {
-  background: var(--surface-color); /* Use surface color */
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
   padding: 1.5rem;
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjusted for more columns */
   gap: 1rem;
   align-items: center;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease-in-out;
+  transform: translateZ(0);
 }
 
 .entryItem:hover {
-  transform: translateY(-5px); /* More pronounced lift effect on hover */
-  box-shadow: var(--shadow-lg); /* Larger shadow on hover */
+  transform: translateY(-5px) translateZ(10px);
+  box-shadow: var(--shadow-lg);
 }
 
 .entryItem p {
@@ -165,14 +279,50 @@
   color: var(--text-light-color);
 }
 
+/* Scrollbar Styling */
+.entryListContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.entryListContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.entryListContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: background 0.3s ease-in-out;
+}
+
+.entryListContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 992px) { /* Adjusted breakpoint for tablet */
+  .mainContent {
+    flex-direction: column;
+  }
+
+  .leftPanel, .rightPanel {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .dashboardContainer {
+    max-width: 700px;
+    height: auto;
+    max-height: 90vh;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboardContainer {
     padding: 1rem;
-    height: 100%;
-    max-height: none;
     border-radius: 0;
     border: none;
     box-shadow: none;
+    max-width: 100%;
   }
 
   .header {
@@ -186,6 +336,6 @@
   }
 
   .entryItem {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr; /* Stack items on small screens */
   }
 }
