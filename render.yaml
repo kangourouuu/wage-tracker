@@ -19,27 +19,18 @@ services:
   - key: FRONTEND_URL
     value: "https://wage-tracker-fe.vercel.app"
   - key: DB_HOST
-    fromService:
-      type: pserv
-      name: wage-tracker-db
-      property: host
+    value: ${WAGE_TRACKER_DB_HOSTNAME}
   - key: DB_PORT
-    fromService:
-      type: pserv
-      name: wage-tracker-db
-      property: port
+    value: ${WAGE_TRACKER_DB_PORT}
   - key: DB_USERNAME
-    fromService:
-      type: pserv
-      name: wage-tracker-db
-      property: user
+    value: ${WAGE_TRACKER_DB_USER}
   - key: DB_PASSWORD
-    fromService:
-      type: pserv
-      name: wage-tracker-db
-      property: password
+    value: ${WAGE_TRACKER_DB_PASSWORD}
   - key: DB_DATABASE
-    fromService:
-      type: pserv
-      name: wage-tracker-db
-      property: database
+    value: ${WAGE_TRACKER_DB_DATABASE}
+
+databases:
+- name: wage-tracker-db
+  databaseName: wage_tracker_db
+  plan: free
+  region: oregon
