@@ -17,7 +17,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose }) => {
   const [error, setError] = useState<string | null>(null);
 
   const addWorkEntryMutation = useMutation({
-    mutationFn: (newEntry: CreateWorkEntryDto) => api.post('/wage', newEntry),
+    mutationFn: (newEntry: CreateWorkEntryDto) => api.post('/work-entries', newEntry),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workEntries'] });
       onClose();
