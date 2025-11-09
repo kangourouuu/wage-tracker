@@ -64,7 +64,7 @@ export const Dashboard = () => {
 
       <div className={styles.entriesHeader}>
         <h2 className={styles.entriesTitle}>Your Work Entries</h2>
-        <button className={styles.addEntryButton}>+ Add Entry</button>
+        <button className={styles.addEntryButton} onClick={() => console.log('Add Entry clicked!')}>+ Add Entry</button>
       </div>
 
       <div>
