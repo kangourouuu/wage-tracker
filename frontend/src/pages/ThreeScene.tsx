@@ -37,7 +37,7 @@ function Swarm() {
     if (!meshRef.current) return;
 
     particles.forEach((particle, i) => {
-      let { t, factor, speed, xFactor, yFactor, zFactor } = particle;
+      const { t, factor, speed, xFactor, yFactor, zFactor } = particle;
       t = particle.t += speed / 2;
       const a = Math.cos(t) + Math.sin(t * 1) / 10;
       const b = Math.sin(t) + Math.cos(t * 2) / 10;

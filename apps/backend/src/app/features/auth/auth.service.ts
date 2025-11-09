@@ -1,12 +1,11 @@
-
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { RegisterDto } from './dto/register.dto';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { User } from '../user/entities/user.entity';
-import { LoginDto } from './dto/login.dto';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { UserService } from "../user/user.service";
+import { RegisterDto } from "./dto/register.dto";
+import * as bcrypt from "bcrypt";
+import { JwtService } from "@nestjs/jwt";
+import { User } from "../user/entities/user.entity";
+import { LoginDto } from "./dto/login.dto";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AuthService {
@@ -19,7 +18,7 @@ export class AuthService {
   async register(registerDto: RegisterDto) {
     const userExists = await this.userService.findByEmail(registerDto.email);
     if (userExists) {
-      throw new UnauthorizedException('User with this email already exists.');
+      throw new UnauthorizedException("User with this email already exists.");
     }
 
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
@@ -29,10 +28,9 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    const { password, ...userWithoutPassword } = user;
-    const { accessToken, refreshToken } = await this.generateTokens(
-      userWithoutPassword,
-    );
+    const { password: _password, ...userWithoutPassword } = user;
+    const { accessToken, refreshToken } =
+      await this.generateTokens(userWithoutPassword);
 
     await this.updateRefreshToken(user.id, refreshToken);
 
@@ -46,7 +44,7 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const user = await this.userService.findByEmail(loginDto.email);
     if (!user || !user.password) {
-      throw new UnauthorizedException('Invalid credentials.');
+      throw new UnauthorizedException("Invalid credentials.");
     }
 
     const isPasswordMatching = await bcrypt.compare(
@@ -54,13 +52,12 @@ export class AuthService {
       user.password,
     );
     if (!isPasswordMatching) {
-      throw new UnauthorizedException('Invalid credentials.');
+      throw new UnauthorizedException("Invalid credentials.");
     }
 
-    const { password, ...userWithoutPassword } = user;
-    const { accessToken, refreshToken } = await this.generateTokens(
-      userWithoutPassword,
-    );
+    const { password: _password, ...userWithoutPassword } = user;
+    const { accessToken, refreshToken } =
+      await this.generateTokens(userWithoutPassword);
 
     await this.updateRefreshToken(user.id, refreshToken);
 
@@ -78,7 +75,7 @@ export class AuthService {
   async refresh(userId: string, refreshToken: string) {
     const user = await this.userService.findById(userId);
     if (!user || !user.hashedRefreshToken) {
-      throw new UnauthorizedException('Access Denied');
+      throw new UnauthorizedException("Access Denied");
     }
 
     const isRefreshTokenMatching = await bcrypt.compare(
@@ -86,10 +83,10 @@ export class AuthService {
       user.hashedRefreshToken,
     );
     if (!isRefreshTokenMatching) {
-      throw new UnauthorizedException('Access Denied');
+      throw new UnauthorizedException("Access Denied");
     }
 
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
     const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
       await this.generateTokens(userWithoutPassword);
 
@@ -102,11 +99,11 @@ export class AuthService {
     };
   }
 
-  private async generateTokens(user: Omit<User, 'password'>) {
+  private async generateTokens(user: Omit<User, "password">) {
     const payload = { sub: user.id, email: user.email };
 
-    const accessExp = this.configService.getOrThrow<string>('jwt.accessExp');
-    const refreshExp = this.configService.getOrThrow<string>('jwt.refreshExp');
+    const accessExp = this.configService.getOrThrow<string>("jwt.accessExp");
+    const refreshExp = this.configService.getOrThrow<string>("jwt.refreshExp");
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
