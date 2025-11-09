@@ -23,7 +23,7 @@ function Swarm() {
     return temp;
   }, []);
 
-  useFrame(state => {
+  useFrame((_state) => {
     if (!meshRef.current) return;
 
     particles.forEach((particle, i) => {
@@ -49,7 +49,7 @@ function Swarm() {
   });
 
   return (
-    <instancedMesh ref={meshRef} args={[null, null, PARTICLE_COUNT]}>
+    <instancedMesh ref={meshRef} args={[undefined, undefined, PARTICLE_COUNT]}>
       <sphereGeometry args={[0.1, 32, 32]} />
       <meshStandardMaterial color="#f7797d" roughness={0.5} metalness={0.5} />
     </instancedMesh>
