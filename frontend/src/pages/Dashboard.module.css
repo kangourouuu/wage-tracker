@@ -37,14 +37,14 @@
   color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out; /* Added transition */
   box-shadow: var(--box-shadow-sm);
 }
 
 .logoutButton:hover {
   background: #ff9a9e;
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow-md);
+  transform: translateY(-3px); /* Slightly more pronounced lift */
+  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
 }
 
 .summary {
@@ -60,6 +60,12 @@
   border-radius: var(--border-radius-md);
   text-align: center;
   box-shadow: var(--box-shadow-sm);
+  transition: all 0.2s ease-in-out; /* Added transition */
+}
+
+.summaryCard:hover {
+  transform: translateY(-3px); /* Lift effect on hover */
+  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
 }
 
 .summaryCard h3 {
@@ -94,14 +100,14 @@
   color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out; /* Added transition */
   box-shadow: var(--box-shadow-sm);
 }
 
 .addEntryButton:hover {
-  background: #b1d9ff;
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow-md);
+  background: var(--primary-color-dark); /* Darker color on hover */
+  transform: translateY(-3px); /* Slightly more pronounced lift */
+  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
 }
 
 .entryList {
@@ -121,6 +127,12 @@
   gap: 1rem;
   align-items: center;
   box-shadow: var(--box-shadow-sm);
+  transition: all 0.2s ease-in-out; /* Added transition */
+}
+
+.entryItem:hover {
+  transform: translateY(-3px); /* Lift effect on hover */
+  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
 }
 
 .entryItem p {
