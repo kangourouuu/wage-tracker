@@ -5,9 +5,8 @@ import type { WorkEntry } from '../types/work-entry';
 import styles from './Dashboard.module.css';
 import AddEntryModal from '../components/AddEntryModal';
 import { useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
+import Dashboard3D from '../components/Dashboard3D'; // Import Dashboard3D
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -33,7 +32,7 @@ const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
 };
 
 export const Dashboard = () => {
-  const { t, i18n } = useTranslation(); // Initialize useTranslation
+  const { t, i18n } = useTranslation();
   const { user, logout } = useAuthStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -47,6 +46,11 @@ export const Dashboard = () => {
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
+    setIsModalOpen(true);
+  };
+
+  const handleAddEntryClick = () => {
+    setSelectedDate(new Date()); // Set current date as default for new entry
     setIsModalOpen(true);
   };
 
@@ -69,73 +73,15 @@ export const Dashboard = () => {
         </div>
       </header>
 
-      <div className={styles.mainContent}>
-        <div className={styles.leftPanel}>
-          <div className={styles.calendarWrapper}>
-            <Calendar
-              onChange={(value) => setSelectedDate(value as Date)}
-              value={selectedDate}
-              onClickDay={handleDateClick}
-              locale={i18n.language === 'vn' ? 'vi' : 'en-US'} // Adjust locale for calendar
-            />
-          </div>
-
-          <section className={styles.summary}>
-            <div className={styles.summaryCard}>
-              <h3>{t('totalHours')}</h3>
-              <p>{summary.totalHours}</p>
-            </div>
-            <div className={styles.summaryCard}>
-              <h3>{t('totalEntries')}</h3>
-              <p>{workEntries?.length || 0}</p>
-            </div>
-            <div className={styles.summaryCard}>
-              <h3>{t('estimatedEarnings')}</h3>
-              <p>${summary.totalEarnings}</p>
-            </div>
-          </section>
-        </div>
-
-        <div className={styles.rightPanel}>
-          <div className={styles.entriesHeader}>
-            <h2 className={styles.entriesTitle}>{t('yourWorkEntries')}</h2>
-            <button className={styles.addEntryButton} onClick={() => handleDateClick(new Date())}>{t('addEntry')}</button>
-          </div>
-
-          <div className={styles.entryListContainer}>
-            {isLoading && <p className={styles.loadingText}>{t('loadingEntries')}</p>}
-            {isError && <p className={styles.errorText}>{t('errorFetchingEntries')}</p>}
-            {workEntries && (
-              <ul className={styles.entryList}>
-                {workEntries.length > 0 ? (
-                  workEntries.map(entry => (
-                    <li key={entry.id} className={styles.entryItem}>
-                      <div>
-                        <p><strong>{t('date')}</strong></p>
-                        <p>{new Date(entry.startTime).toLocaleDateString()}</p>
-                      </div>
-                      <div>
-                        <p><strong>{t('startTime')}</strong></p>
-                        <p>{new Date(entry.startTime).toLocaleTimeString()}</p>
-                      </div>
-                      <div>
-                        <p><strong>{t('endTime')}</strong></p>
-                        <p>{new Date(entry.endTime).toLocaleTimeString()}</p>
-                      </div>
-                      <div>
-                        <p><strong>{t('break')}</strong></p>
-                        <p>{entry.breakDuration} min</p>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <p className={styles.noEntriesText}>{t('noEntriesFound')}</p>
-                )}
-              </ul>
-            )}
-          </div>
-        </div>
-      </div>
+      <Dashboard3D
+        summary={summary}
+        workEntries={workEntries || []}
+        selectedDate={selectedDate}
+        onDateClick={handleDateClick}
+        onAddEntryClick={handleAddEntryClick}
+        t={t}
+        i18n={i18n}
+      />
 
       <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </div>
