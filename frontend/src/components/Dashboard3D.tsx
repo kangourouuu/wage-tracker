@@ -4,48 +4,27 @@ import { OrbitControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface Dashboard3DProps {
-  summary: {
-    totalHours: string;
-    totalEarnings: string;
-  };
   workEntries: any[]; // Replace 'any' with actual WorkEntry type
   selectedDate: Date | null;
   onDateClick: (date: Date) => void;
-  onAddEntryClick: () => void;
   t: (key: string, options?: any) => string;
   i18n: any;
 }
 
-// Placeholder for 3D Summary Card
-const SummaryCard3D = ({ title, value, position }: { title: string; value: string; position: [number, number, number] }) => {
-  const ref = useRef<THREE.Mesh>(null!);
-  useFrame(() => {
-    if (ref.current) {
-      ref.current.rotation.y += 0.005;
-    }
-  });
-  return (
-    <mesh ref={ref} position={position}>
-      <boxGeometry args={[2, 1, 0.2]} />
-      <meshStandardMaterial color="hotpink" transparent opacity={0.7} />
-      <Text position={[0, 0.3, 0.11]} fontSize={0.2} color="white" anchorX="center" anchorY="middle">
-        {title}
-      </Text>
-      <Text position={[0, -0.2, 0.11]} fontSize={0.3} color="white" anchorX="center" anchorY="middle">
-        {value}
-      </Text>
-    </mesh>
-  );
-};
-
-// Placeholder for 3D Calendar
+// Placeholder for 3D Calendar with liquid glass effect
 const Calendar3D = ({ selectedDate, onDateClick, t }: { selectedDate: Date | null; onDateClick: (date: Date) => void; t: (key: string) => string }) => {
   const ref = useRef<THREE.Mesh>(null!);
-  // This is a very simplified 3D representation. A real 3D calendar would be much more complex.
   return (
     <mesh ref={ref} position={[-4, 0, 0]} onClick={() => onDateClick(new Date())}>
       <boxGeometry args={[3, 3, 0.1]} />
-      <meshStandardMaterial color="lightblue" transparent opacity={0.7} />
+      <meshStandardMaterial
+        color="white"
+        transparent
+        opacity={0.2} // Increased transparency for liquid glass
+        roughness={0.1}
+        metalness={0.9} // Increased metalness for reflectivity
+        envMapIntensity={1} // Environment map intensity for reflections
+      />
       <Text position={[0, 0.5, 0.06]} fontSize={0.3} color="white" anchorX="center" anchorY="middle">
         {t('date')}
       </Text>
@@ -74,17 +53,12 @@ const WorkEntry3D = ({ entry, position, t }: { entry: any; position: [number, nu
 };
 
 
-const Dashboard3D: React.FC<Dashboard3DProps> = ({ summary, workEntries, selectedDate, onDateClick, onAddEntryClick, t }) => {
+const Dashboard3D: React.FC<Dashboard3DProps> = ({ workEntries, selectedDate, onDateClick, t, i18n }) => {
   return (
     <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
       <OrbitControls />
-
-      {/* Summary Cards */}
-      <SummaryCard3D title={t('totalHours')} value={summary.totalHours} position={[-2, 3, 0]} />
-      <SummaryCard3D title={t('totalEntries')} value={workEntries.length.toString()} position={[0, 3, 0]} />
-      <SummaryCard3D title={t('estimatedEarnings')} value={`$${summary.totalEarnings}`} position={[2, 3, 0]} />
 
       {/* Calendar */}
       <Calendar3D selectedDate={selectedDate} onDateClick={onDateClick} t={t} />
@@ -93,15 +67,6 @@ const Dashboard3D: React.FC<Dashboard3DProps> = ({ summary, workEntries, selecte
       {workEntries.map((entry, index) => (
         <WorkEntry3D key={entry.id} entry={entry} position={[4, 2 - index * 1, 0]} t={t} />
       ))}
-
-      {/* Add Entry Button - represented as a 3D object */}
-      <mesh position={[0, -3, 0]} onClick={onAddEntryClick}>
-        <boxGeometry args={[2, 0.5, 0.1]} />
-        <meshStandardMaterial color="green" />
-        <Text position={[0, 0, 0.06]} fontSize={0.2} color="white" anchorX="center" anchorY="middle">
-          {t('addEntry')}
-        </Text>
-      </mesh>
     </Canvas>
   );
 };

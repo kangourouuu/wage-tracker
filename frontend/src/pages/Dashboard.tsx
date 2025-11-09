@@ -6,7 +6,9 @@ import styles from './Dashboard.module.css';
 import AddEntryModal from '../components/AddEntryModal';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Dashboard3D from '../components/Dashboard3D'; // Import Dashboard3D
+import Dashboard3D from '../components/Dashboard3D';
+import Calendar from 'react-calendar'; // Re-import Calendar component
+import 'react-calendar/dist/Calendar.css'; // Re-import calendar CSS
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -73,15 +75,46 @@ export const Dashboard = () => {
         </div>
       </header>
 
-      <Dashboard3D
-        summary={summary}
-        workEntries={workEntries || []}
-        selectedDate={selectedDate}
-        onDateClick={handleDateClick}
-        onAddEntryClick={handleAddEntryClick}
-        t={t}
-        i18n={i18n}
-      />
+      <section className={styles.summary}>
+        <div className={styles.summaryCard}>
+          <h3>{t('totalHours')}</h3>
+          <p>{summary.totalHours}</p>
+        </div>
+        <div className={styles.summaryCard}>
+          <h3>{t('totalEntries')}</h3>
+          <p>{workEntries?.length || 0}</p>
+        </div>
+        <div className={styles.summaryCard}>
+          <h3>{t('estimatedEarnings')}</h3>
+          <p>${summary.totalEarnings}</p>
+        </div>
+      </section>
+
+      <div className={styles.mainContent}>
+        <div className={styles.leftPanel}>
+          <div className={styles.calendarWrapper}>
+            <Calendar
+              onChange={(value) => setSelectedDate(value as Date)}
+              value={selectedDate}
+              onClickDay={handleDateClick}
+              locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
+            />
+            <button className={styles.addEntryButton} onClick={handleAddEntryClick}>
+              {t('addEntry')}
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.rightPanel}>
+          <Dashboard3D
+            workEntries={workEntries || []}
+            selectedDate={selectedDate}
+            onDateClick={handleDateClick}
+            t={t}
+            i18n={i18n}
+          />
+        </div>
+      </div>
 
       <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </div>
