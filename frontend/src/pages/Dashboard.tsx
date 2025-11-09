@@ -111,7 +111,6 @@ export const Dashboard = () => {
             selectedDate={selectedDate}
             onDateClick={handleDateClick}
             t={t}
-            i18n={i18n}
           />
         </div>
       </div>

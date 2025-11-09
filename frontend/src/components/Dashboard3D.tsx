@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber'; // Removed useFrame
 import { OrbitControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -8,7 +8,6 @@ interface Dashboard3DProps {
   selectedDate: Date | null;
   onDateClick: (date: Date) => void;
   t: (key: string, options?: any) => string;
-  i18n: any;
 }
 
 // Placeholder for 3D Calendar with liquid glass effect
@@ -53,7 +52,7 @@ const WorkEntry3D = ({ entry, position, t }: { entry: any; position: [number, nu
 };
 
 
-const Dashboard3D: React.FC<Dashboard3DProps> = ({ workEntries, selectedDate, onDateClick, t, i18n }) => {
+const Dashboard3D: React.FC<Dashboard3DProps> = ({ workEntries, selectedDate, onDateClick, t }) => {
   return (
     <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
       <ambientLight intensity={0.5} />
