@@ -14,8 +14,8 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.15); /* More transparent background for glassmorphism */
-  backdrop-filter: blur(10px); /* Ensure blur is applied */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: var(--glass-bg); /* Use glassmorphism background variable */
+  backdrop-filter: var(--glass-backdrop-filter); /* Use glassmorphism backdrop filter variable */
+  border: 1px solid var(--glass-border); /* Use glassmorphism border variable */
+  box-shadow: var(--shadow-lg); /* Use a larger shadow for elegance */
 }

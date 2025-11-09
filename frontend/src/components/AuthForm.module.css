@@ -1,20 +1,20 @@
 .authFormContainer {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
   padding: 2.5rem;
   border-radius: var(--border-radius-md);
   color: var(--text-color);
   width: 100%;
   max-width: 420px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: var(--box-shadow-md);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
   transition: all 0.3s ease-in-out;
 }
 
 .title {
   text-align: center;
   margin-bottom: 2rem;
-  color: var(--text-color);
+  color: var(--primary-color-dark); /* Use a darker primary color for titles */
   font-weight: 700;
   font-size: 1.75rem;
 }
@@ -29,33 +29,42 @@
   padding: 0.85rem 1rem;
   border-radius: var(--border-radius-sm);
   border: none;
-  background: var(--primary-color);
+  background: var(--gradient-primary); /* Use primary gradient */
   color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s ease-in-out; /* Added transition */
-  box-shadow: var(--box-shadow-sm);
+  transition: all 0.3s ease-in-out;
+  box-shadow: var(--shadow-md);
   font-family: var(--font-family);
   font-size: 1rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .button:hover {
-  transform: translateY(-3px); /* Slightly more pronounced lift */
-  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: var(--gradient-primary); /* Ensure gradient persists on hover */
+}
+
+.button:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .button:disabled {
-  background-color: var(--border-color);
+  background: var(--border-color);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+  color: var(--text-light-color);
 }
 
 .error {
   color: var(--error-color);
   text-align: center;
   margin-top: 1rem;
-  background: rgba(245, 54, 92, 0.1);
+  background: rgba(var(--error-color-rgb), 0.1); /* Use RGB for transparency */
   padding: 0.75rem;
   border-radius: var(--border-radius-sm);
 }
@@ -71,12 +80,12 @@
   font-family: var(--font-family);
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.2s ease-in-out; /* Added transition */
+  transition: color 0.2s ease-in-out;
 }
 
 .switchButton:hover {
   text-decoration: underline;
-  color: var(--primary-color-dark); /* Darker color on hover */
+  color: var(--primary-color-dark);
 }
 
 @media (max-width: 480px) {

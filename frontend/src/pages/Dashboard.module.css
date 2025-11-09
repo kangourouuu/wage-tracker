@@ -1,6 +1,6 @@
 .dashboardContainer {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
   padding: 2rem;
   border-radius: var(--border-radius-md);
   color: var(--text-color);
@@ -9,8 +9,8 @@
   height: 90%;
   max-height: 700px;
   overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: var(--box-shadow-md);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
 }
@@ -27,24 +27,32 @@
 .welcomeTitle {
   font-size: 1.75rem;
   font-weight: 700;
+  color: var(--primary-color-dark);
 }
 
 .logoutButton {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius-sm);
   border: none;
-  background: var(--secondary-color);
+  background: var(--gradient-accent-2); /* Use accent gradient for logout */
   color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s ease-in-out; /* Added transition */
-  box-shadow: var(--box-shadow-sm);
+  transition: all 0.3s ease-in-out;
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
 }
 
 .logoutButton:hover {
-  background: #ff9a9e;
-  transform: translateY(-3px); /* Slightly more pronounced lift */
-  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: var(--gradient-accent-2); /* Ensure gradient persists on hover */
+}
+
+.logoutButton:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .summary {
@@ -55,17 +63,18 @@
 }
 
 .summaryCard {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--surface-color); /* Use surface color */
   padding: 1.5rem;
   border-radius: var(--border-radius-md);
   text-align: center;
-  box-shadow: var(--box-shadow-sm);
-  transition: all 0.2s ease-in-out; /* Added transition */
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid var(--border-color);
 }
 
 .summaryCard:hover {
-  transform: translateY(-3px); /* Lift effect on hover */
-  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
+  transform: translateY(-5px); /* More pronounced lift effect on hover */
+  box-shadow: var(--shadow-lg); /* Larger shadow on hover */
 }
 
 .summaryCard h3 {
@@ -77,7 +86,7 @@
 .summaryCard p {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--accent-color-1); /* Use an accent color for values */
 }
 
 .entriesHeader {
@@ -90,24 +99,32 @@
 .entriesTitle {
   font-size: 1.5rem;
   font-weight: 700;
+  color: var(--primary-color-dark);
 }
 
 .addEntryButton {
   padding: 0.6rem 1.2rem;
   border-radius: var(--border-radius-sm);
   border: none;
-  background: var(--primary-color);
+  background: var(--gradient-accent-1); /* Use accent gradient for add button */
   color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s ease-in-out; /* Added transition */
-  box-shadow: var(--box-shadow-sm);
+  transition: all 0.3s ease-in-out;
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
 }
 
 .addEntryButton:hover {
-  background: var(--primary-color-dark); /* Darker color on hover */
-  transform: translateY(-3px); /* Slightly more pronounced lift */
-  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
+  background: var(--gradient-accent-1); /* Ensure gradient persists on hover */
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.addEntryButton:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .entryList {
@@ -118,7 +135,7 @@
 }
 
 .entryItem {
-  background: #fff;
+  background: var(--surface-color); /* Use surface color */
   padding: 1.5rem;
   border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
@@ -126,17 +143,18 @@
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
   align-items: center;
-  box-shadow: var(--box-shadow-sm);
-  transition: all 0.2s ease-in-out; /* Added transition */
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease-in-out;
 }
 
 .entryItem:hover {
-  transform: translateY(-3px); /* Lift effect on hover */
-  box-shadow: var(--box-shadow-lg); /* Larger shadow on hover */
+  transform: translateY(-5px); /* More pronounced lift effect on hover */
+  box-shadow: var(--shadow-lg); /* Larger shadow on hover */
 }
 
 .entryItem p {
   margin: 0;
+  color: var(--text-color);
 }
 
 .loadingText,
