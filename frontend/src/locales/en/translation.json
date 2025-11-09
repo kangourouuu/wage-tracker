@@ -10,7 +10,7 @@
   "errorFetchingEntries": "Error fetching entries.",
   "noEntriesFound": "No work entries found. Time to get to work! 💸",
   "date": "Date",
-  "startTime": "Start Time",
+  "startTime": "Working Date",
   "endTime": "End Time",
   "break": "Break",
   "addWorkEntry": "Add New Work Entry",

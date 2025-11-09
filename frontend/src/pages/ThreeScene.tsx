@@ -1,6 +1,5 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber'; // Removed useThree
-import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 const PARTICLE_COUNT = 1000; // Increased particle count

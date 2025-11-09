@@ -10,7 +10,7 @@
   "errorFetchingEntries": "Lỗi khi tải ca làm.",
   "noEntriesFound": "Không tìm thấy ca làm nào. Bắt đầu làm việc thôi! 💸",
   "date": "Ngày",
-  "startTime": "Thời gian bắt đầu",
+  "startTime": "Ngày làm việc",
   "endTime": "Thời gian kết thúc",
   "break": "Nghỉ giải lao",
   "addWorkEntry": "Thêm ca làm mới",

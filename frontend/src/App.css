@@ -1,21 +1,8 @@
-.appContainer {
+.mainContainer {
   width: 100vw;
   height: 100vh;
-  position: relative;
-}
-
-.contentOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  background-color: var(--glass-bg); /* Use glassmorphism background variable */
-  backdrop-filter: var(--glass-backdrop-filter); /* Use glassmorphism backdrop filter variable */
-  border: 1px solid var(--glass-border); /* Use glassmorphism border variable */
-  box-shadow: var(--shadow-lg); /* Use a larger shadow for elegance */
 }

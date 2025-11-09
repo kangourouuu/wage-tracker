@@ -76,16 +76,6 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.formGroup}>
-            <label htmlFor="startTime">{t('startTime')}:</label>
-            <input
-              type="datetime-local"
-              id="startTime"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              required
-            />
-          </div>
-          <div className={styles.formGroup}>
             <label htmlFor="hoursWorked">{t('hoursWorked')}:</label>
             <input
               type="number"

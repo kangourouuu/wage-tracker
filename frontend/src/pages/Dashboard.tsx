@@ -2,13 +2,13 @@ import { useAuthStore } from '../store/authStore';
 import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
 import type { WorkEntry } from '../types/work-entry';
+import 'react-calendar/dist/Calendar.css';
+import '../styles/Calendar.css';
 import styles from './Dashboard.module.css';
-import AddEntryModal from '../components/AddEntryModal';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Dashboard3D from '../components/Dashboard3D';
-import Calendar from 'react-calendar'; // Re-import Calendar component
-import 'react-calendar/dist/Calendar.css'; // Re-import calendar CSS
+import Calendar from 'react-calendar';
+import AddEntryModal from '../components/AddEntryModal';
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -51,11 +51,6 @@ export const Dashboard = () => {
     setIsModalOpen(true);
   };
 
-  const handleAddEntryClick = () => {
-    setSelectedDate(new Date()); // Set current date as default for new entry
-    setIsModalOpen(true);
-  };
-
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
@@ -75,43 +70,38 @@ export const Dashboard = () => {
         </div>
       </header>
 
-      <section className={styles.summary}>
-        <div className={styles.summaryCard}>
-          <h3>{t('totalHours')}</h3>
-          <p>{summary.totalHours}</p>
-        </div>
-        <div className={styles.summaryCard}>
-          <h3>{t('totalEntries')}</h3>
-          <p>{workEntries?.length || 0}</p>
-        </div>
-        <div className={styles.summaryCard}>
-          <h3>{t('estimatedEarnings')}</h3>
-          <p>${summary.totalEarnings}</p>
-        </div>
-      </section>
-
       <div className={styles.mainContent}>
         <div className={styles.leftPanel}>
           <div className={styles.calendarWrapper}>
             <Calendar
-              onChange={(value) => setSelectedDate(value as Date)}
+              onChange={(value) => {
+                if (Array.isArray(value)) {
+                  setSelectedDate(value[0]);
+                } else {
+                  setSelectedDate(value);
+                }
+              }}
               value={selectedDate}
               onClickDay={handleDateClick}
               locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
             />
-            <button className={styles.addEntryButton} onClick={handleAddEntryClick}>
-              {t('addEntry')}
-            </button>
           </div>
         </div>
-
         <div className={styles.rightPanel}>
-          <Dashboard3D
-            workEntries={workEntries || []}
-            selectedDate={selectedDate}
-            onDateClick={handleDateClick}
-            t={t}
-          />
+          <section className={styles.summary}>
+            <div className={styles.summaryCard}>
+              <h3>{t('totalHours')}</h3>
+              <p className={styles.totalHours}>{summary.totalHours}</p>
+            </div>
+            <div className={styles.summaryCard}>
+              <h3>{t('totalEntries')}</h3>
+              <p className={styles.totalEntries}>{workEntries?.length || 0}</p>
+            </div>
+            <div className={styles.summaryCard}>
+              <h3>{t('estimatedEarnings')}</h3>
+              <p className={styles.estimatedEarnings}>${summary.totalEarnings}</p>
+            </div>
+          </section>
         </div>
       </div>
 
@@ -119,3 +109,4 @@ export const Dashboard = () => {
     </div>
   );
 };
+

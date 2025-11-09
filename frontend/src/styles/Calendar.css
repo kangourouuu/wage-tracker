@@ -1,0 +1,63 @@
+/* React Calendar Overrides for Glassmorphism */
+.react-calendar {
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  font-family: 'Montserrat', monospace !important; /* Use app font */
+  z-index: 2; /* Ensure calendar content is above liquid glass effect */
+}
+
+.react-calendar__viewContainer,
+.react-calendar__navigation,
+.react-calendar__month-view,
+.react-calendar__year-view,
+.react-calendar__decade-view,
+.react-calendar__century-view {
+  background: transparent !important;
+}
+
+.react-calendar__navigation button {
+  color: var(--text-color) !important;
+  font-weight: bold !important;
+  transition: color 0.2s ease-in-out;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--border-radius-sm);
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  color: var(--text-light-color) !important;
+  font-size: 0.8rem !important;
+}
+
+.react-calendar__tile {
+  color: var(--text-color) !important;
+  border-radius: var(--border-radius-sm) !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  transform: scale(1.05);
+}
+
+.react-calendar__tile--now {
+  background: rgba(var(--accent-color-1-rgb), 0.2) !important; /* Subtle accent for today */
+  color: var(--accent-color-1) !important;
+}
+
+.react-calendar__tile--active {
+  background: var(--pastel-orange) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-md);
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: var(--pastel-orange) !important;
+  transform: scale(1.05);
+}

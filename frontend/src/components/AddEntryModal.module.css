@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,10 +12,9 @@
 }
 
 .modalContent {
-  background: var(--surface-color);
+  background-color: #ffffff;
   padding: 2rem;
   border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 500px;
   color: var(--text-color);
@@ -25,7 +24,7 @@
 .modalTitle {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: var(--primary-color-dark);
+  color: var(--pastel-orange);
   font-size: 1.5rem;
 }
 
@@ -49,18 +48,18 @@
 .formGroup input[type="datetime-local"],
 .formGroup input[type="number"] {
   padding: 0.75rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-sm);
   font-family: var(--font-family);
   font-size: 1rem;
   color: var(--text-color);
-  background-color: var(--background-color);
+  background-color: var(--glass-bg);
   transition: border-color 0.2s ease-in-out;
 }
 
 .formGroup input[type="datetime-local"]:focus,
 .formGroup input[type="number"]:focus {
-  border-color: var(--primary-color);
+  border-color: var(--pastel-orange);
   outline: none;
 }
 
@@ -85,7 +84,7 @@
 }
 
 .submitButton {
-  background: var(--gradient-primary);
+  background: var(--pastel-orange);
   color: #fff;
 }
 
@@ -103,14 +102,15 @@
 }
 
 .cancelButton {
-  background: var(--surface-color);
+  background: transparent;
   color: var(--text-color);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
 }
 
 .cancelButton:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+  background: var(--glass-bg);
 }
 
 .error {
