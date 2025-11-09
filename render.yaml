@@ -12,6 +12,8 @@ services:
     value: 3000
   - key: JWT_SECRET
     generateValue: true
+  - key: JWT_REFRESH_SECRET
+    generateValue: true
   - key: JWT_ACCESS_EXP
     value: 15m
   - key: JWT_REFRESH_EXP
