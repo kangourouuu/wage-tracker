@@ -8,3 +8,9 @@ export interface WorkEntry {
   updatedAt: string;
   userId: string;
 }
+
+export interface CreateWorkEntryDto {
+  startTime: string;
+  endTime: string;
+  breakDuration?: number;
+}

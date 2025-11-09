@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './AddEntryModal.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
-import { CreateWorkEntryDto } from '../../types/work-entry.ts'; // Assuming this DTO exists
+import type { CreateWorkEntryDto } from '../types/work-entry.ts'; // Assuming this DTO exists
 
 interface AddEntryModalProps {
   isOpen: boolean;
