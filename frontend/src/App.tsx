@@ -6,11 +6,7 @@ import { useAuthStore } from './store/authStore';
 import './App.css';
 
 function Root() {
-  const { accessToken } = useAuthStore();
-  if (accessToken) {
-    return <Navigate to="/dashboard" />;
-  }
-  return <Navigate to="/login" />;
+  return <Navigate to="/dashboard" />;
 }
 
 function App() {
@@ -22,11 +18,7 @@ function App() {
         <Route path="/register" element={<AuthForm isLogin={false} />} />
         <Route
           path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
+          element={<Dashboard />}
         />
       </Routes>
     </div>

@@ -60,7 +60,7 @@ body,
 }
 
 body {
-  background: linear-gradient(to top, #f4f7f6 0%, #ffffff 100%);
+  background: radial-gradient(circle, #90EE90 0%, #006400 50%, #FFFFFF 100%);
   color: var(--text-color);
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;

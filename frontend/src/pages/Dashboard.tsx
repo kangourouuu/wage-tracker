@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Calendar from 'react-calendar';
 import AddEntryModal from '../components/AddEntryModal';
+import ThreeScene from './ThreeScene'; // Import ThreeScene
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -57,6 +58,7 @@ export const Dashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
+      <ThreeScene /> {/* Add ThreeScene here */}
       <header className={styles.header}>
         <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
         <div className={styles.headerActions}>
