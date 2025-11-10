@@ -98,7 +98,7 @@
 
 @media (max-width: 480px) {
   .authFormContainer {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem; /* Adjusted padding */
     border: none;
     box-shadow: none;
     width: 100%;
@@ -110,6 +110,6 @@
   }
 
   .title {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem; /* Increased margin */
   }
 }
