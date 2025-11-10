@@ -103,7 +103,7 @@
 
 .summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive grid */
   gap: 1.5rem;
 }
 
@@ -204,35 +204,7 @@
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.addEntryButton {
-  padding: 0.8rem 1.6rem; /* Adjusted padding */
-  border-radius: 2rem;
-  border: none;
-  background: var(--gradient-accent-1);
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-  box-shadow: var(--shadow-md);
-  font-family: var(--font-family);
-  font-size: 1rem;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  margin-top: 1rem; /* Adjusted margin */
-  align-self: center; /* Center the button */
-}
 
-.addEntryButton:hover {
-  background: var(--gradient-accent-1);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: var(--shadow-lg);
-}
-
-.addEntryButton:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow: var(--shadow-sm);
-}
 
 /* Scrollbar Styling */
 .dashboardContainer::-webkit-scrollbar {
