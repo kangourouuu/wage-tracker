@@ -86,6 +86,9 @@ export const Dashboard = () => {
               locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
             />
           </div>
+          <button className={styles.addEntryButton} onClick={() => setIsModalOpen(true)}>
+            {t('addEntry')}
+          </button>
         </div>
         <div className={styles.rightPanel}>
           <section className={styles.summary}>

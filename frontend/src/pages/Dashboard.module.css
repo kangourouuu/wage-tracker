@@ -11,7 +11,7 @@
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 1.5rem; /* Added gap between flex items */
   position: relative; /* For potential absolute positioning of elements */
   transform-style: preserve-3d; /* Enable 3D transformations for children */
   perspective: 1000px; /* Define perspective for 3D effects */
@@ -37,16 +37,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0;
   border-bottom: 1px solid var(--border-color);
-  z-index: 10; /* Ensure header is above other elements */
+  padding-bottom: 1rem; /* Added padding */
+  z-index: 10;
 }
 
 .welcomeTitle {
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--pastel-orange);
-  text-shadow: none; /* Remove existing text-shadow */
+  text-shadow: none;
 }
 
 .headerActions {
@@ -91,7 +91,7 @@
 }
 
 .logoutButton:hover {
-  transform: translateY(-3px) scale(1.02); /* More pronounced lift and slight scale */
+  transform: translateY(-3px) scale(1.02);
   box-shadow: var(--shadow-lg);
   background: var(--pastel-orange);
 }
@@ -103,22 +103,20 @@
 
 .summary {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid */
   gap: 1.5rem;
 }
 
 .summaryCard {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(15px);
-  padding: 1rem;
+  padding: 1.5rem; /* Increased padding */
   border-radius: var(--border-radius-md);
   text-align: center;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease-in-out;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transform: translateZ(0);
-  flex-grow: 1;
-  flex-basis: 200px;
 }
 
 .summaryCard:hover {
@@ -128,13 +126,13 @@
 }
 
 .summaryCard h3 {
-  font-size: 0.9rem;
+  font-size: 1rem; /* Increased font size */
   color: var(--text-light-color);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem; /* Adjusted margin */
 }
 
 .summaryCard p {
-  font-size: 1.5rem;
+  font-size: 2rem; /* Increased font size */
   font-weight: 700;
   text-shadow: none;
 }
@@ -146,23 +144,23 @@
 }
 
 .mainContent {
-  display: grid; /* Use grid for more control */
-  grid-template-columns: 1fr 1fr; /* Calendar on left, summary on right */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
   flex-grow: 1;
-  align-items: center;
+  align-items: start; /* Align items to the start */
 }
 
 .leftPanel {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem; /* Adjusted gap */
 }
 
 .rightPanel {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem; /* Adjusted gap */
 }
 
 .calendarWrapper {
@@ -173,9 +171,9 @@
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease-in-out;
-  transform: translateZ(0); /* Ensure 3D context */
-  position: relative; /* For liquid glass effect */
-  overflow: hidden; /* For liquid glass effect */
+  transform: translateZ(0);
+  position: relative;
+  overflow: hidden;
 }
 
 .calendarWrapper::before {
@@ -202,13 +200,13 @@
 
 .calendarWrapper:hover {
   box-shadow: var(--shadow-lg);
-  transform: translateZ(10px) translateY(-5px); /* Lift and bring forward */
+  transform: translateZ(10px) translateY(-5px);
   border-color: rgba(255, 255, 255, 0.2);
 }
 
 .addEntryButton {
-  padding: 0.7rem 1.4rem;
-  border-radius: 2rem; /* Changed to md for more rounded */
+  padding: 0.8rem 1.6rem; /* Adjusted padding */
+  border-radius: 2rem;
   border: none;
   background: var(--gradient-accent-1);
   color: #fff;
@@ -221,7 +219,8 @@
   position: relative;
   overflow: hidden;
   z-index: 1;
-  margin-top: 1.5rem; /* Added margin to separate from calendar */
+  margin-top: 1rem; /* Adjusted margin */
+  align-self: center; /* Center the button */
 }
 
 .addEntryButton:hover {
@@ -236,39 +235,35 @@
 }
 
 /* Scrollbar Styling */
-.entryListContainer::-webkit-scrollbar {
+.dashboardContainer::-webkit-scrollbar {
   width: 8px;
 }
 
-.entryListContainer::-webkit-scrollbar-track {
+.dashboardContainer::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
 }
 
-.entryListContainer::-webkit-scrollbar-thumb {
+.dashboardContainer::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   transition: background 0.3s ease-in-out;
 }
 
-.entryListContainer::-webkit-scrollbar-thumb:hover {
+.dashboardContainer::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
 }
 
-@media (max-width: 992px) { /* Adjusted breakpoint for tablet */
+@media (max-width: 992px) {
   .mainContent {
-    grid-template-columns: 1fr; /* Stack columns on smaller screens */
-  }
-
-  .leftPanel, .rightPanel {
-    min-width: unset;
-    width: 100%;
+    grid-template-columns: 1fr;
   }
 
   .dashboardContainer {
     max-width: 700px;
     height: auto;
-    max-height: 90vh;
+    max-height: 95vh; /* Adjusted max-height */
+    padding: 1.5rem;
   }
 }
 
@@ -279,11 +274,36 @@
     border: none;
     box-shadow: none;
     max-width: 100%;
+    height: 100%;
+    max-height: 100%;
   }
 
   .header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row; /* Keep as row */
+    align-items: center;
     gap: 1rem;
+  }
+
+  .welcomeTitle {
+    font-size: 1.25rem; /* Smaller font size */
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column; /* Stack on very small screens */
+    align-items: flex-start;
+  }
+
+  .summaryCard p {
+    font-size: 1.5rem; /* Adjust font size for small screens */
+  }
+
+  .dashboardContainer {
+    padding: 0.5rem;
+  }
+
+  .addEntryButton {
+    width: 100%;
   }
 }
