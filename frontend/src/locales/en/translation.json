@@ -26,6 +26,8 @@
   "password": "Password",
   "name": "Name",
   "wagePerHour": "Wage per Hour",
+  "jobName": "Job Name",
+  "jobWagePerHour": "Job Wage per Hour",
   "loginButton": "Login",
   "registerButton": "Register",
   "dontHaveAccount": "Don't have an account?",
@@ -33,5 +35,10 @@
   "failedToLogin": "Failed to login.",
   "failedToRegister": "Failed to register.",
   "submitting": "Submitting...",
-  "authDescription": "Track your work hours and earnings effortlessly. Get insights into your productivity and manage your time effectively."
+  "authDescription": "Track your work hours and earnings effortlessly. Get insights into your productivity and manage your time effectively.",
+  "removeJob": "Remove Job",
+  "addJob": "Add Job",
+  "job": "Job",
+  "pleaseSelectJob": "Please select a job.",
+  "noJobsFound": "No jobs found. Please add a job first."
 }

@@ -6,6 +6,7 @@ import { JwtService } from "@nestjs/jwt";
 import { User } from "../user/entities/user.entity";
 import { LoginDto } from "./dto/login.dto";
 import { ConfigService } from "@nestjs/config";
+import { JobService } from "../wage/job.service";
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly jobService: JobService,
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -24,9 +26,17 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     const user = await this.userService.create({
-      ...registerDto,
+      name: registerDto.name,
+      email: registerDto.email,
       password: hashedPassword,
     });
+
+    // Create jobs for the new user
+    if (registerDto.jobs && registerDto.jobs.length > 0) {
+      for (const jobDto of registerDto.jobs) {
+        await this.jobService.create(user.id, jobDto);
+      }
+    }
 
     const { password: _password, ...userWithoutPassword } = user;
     const { accessToken, refreshToken } =

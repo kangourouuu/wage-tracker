@@ -8,25 +8,26 @@ import styles from './Dashboard.module.css';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Calendar from 'react-calendar';
-import AddEntryModal from '../components/AddEntryModal';
-import ThreeScene from './ThreeScene'; // Import ThreeScene
+import AddWorkEntry from '../components/AddWorkEntry';
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
   return data;
 };
 
-const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
-  const totalHours = entries.reduce((acc, entry) => {
+const calculateSummary = (entries: WorkEntry[]) => {
+  let totalHours = 0;
+  let totalEarnings = 0;
+
+  entries.forEach((entry) => {
     const start = new Date(entry.startTime).getTime();
     const end = new Date(entry.endTime).getTime();
     const durationMs = end - start;
-    const breakMs = entry.breakDuration * 60 * 1000;
-    const hours = (durationMs - breakMs) / (1000 * 60 * 60);
-    return acc + hours;
-  }, 0);
+    const hours = durationMs / (1000 * 60 * 60); // No breakDuration anymore
 
-  const totalEarnings = totalHours * wagePerHour;
+    totalHours += hours;
+    totalEarnings += hours * entry.job.wagePerHour; // Use job's wagePerHour
+  });
 
   return {
     totalHours: totalHours.toFixed(2),
@@ -37,7 +38,7 @@ const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
 export const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const { user, logout } = useAuthStore();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAddEntry, setShowAddEntry] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const { data: workEntries } = useQuery<WorkEntry[]>({
@@ -45,11 +46,11 @@ export const Dashboard = () => {
     queryFn: fetchWorkEntries,
   });
 
-  const summary = user && workEntries ? calculateSummary(workEntries, user.wagePerHour) : { totalHours: '0.00', totalEarnings: '0.00' };
+  const summary = workEntries ? calculateSummary(workEntries) : { totalHours: '0.00', totalEarnings: '0.00' };
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
-    setIsModalOpen(true);
+    setShowAddEntry(true);
   };
 
   const changeLanguage = (lng: string) => {
@@ -58,7 +59,6 @@ export const Dashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      <ThreeScene /> {/* Add ThreeScene here */}
       <header className={styles.header}>
         <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
         <div className={styles.headerActions}>
@@ -90,8 +90,14 @@ export const Dashboard = () => {
           </div>
 
         </div>
+        {showAddEntry && selectedDate && (
+          <AddWorkEntry
+            selectedDate={selectedDate}
+            onClose={() => setShowAddEntry(false)}
+          />
+        )}
         <div className={styles.rightPanel}>
-          <section className={styles.summary}>
+          <div className={styles.summary}>
             <div className={styles.summaryCard}>
               <h3>{t('totalHours')}</h3>
               <p className={styles.totalHours}>{summary.totalHours}</p>
@@ -104,11 +110,9 @@ export const Dashboard = () => {
               <h3>{t('estimatedEarnings')}</h3>
               <p className={styles.estimatedEarnings}>${summary.totalEarnings}</p>
             </div>
-          </section>
+          </div>
         </div>
       </div>
-
-      <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </div>
   );
 };

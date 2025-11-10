@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AccessTokenStrategy } from './strategies/access-token.strategy';
 import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+import { WageModule } from '../wage/wage.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
       }),
       inject: [ConfigService],
     }),
+    WageModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],

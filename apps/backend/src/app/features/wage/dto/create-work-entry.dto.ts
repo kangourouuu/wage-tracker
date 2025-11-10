@@ -1,5 +1,5 @@
 
-import { IsDateString, IsNumber, IsOptional } from 'class-validator';
+import { IsDateString, IsUUID, IsNumber, IsOptional, Min } from 'class-validator';
 
 export class CreateWorkEntryDto {
   @IsDateString()
@@ -8,7 +8,11 @@ export class CreateWorkEntryDto {
   @IsDateString()
   endTime: string;
 
-  @IsNumber()
+  @IsUUID()
+  jobId: string;
+
   @IsOptional()
-  breakDuration?: number;
+  @IsNumber()
+  @Min(0)
+  breakDuration?: number; // in minutes
 }

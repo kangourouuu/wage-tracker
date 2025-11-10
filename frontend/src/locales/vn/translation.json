@@ -26,6 +26,8 @@
   "password": "Mật khẩu",
   "name": "Tên",
   "wagePerHour": "Lương mỗi giờ",
+  "jobName": "Tên công việc",
+  "jobWagePerHour": "Lương mỗi giờ của công việc",
   "loginButton": "Đăng nhập",
   "registerButton": "Đăng ký",
   "dontHaveAccount": "Chưa có tài khoản?",
@@ -33,5 +35,10 @@
   "failedToLogin": "Đăng nhập thất bại.",
   "failedToRegister": "Đăng ký thất bại.",
   "submitting": "Đang gửi...",
-  "authDescription": "Theo dõi giờ làm và thu nhập của bạn một cách dễ dàng. Nắm bắt năng suất và quản lý thời gian hiệu quả."
+  "authDescription": "Theo dõi giờ làm và thu nhập của bạn một cách dễ dàng. Nắm bắt năng suất và quản lý thời gian hiệu quả.",
+  "removeJob": "Xóa công việc",
+  "addJob": "Thêm công việc",
+  "job": "Công việc",
+  "pleaseSelectJob": "Vui lòng chọn một công việc.",
+  "noJobsFound": "Không tìm thấy công việc nào. Vui lòng thêm công việc trước."
 }

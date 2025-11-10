@@ -7,26 +7,13 @@
   height: 90%;
   max-height: 800px; /* Increased max-height */
   overflow-y: auto;
-}
-
-.dashboardContainer::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
-  animation: liquid-flow 15s linear infinite;
-  pointer-events: none;
-  z-index: -1;
+  perspective: 1000px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
   padding-bottom: 1rem; /* Added padding */
   z-index: 10;
 }
@@ -98,43 +85,37 @@
 
 .summaryCard {
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(15px);
-  padding: 1.5rem; /* Increased padding */
-  border-radius: 1.5rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  padding: 2rem;
+  border-radius: 30px;
   text-align: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transform: translateZ(0); /* Static 3D appearance */
   transition: all 0.3s ease-in-out;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transform: translateZ(0);
-}
-
-.summaryCard:hover {
-  transform: translateY(-5px) translateZ(10px);
-  box-shadow: var(--shadow-lg);
-  background: rgba(255, 255, 255, 0.15);
 }
 
 .summaryCard h3 {
   font-size: 1rem; /* Increased font size */
-  color: var(--text-light-color);
+  color: #333;
   margin-bottom: 0.75rem; /* Adjusted margin */
 }
 
 .summaryCard p {
   font-size: 2rem; /* Increased font size */
   font-weight: 700;
-  text-shadow: none;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  color: #333;
 }
 
 .totalHours,
 .totalEntries,
 .estimatedEarnings {
-  color: var(--pastel-orange);
+  color: #007bff;
 }
 
 .mainContent {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 2rem;
   flex-grow: 1;
   align-items: start; /* Align items to the start */
@@ -150,47 +131,20 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem; /* Adjusted gap */
+  min-width: 380px; /* Ensure summary cards have enough space */
 }
 
 .calendarWrapper {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--border-radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
   padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   transform: translateZ(0);
   position: relative;
   overflow: hidden;
-}
-
-.calendarWrapper::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
-  animation: liquid-flow 10s linear infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
-@keyframes liquid-flow {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.calendarWrapper:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateZ(10px) translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
 
@@ -217,7 +171,18 @@
 
 @media (max-width: 992px) {
   .mainContent {
+    flex-direction: column;
+  }
+
+  .calendarWrapper {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .summary {
     grid-template-columns: 1fr;
+    max-width: 300px; /* Added for equal horizontal size with calendar */
+    margin: 0 auto;   /* Added for centering */
   }
 
   .dashboardContainer {

@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { WorkEntry } from '../../wage/entities/work-entry.entity';
+import { Job } from '../../wage/entities/job.entity'; // Import Job entity
 
 @Entity()
 export class User {
@@ -23,11 +24,11 @@ export class User {
   @Column()
   password?: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
-  wagePerHour: number;
-
   @OneToMany(() => WorkEntry, (workEntry) => workEntry.user)
   workEntries: WorkEntry[];
+
+  @OneToMany(() => Job, (job) => job.user) // Add OneToMany relationship for Job
+  jobs: Job[];
 
   @Column({ nullable: true })
   hashedRefreshToken?: string;
