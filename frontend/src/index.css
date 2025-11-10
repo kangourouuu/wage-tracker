@@ -11,6 +11,7 @@
 
   /* Primary Palette - Professional and modern */
   --primary-color: #5e35b1;    /* Deep Purple */
+  --primary-color-rgb: 94, 53, 177;
   --primary-color-light: #9575cd; /* Lighter Purple */
   --primary-color-dark: #311b92;  /* Darker Purple */
 

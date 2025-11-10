@@ -29,7 +29,7 @@
 
 .input:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.25);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.25);
 }
 
 .input:focus + .label,
