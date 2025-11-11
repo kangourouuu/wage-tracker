@@ -25,7 +25,7 @@ const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   return data;
 };
 
-const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
+const calculateSummary = (entries: WorkEntry[]) => { // Removed wagePerHour argument
   const totalHours = entries.reduce((acc, entry) => {
     const start = new Date(entry.startTime).getTime();
     const end = new Date(entry.endTime).getTime();
@@ -35,7 +35,15 @@ const calculateSummary = (entries: WorkEntry[], wagePerHour: number) => {
     return acc + hours;
   }, 0);
 
-  const totalEarnings = totalHours * wagePerHour;
+  // Calculate total earnings by summing earnings from each entry based on its specific job's wagePerHour
+  const totalEarnings = entries.reduce((acc, entry) => {
+    const start = new Date(entry.startTime).getTime();
+    const end = new Date(entry.endTime).getTime();
+    const durationMs = end - start;
+    const breakMs = entry.breakDuration * 60 * 1000;
+    const hours = (durationMs - breakMs) / (1000 * 60 * 60);
+    return acc + (hours * entry.job.wagePerHour); // Use wagePerHour from the job associated with the entry
+  }, 0);
 
   return {
     totalHours: totalHours.toFixed(2),
@@ -54,7 +62,7 @@ export const Dashboard = () => {
     queryFn: fetchWorkEntries,
   });
 
-  const summary = user && workEntries ? calculateSummary(workEntries, user.wagePerHour) : { totalHours: '0.00', totalEarnings: '0.00' };
+  const summary = workEntries ? calculateSummary(workEntries) : { totalHours: '0.00', totalEarnings: '0.00' };
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);

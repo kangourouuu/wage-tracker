@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+
 :root {
   /* Base Colors */
   --background-color: #f4f7f6; /* Lighter, softer background */
@@ -37,8 +39,8 @@
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
 
   /* Typography */
-  --font-family-body: 'Inter', sans-serif;
-  --font-family-heading: 'Orbitron', sans-serif;
+  --font-family-body: 'Be Vietnam Pro', sans-serif;
+  --font-family-heading: 'Be Vietnam Pro', sans-serif;
   --font-size-base: 16px; /* Explicitly set base font size */
   --line-height-base: 1.6;
 

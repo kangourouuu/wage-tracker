@@ -1,7 +1,7 @@
 /* === Liquid Glass Form Container === */
 .formContainer { /* Renamed from .form-container */
   width: 100%;
-  max-width: 400px;
+  max-width: 550px; /* Increased max-width */
   padding: 2rem 2.5rem;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.2); /* Increased opacity */
@@ -38,6 +38,7 @@
 .title { /* Renamed from .form-container h2 */
   font-size: 1.4rem;
   font-weight: 600;
+  margin-top: 1.5rem; /* Increased margin-top */
   margin-bottom: 1.2rem;
   letter-spacing: 0.5px;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Darker shadow for better contrast */
@@ -73,7 +74,7 @@
 /* === Button === */
 .submitButton { /* Renamed from .form-container button */
   width: 100%;
-  padding: 0.9rem 1rem;
+  padding: 0.7rem 1rem; /* Reduced vertical padding */
   margin-top: 1rem;
   border: none;
   border-radius: 12px;
@@ -159,4 +160,95 @@
   .submitButton {
     font-size: 0.9rem;
   }
+}
+
+/* === Jobs Section === */
+.jobsSection {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); /* Subtle background for the section */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.jobsSection h3 {
+  font-size: 1.2rem; /* Increased font size */
+  font-weight: 700; /* Made bold */
+  margin-bottom: 0.8rem;
+  color: var(--primary-color-light);
+}
+
+.jobEntry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  align-items: center;
+  position: relative; /* Added for positioning the remove button */
+}
+
+.jobEntry > div { /* Target the Input component's div wrapper */
+  flex: 1;
+  min-width: 120px; /* Ensure inputs don't get too small */
+}
+
+.removeJobButton {
+  background: transparent; /* Make button background transparent */
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; /* Size of the circle */
+  height: 30px; /* Size of the circle */
+  border-radius: 50%; /* Make it a circle */
+  transition: background 0.3s ease;
+  flex-shrink: 0; /* Prevent shrinking */
+  margin-left: 0.5rem; /* Space from inputs */
+}
+
+.removeJobButton:hover {
+  background: rgba(255, 0, 0, 0.1); /* Subtle red background on hover */
+}
+
+.removeJobSymbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* Size of the inner circle */
+  height: 24px; /* Size of the inner circle */
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.8); /* Red circle */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1; /* Center the minus symbol vertically */
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.removeJobSymbol:hover {
+  background: rgba(255, 0, 0, 1); /* Darker red on hover */
+}
+
+.addJobButton {
+  width: 100%;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem 1rem; /* Increased vertical padding */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 600;
+  font-size: 1rem; /* Increased font size */
+  margin-top: 0.5rem;
+}
+
+.addJobButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(var(--primary-color-rgb), 0.4);
 }

@@ -101,27 +101,27 @@ function ThreeSceneContent() {
     if (!prefersReducedMotion) {
       // Orbiting Circle 1
       if (orbitingCircleRef1.current) {
-        orbitingCircleRef1.current.position.x = Math.sin(state.clock.elapsedTime * 0.3) * 2; // Smaller orbit radius
-        orbitingCircleRef1.current.position.y = Math.cos(state.clock.elapsedTime * 0.3) * 2; // Smaller orbit radius
-        orbitingCircleRef1.current.position.z = -1; // Very close, just behind AuthForm
+        orbitingCircleRef1.current.position.x = Math.sin(state.clock.elapsedTime * 0.3) * 15; // Wider orbit
+        orbitingCircleRef1.current.position.y = Math.cos(state.clock.elapsedTime * 0.3) * 10; // Wider orbit
+        orbitingCircleRef1.current.position.z = Math.sin(state.clock.elapsedTime * 0.2) * 3 - 20; // Further back
         orbitingCircleRef1.current.rotation.y += 0.005;
         orbitingCircleRef1.current.rotation.x += 0.002;
       }
 
       // Orbiting Circle 2
       if (orbitingCircleRef2.current) {
-        orbitingCircleRef2.current.position.x = Math.cos(state.clock.elapsedTime * 0.25) * 3; // Smaller orbit radius
-        orbitingCircleRef2.current.position.y = Math.sin(state.clock.elapsedTime * 0.25) * 3; // Smaller orbit radius
-        orbitingCircleRef2.current.position.z = -2; // Very close, just behind AuthForm
+        orbitingCircleRef2.current.position.x = Math.cos(state.clock.elapsedTime * 0.25) * 18; // Wider orbit
+        orbitingCircleRef2.current.position.y = Math.sin(state.clock.elapsedTime * 0.25) * 12; // Wider orbit
+        orbitingCircleRef2.current.position.z = Math.cos(state.clock.elapsedTime * 0.15) * 4 - 25; // Further back
         orbitingCircleRef2.current.rotation.y -= 0.003;
         orbitingCircleRef2.current.rotation.z += 0.004;
       }
 
       // Orbiting Circle 3
       if (orbitingCircleRef3.current) {
-        orbitingCircleRef3.current.position.x = Math.sin(state.clock.elapsedTime * 0.35) * 2.5; // Smaller orbit radius
-        orbitingCircleRef3.current.position.y = Math.cos(state.clock.elapsedTime * 0.35) * 2.5; // Smaller orbit radius
-        orbitingCircleRef3.current.position.z = -1.5; // Very close, just behind AuthForm
+        orbitingCircleRef3.current.position.x = Math.sin(state.clock.elapsedTime * 0.35) * 12; // Wider orbit
+        orbitingCircleRef3.current.position.y = Math.cos(state.clock.elapsedTime * 0.35) * 8; // Wider orbit
+        orbitingCircleRef3.current.position.z = Math.sin(state.clock.elapsedTime * 0.25) * 2 - 18; // Further back
         orbitingCircleRef3.current.rotation.x -= 0.006;
         orbitingCircleRef3.current.rotation.y += 0.001;
       }
@@ -168,12 +168,12 @@ function ThreeSceneContent() {
       <pointLight position={[0, -10, 0]} color="#B3E5FC" intensity={1} /> {/* Another blue accent light */}
 
       {/* Orbiting Circle 1 around AuthForm */}
-      <mesh ref={orbitingCircleRef1} position={[0, 0, -1]} scale={3}> {/* Large scale */}
+      <mesh ref={orbitingCircleRef1} position={[0, 0, -20]} scale={0.7}> {/* Smaller scale */}
         <torusGeometry args={[3, 0.1, 16, 100]} />
         <meshPhysicalMaterial
-          color="red" // Contrasting color
+          color="#BCF0F6" // Original color
           transparent
-          opacity={0.9} // High opacity
+          opacity={0.3} // Original opacity
           roughness={0.1}
           metalness={0.9}
           transmission={0.9}
@@ -184,12 +184,12 @@ function ThreeSceneContent() {
       </mesh>
 
       {/* Orbiting Circle 2 */}
-      <mesh ref={orbitingCircleRef2} position={[0, 0, -2]} scale={2.5}> {/* Large scale */}
+      <mesh ref={orbitingCircleRef2} position={[0, 0, -25]} scale={0.6}> {/* Smaller scale */}
         <torusGeometry args={[2.5, 0.08, 16, 100]} />
         <meshPhysicalMaterial
-          color="green" // Contrasting color
+          color="#B3E5FC" // Original color
           transparent
-          opacity={0.9} // High opacity
+          opacity={0.25} // Original opacity
           roughness={0.1}
           metalness={0.9}
           transmission={0.9}
@@ -200,12 +200,12 @@ function ThreeSceneContent() {
       </mesh>
 
       {/* Orbiting Circle 3 */}
-      <mesh ref={orbitingCircleRef3} position={[0, 0, -1.5]} scale={3.5}> {/* Large scale */}
+      <mesh ref={orbitingCircleRef3} position={[0, 0, -18]} scale={0.8}> {/* Smaller scale */}
         <torusGeometry args={[3.5, 0.12, 16, 100]} />
         <meshPhysicalMaterial
-          color="blue" // Contrasting color
+          color="#81D4FA" // Original color
           transparent
-          opacity={0.9} // High opacity
+          opacity={0.35} // Original opacity
           roughness={0.1}
           metalness={0.9}
           transmission={0.9}
