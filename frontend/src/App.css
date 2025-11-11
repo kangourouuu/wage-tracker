@@ -6,3 +6,10 @@
   align-items: center;
   padding: 1rem;
 }
+
+@media (max-width: 768px) {
+  .mainContainer {
+    padding: 0;
+    align-items: flex-start; /* Align to top on mobile */
+  }
+}

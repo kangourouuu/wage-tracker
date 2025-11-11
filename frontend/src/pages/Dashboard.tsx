@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import Calendar from 'react-calendar';
 import AddEntryModal from '../components/AddEntryModal';
 import ThreeScene from './ThreeScene'; // Import ThreeScene
+import WorkEntryList from '../components/WorkEntryList';
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -102,9 +103,11 @@ export const Dashboard = () => {
             </div>
             <div className={styles.summaryCard}>
               <h3>{t('estimatedEarnings')}</h3>
-              <p className={styles.estimatedEarnings}>${summary.totalEarnings}</p>
+              <p className={styles.estimatedEarnings}>{summary.totalEarnings}</p>
+              <p className={styles.wageUnit}>{t('wageUnit')}</p>
             </div>
           </section>
+          {workEntries && <WorkEntryList workEntries={workEntries} />}
         </div>
       </div>
 

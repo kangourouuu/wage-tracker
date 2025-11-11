@@ -12,7 +12,7 @@ interface AuthFormProps {
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
-  const { t } = useTranslation(); // Initialize useTranslation
+  const { t, i18n } = useTranslation(); // Initialize useTranslation
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -44,8 +44,18 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
     mutation.mutate(payload);
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div className={styles.authFormContainer}>
+      <div className={styles.languageSwitcherContainer}>
+        <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
+          <option value="en">English</option>
+          <option value="vn">Tiếng Việt</option>
+        </select>
+      </div>
       <h2 className={styles.title}>{isLogin ? t('login') : t('register')}</h2>
       <p className={styles.description}>{t('authDescription')}</p>
       <form onSubmit={handleSubmit} className={styles.form}>

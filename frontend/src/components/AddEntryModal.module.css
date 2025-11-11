@@ -12,7 +12,7 @@
 }
 
 .modalContent {
-  background-color: #ffffff;
+  background-color: var(--glass-bg);
   padding: 2rem;
   border-radius: var(--border-radius-md);
   width: 100%;

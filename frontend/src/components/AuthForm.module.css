@@ -15,8 +15,8 @@
   text-align: center;
   margin-bottom: 0.5rem; /* Reduced margin to bring description closer */
   color: var(--primary-color-dark); /* Use a darker primary color for titles */
-  font-weight: 700;
-  font-size: 1.75rem;
+  font-weight: 900;
+  font-size: 2rem;
 }
 
 .description {
@@ -94,6 +94,25 @@
 .switchButton:hover {
   text-decoration: underline;
   color: var(--primary-color-dark);
+}
+
+.languageSwitcherContainer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.languageSwitcher {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
 
 @media (max-width: 480px) {

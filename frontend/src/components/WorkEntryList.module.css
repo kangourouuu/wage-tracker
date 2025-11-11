@@ -1,0 +1,42 @@
+.workEntryList {
+  margin-top: 2rem;
+}
+
+.workEntryList h2 {
+  margin-bottom: 1rem;
+}
+
+.workEntryList table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.workEntryList th,
+.workEntryList td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.workEntryList th {
+  font-weight: bold;
+}
+
+.deleteButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: var(--error-color);
+  color: white;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #c41e1a;
+}
+
+.deleteButton:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+}
