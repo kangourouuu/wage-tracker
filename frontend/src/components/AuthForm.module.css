@@ -45,6 +45,13 @@
   color: var(--primary-color-dark); /* Use a darker primary color for titles */
 }
 
+.description {
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 /* === Input Fields === */
 .formContainer input { /* Keep this for now, but be aware of Input component */
   width: 100%;
@@ -211,7 +218,7 @@
 }
 
 .removeJobButton:hover {
-  background: rgba(255, 0, 0, 0.1); /* Subtle red background on hover */
+  background: rgba(var(--pastel-orange-rgb), 0.1); /* Subtle pastel orange background on hover */
 }
 
 .removeJobSymbol {
@@ -221,7 +228,7 @@
   width: 24px; /* Size of the inner circle */
   height: 24px; /* Size of the inner circle */
   border-radius: 50%;
-  background: rgba(255, 0, 0, 0.8); /* Red circle */
+  background: var(--pastel-orange); /* Pastel orange circle */
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
@@ -231,7 +238,7 @@
 }
 
 .removeJobSymbol:hover {
-  background: rgba(255, 0, 0, 1); /* Darker red on hover */
+  background: var(--pastel-orange-dark); /* Darker pastel orange on hover */
 }
 
 .addJobButton {
