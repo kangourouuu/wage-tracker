@@ -172,3 +172,11 @@
     margin-bottom: 2rem; /* Increased margin */
   }
 }
+
+.authFormWrapper {
+  max-width: 600px; /* Allow it to stretch more than before */
+  max-height: 80vh; /* Constrain height to prevent overflow on smaller screens */
+  width: 100%; /* Ensure it takes full width up to max-width */
+  height: auto; /* Allow height to adjust based on content */
+  overflow: auto; /* Add scrolling if content overflows wrapper */
+}
