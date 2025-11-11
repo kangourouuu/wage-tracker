@@ -19,7 +19,7 @@
 
 .welcomeTitle {
   font-size: 1.8rem;
-  color: var(--primary-color-light);
+  color: #333; /* Changed to a darker color */
   margin: 0;
   text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
 }
@@ -100,6 +100,7 @@
 .summaryCard p {
   font-size: 2rem; /* Increased font size */
   font-weight: 700;
+  color: #333; /* Changed to a darker color */
   text-shadow: none;
 }
 

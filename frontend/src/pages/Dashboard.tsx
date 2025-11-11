@@ -15,7 +15,6 @@ import WorkEntryList3D from '../components/WorkEntryList3D'; // Import WorkEntry
 import AddEntryModal3D from '../components/AddEntryModal3D'; // Import AddEntryModal3D
 import MainDashboardPanel3D from '../components/MainDashboardPanel3D'; // Import MainDashboardPanel3D
 import { Canvas, useFrame } from '@react-three/fiber'; // Ensure Canvas and useFrame are imported
-import { OrbitControls } from '@react-three/drei'; // Import OrbitControls
 import * as THREE from 'three';
 
 // This comment is added to trigger a re-compilation and potentially resolve MIME type issues.
@@ -109,7 +108,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   return (
     <Suspense fallback={null}>
-      <OrbitControls /> {/* Add OrbitControls for camera interaction */}
+      {/* OrbitControls removed */}
       <HeroCard3D ref={heroCardRef} user={user} logout={logout} i18n={i18n} changeLanguage={changeLanguage} t={t} position={[0, 6, 0]} /> {/* Adjusted position */}
       <Calendar3DPanel
         ref={calendarPanelRef}
@@ -180,7 +179,7 @@ export const Dashboard = () => {
   return (
     <div className={styles.dashboardContainer}>
       <ThreeScene />
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
+      <Canvas camera={{ position: [0, 0, 12], fov: 60 }}>
         <DashboardContent
           workEntries={workEntries}
           summary={summary}

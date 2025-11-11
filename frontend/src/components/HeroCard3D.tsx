@@ -32,7 +32,7 @@ const HeroCard3D = React.forwardRef<THREE.Mesh, HeroCard3DProps>(({ user, logout
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      <boxGeometry args={[10, 3, 0.1]} /> {/* Placeholder geometry for the card */}
+      <boxGeometry args={[8, 2, 0.1]} /> {/* Adjusted size for the card */}
       <meshPhysicalMaterial
         color="#ffffff" // Base color for the glass
         transparent
@@ -45,7 +45,7 @@ const HeroCard3D = React.forwardRef<THREE.Mesh, HeroCard3DProps>(({ user, logout
         clearcoatRoughness={0.5} // Increased clearcoat roughness for frosted look
         envMapIntensity={1}
       />
-      <Html center position={[0, 0, 0.06]}> {/* Position slightly above the plane */}
+      <Html center position={[0, 0, 0.06]} scale={0.01}> {/* Position slightly above the plane, added scale */}
         <header className={styles.header} style={{ width: '800px', padding: '20px', borderRadius: '20px', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div className={styles.avatarOrb}></div> {/* Avatar Orb Placeholder */}
