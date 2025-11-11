@@ -62,8 +62,7 @@ body,
 }
 
 body {
-  background-color: #4FC3F7; /* Fallback solid color */
-  background: radial-gradient(circle 300px at center, #4FC3F7, #81D4FA, #B3E5FC, #E0F2F7); /* Blue Sky radial gradient - Reversed */
+  background-color: #E0F2F7; /* Solid light blue background */
   color: var(--text-color);
   font-family: var(--font-family-body);
   -webkit-font-smoothing: antialiased;

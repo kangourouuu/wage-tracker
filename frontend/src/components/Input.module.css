@@ -7,7 +7,7 @@
   padding: 0.85rem 1rem;
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--border-color);
-  background: var(--surface-color);
+  background: transparent; /* Changed to transparent */
   color: var(--text-color);
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
@@ -23,7 +23,7 @@
   color: var(--text-light-color);
   pointer-events: none;
   transition: all 0.2s ease-out;
-  background-color: var(--surface-color);
+  background-color: transparent; /* Changed to transparent */
   padding: 0 0.25rem;
 }
 

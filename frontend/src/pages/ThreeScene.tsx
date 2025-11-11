@@ -126,10 +126,60 @@ function ThreeSceneContent() {
 
   return (
     <>
-      <ambientLight intensity={0.6} /> {/* Adjusted ambient light */}
-      <directionalLight position={[5, 5, 5]} intensity={0.8} /> {/* Adjusted directional light */}
-      <pointLight position={[-10, -10, -10]} color="#9a4dff" intensity={1} /> {/* Updated point light color */}
-      <pointLight position={[0, 10, 0]} color="#FFD700" intensity={1.2} /> {/* Gold accent light */}
+      <ambientLight intensity={0.8} /> {/* Increased ambient light */}
+      <directionalLight position={[5, 5, 5]} intensity={1} /> {/* Increased directional light */}
+      <pointLight position={[-10, -10, -10]} color="#81D4FA" intensity={1.5} /> {/* Blue accent light */}
+      <pointLight position={[10, 10, 10]} color="#E0F2F7" intensity={1.2} /> {/* Light blue accent light */}
+      <pointLight position={[0, -10, 0]} color="#B3E5FC" intensity={1} /> {/* Another blue accent light */}
+
+      {/* Floating Icosahedron */}
+      <mesh position={[5, 0, -10]} rotation={[0.5, 0.5, 0]} scale={2}>
+        <icosahedronGeometry args={[1, 1]} />
+        <meshPhysicalMaterial
+          color="#B3E5FC"
+          transparent
+          opacity={0.2}
+          roughness={0.1}
+          metalness={0.9}
+          transmission={0.9}
+          clearcoat={1}
+          clearcoatRoughness={0.25}
+          envMapIntensity={1}
+        />
+      </mesh>
+
+      {/* Floating TorusKnot */}
+      <mesh position={[-5, 5, -15]} rotation={[0, 0.8, 0.5]} scale={1.5}>
+        <torusKnotGeometry args={[1, 0.3, 100, 16]} />
+        <meshPhysicalMaterial
+          color="#81D4FA"
+          transparent
+          opacity={0.2}
+          roughness={0.1}
+          metalness={0.9}
+          transmission={0.9}
+          clearcoat={1}
+          clearcoatRoughness={0.25}
+          envMapIntensity={1}
+        />
+      </mesh>
+
+      {/* Another Icosahedron */}
+      <mesh position={[0, -7, -8]} rotation={[0.2, 0, 0.7]} scale={1.8}>
+        <icosahedronGeometry args={[1, 0]} />
+        <meshPhysicalMaterial
+          color="#E0F2F7"
+          transparent
+          opacity={0.15}
+          roughness={0.1}
+          metalness={0.9}
+          transmission={0.9}
+          clearcoat={1}
+          clearcoatRoughness={0.25}
+          envMapIntensity={1}
+        />
+      </mesh>
+
       <Swarm />
     </>
   );

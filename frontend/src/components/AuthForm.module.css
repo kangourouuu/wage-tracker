@@ -51,7 +51,7 @@
   margin: 0.6rem 0;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3); /* White input border */
-  background: rgba(255, 255, 255, 0.05); /* More transparent input background */
+  background: transparent; /* Changed to transparent */
   color: #333; /* Darker text for input fields */
   font-size: 1rem;
   outline: none;
@@ -60,11 +60,12 @@
 }
 
 .formContainer input::placeholder {
-  color: rgba(51, 51, 51, 0.6); /* Slightly lighter placeholder text for contrast */
+  color: rgba(51, 51, 51, 0.8); /* Increased opacity for more contrast */
+  background: transparent; /* Ensure placeholder background is transparent */
 }
 
 .formContainer input:focus {
-  background: rgba(255, 255, 255, 0.1); /* More transparent focus background */
+  background: rgba(255, 255, 255, 0.05); /* Subtle white background on focus */
   border-color: rgba(255, 255, 255, 0.5); /* Slightly less opaque focus border */
   box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6); /* More pronounced shadow on focus */
 }
