@@ -6,7 +6,7 @@ const PARTICLE_COUNT_PER_COLOR = 500; // Total particles 2000 / 4 colors
 const COLORS = ['#C3E4FB', '#94CEF7', '#82C6F6', '#FFFFFF'];
 
 function Swarm() {
-  const meshRefs = useRef([]);
+  const meshRefs = useRef<(THREE.InstancedMesh | null)[]>([]);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const mouse = useRef({ x: 0, y: 0 });
 
