@@ -68,7 +68,7 @@ export const Dashboard = () => {
 
   return (
     <div className={styles.dashboardPage}>
-      <Canvas className={styles.threeCanvas}> {/* Add Canvas and className */}
+      <Canvas className={styles.threeCanvas} gl={{ alpha: true }}> {/* Add Canvas and className */}
         <ThreeScene />
       </Canvas>
       <div className={styles.dashboardContainer}>

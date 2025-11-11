@@ -83,7 +83,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   return (
     <div className={styles.authPage}> {/* Use a new class for the page container */}
-      <Canvas className={styles.threeCanvas}> {/* Add Canvas and className */}
+      <Canvas className={styles.threeCanvas} gl={{ alpha: true }}> {/* Add Canvas and className */}
         <ThreeScene />
       </Canvas>
       <div className={styles.formContainer}>
