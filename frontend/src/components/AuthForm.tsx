@@ -70,7 +70,7 @@ const AuthForm3D: React.FC<AuthFormProps> = ({ isLogin }) => {
   return (
     <group ref={groupRef}>
       <Html center scale={0.01}>
-        <div className={styles.authFormContainer}>
+        <div className={styles.formContainer}>
           <div className={styles.languageSwitcherContainer}>
             <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
               <option value="en">English</option>
@@ -116,7 +116,7 @@ const AuthForm3D: React.FC<AuthFormProps> = ({ isLogin }) => {
                 required
               />
             )}
-            <button type="submit" className={styles.button} disabled={mutation.isPending}>
+            <button type="submit" className={styles.submitButton} disabled={mutation.isPending}>
               {mutation.isPending ? t('submitting') : (isLogin ? t('loginButton') : t('registerButton'))}
             </button>
             {error && <p className={styles.error}>{error}</p>}

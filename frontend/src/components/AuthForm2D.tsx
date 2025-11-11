@@ -54,7 +54,7 @@ export const AuthForm2D: React.FC<AuthForm2DProps> = (props) => {
   };
 
   return (
-    <div className={styles.authFormContainer}>
+    <div className={styles.formContainer}>
       <div className={styles.languageSwitcherContainer}>
         <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
           <option value="en">English</option>
@@ -100,7 +100,7 @@ export const AuthForm2D: React.FC<AuthForm2DProps> = (props) => {
             required
           />
         )}
-        <button type="submit" className={styles.button} disabled={mutation.isPending}>
+        <button type="submit" className={styles.submitButton} disabled={mutation.isPending}>
           {mutation.isPending ? t('submitting') : (props.isLogin ? t('loginButton') : t('registerButton'))}
         </button>
         {error && <p className={styles.error}>{error}</p>}
