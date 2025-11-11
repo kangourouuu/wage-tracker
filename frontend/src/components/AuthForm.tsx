@@ -43,7 +43,12 @@ const AuthForm3D: React.FC<AuthFormProps> = ({ isLogin }) => {
     setError(null);
     const payload = isLogin
       ? { email, password }
-      : { name, email, password, wagePerHour: Number(wagePerHour) };
+      : {
+          name,
+          email,
+          password,
+          jobs: [{ name: 'Default Job', wagePerHour: Number(wagePerHour) }],
+        };
     mutation.mutate(payload);
   };
 
