@@ -67,7 +67,7 @@ body,
 }
 
 body {
-  background-color: #E0F2F7; /* Solid light blue background */
+  background-color: transparent; /* Changed to transparent */
   color: var(--text-color);
   font-family: var(--font-family-body);
   -webkit-font-smoothing: antialiased;

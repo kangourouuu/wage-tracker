@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import ThreeScene from './ThreeScene';
 import Calendar from 'react-calendar'; // Import 2D Calendar
 import AddEntryModal from '../components/AddEntryModal'; // Import 2D AddEntryModal
+import TimeOfDayIcon from '../components/TimeOfDayIcon'; // Import TimeOfDayIcon
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -69,6 +70,7 @@ export const Dashboard = () => {
       <div className={styles.dashboardContainer}>
         <header className={styles.header}>
           <div className={styles.welcomeSection}>
+            <TimeOfDayIcon /> {/* Time of day icon */}
             <div className={styles.avatarOrb}></div>
             <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
           </div>
