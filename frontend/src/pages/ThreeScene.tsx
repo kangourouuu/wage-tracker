@@ -1,5 +1,5 @@
 import { useMemo, useRef, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResponsive
 import RadialGradientShader from '../shaders/RadialGradientShader'; // Import the shader
@@ -90,7 +90,7 @@ function Swarm() {
   );
 }
 
-function ThreeSceneContent() {
+function ThreeScene() {
   const { scene, camera, gl, viewport } = useThree(); // Destructure viewport
   const { isMobile, isTablet, prefersReducedMotion } = useResponsive();
 
@@ -237,14 +237,6 @@ function ThreeSceneContent() {
 
       <Swarm />
     </>
-  );
-}
-
-function ThreeScene() {
-  return (
-    <Canvas camera={{ position: [0, 0, 15], fov: 75 }} style={{ position: 'fixed', top: 0, left: 0, zIndex: -1 }} gl={{ alpha: true }}>
-      <ThreeSceneContent />
-    </Canvas>
   );
 }
 
