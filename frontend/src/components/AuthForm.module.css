@@ -1,3 +1,22 @@
+.authPage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Hide overflow from ThreeScene */
+}
+
+.threeCanvas {
+  position: fixed !important; /* Use fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0; /* Ensure it's behind other content */
+}
+
 /* === Liquid Glass Form Container === */
 .formContainer { /* Renamed from .form-container */
   width: 100%;

@@ -1,8 +1,8 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthForm } from './components/AuthForm';
 import { Dashboard } from './pages/Dashboard';
 import { ResponsiveProvider } from './contexts/ResponsiveProvider';
-import ThreeScene from './pages/ThreeScene'; // Import ThreeScene
+import { ProtectedRoute } from './components/ProtectedRoute'; // Import ProtectedRoute
 import './App.css';
 
 function Root() {
@@ -10,19 +10,15 @@ function Root() {
 }
 
 function App() {
-  const location = useLocation();
-  const showThreeScene = location.pathname === '/login' || location.pathname === '/register';
-
   return (
     <ResponsiveProvider>
-      {showThreeScene && <ThreeScene />} {/* Render ThreeScene as background only on auth pages */}
       <Routes>
         <Route path="/" element={<Root />} />
         <Route path="/login" element={<AuthForm isLogin />} />
         <Route path="/register" element={<AuthForm isLogin={false} />} />
         <Route
           path="/dashboard"
-          element={<Dashboard />} // Temporarily removed ProtectedRoute
+          element={<ProtectedRoute><Dashboard /></ProtectedRoute>} // Re-enabled ProtectedRoute
         />
       </Routes>
     </ResponsiveProvider>
