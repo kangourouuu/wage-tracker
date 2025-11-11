@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResponsive
 
 const PARTICLE_COUNT_PER_COLOR = 1000; // Increased particle count
-const COLORS = ['#8A2BE2', '#9a4dff', '#6A0DAD', '#FFFFFF']; // Updated colors to match theme
+const COLORS = ['#00FFFF', '#00CED1', '#008B8B', '#FFFFFF']; // Updated colors to match theme (Cyan)
 
 function Swarm() {
   const meshRefs = useRef<(THREE.InstancedMesh | null)[]>([]);
@@ -116,7 +116,7 @@ function ThreeSceneContent() {
     if (isMobile || prefersReducedMotion) {
       scene.fog = null;
     } else {
-      scene.fog = new THREE.FogExp2(0x4B0082, 0.005); // Dark purple fog
+      scene.fog = new THREE.FogExp2(0x00CED1, 0.005); // Dark Cyan fog
     }
 
     return () => {

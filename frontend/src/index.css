@@ -9,11 +9,11 @@
   --error-color-rgb: 229, 57, 53;
   --success-color: #43a047;   /* Material Design green for success */
 
-  /* Primary Palette - Professional and modern */
-  --primary-color: #8a2be2;    /* Blue Violet */
-  --primary-color-rgb: 138, 43, 226;
-  --primary-color-light: #9a4dff; /* Lighter Violet */
-  --primary-color-dark: #6a0dad;  /* Darker Violet */
+  /* Primary Palette - Professional and modern (Cyan) */
+  --primary-color: #00FFFF;    /* Cyan */
+  --primary-color-rgb: 0, 255, 255;
+  --primary-color-light: #E0FFFF; /* Light Cyan */
+  --primary-color-dark: #00CED1;  /* Dark Turquoise */
 
   /* Accent Palette */
   --accent-color-1: #5a9bd5;   /* Steel Blue */
@@ -22,7 +22,7 @@
   --gold-accent: #FFD700; /* Gold accent for CTAs */
 
   /* Gradients */
-  --gradient-primary: linear-gradient(to right, var(--primary-color-dark), var(--primary-color));
+  --gradient-primary: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color)); /* Adjusted gradient direction */
   --gradient-accent-1: linear-gradient(to right, var(--accent-color-1-dark), var(--accent-color-1));
   --gradient-gold: linear-gradient(to right, #FFD700, #FFA500); /* Gold gradient */
 
@@ -60,7 +60,7 @@ body,
 }
 
 body {
-  background: radial-gradient(circle 1200px at center, #6A0DAD, #8A2BE2, #4B0082); /* Purple/blue radial gradient */
+  background: radial-gradient(circle 300px at center, lightcyan, cyan, white); /* New cyan radial gradient */
   color: var(--text-color);
   font-family: var(--font-family-body);
   -webkit-font-smoothing: antialiased;
