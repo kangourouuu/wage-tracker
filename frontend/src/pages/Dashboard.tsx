@@ -71,7 +71,6 @@ export const Dashboard = () => {
         <header className={styles.header}>
           <div className={styles.welcomeSection}>
             <TimeOfDayIcon /> {/* Time of day icon */}
-            <div className={styles.avatarOrb}></div>
             <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
           </div>
           <div className={styles.headerActions}>
