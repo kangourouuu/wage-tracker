@@ -8,6 +8,15 @@
   overflow: hidden; /* Hide overflow from ThreeScene */
 }
 
+.threeCanvas {
+  position: fixed !important; /* Use fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0; /* Ensure it's behind other content */
+}
+
 .dashboardContainer {
   position: relative;
   z-index: 10; /* Ensure it's above the ThreeScene */
@@ -48,26 +57,6 @@
   color: #333; /* Darker color for better visibility */
   margin: 0;
   text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
-}
-
-.avatarOrb {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FFD700, #FFA500); /* Gold gradient */
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.5);
-  animation: pulse 2s infinite alternate;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.5);
-  }
-  100% {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255, 215, 0, 1), inset 0 0 12px rgba(255, 255, 255, 0.7);
-  }
 }
 
 .headerActions {

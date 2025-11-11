@@ -11,6 +11,7 @@ import ThreeScene from './ThreeScene';
 import Calendar from 'react-calendar'; // Import 2D Calendar
 import AddEntryModal from '../components/AddEntryModal'; // Import 2D AddEntryModal
 import TimeOfDayIcon from '../components/TimeOfDayIcon'; // Import TimeOfDayIcon
+import { Canvas } from '@react-three/fiber'; // Import Canvas
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -66,7 +67,9 @@ export const Dashboard = () => {
 
   return (
     <div className={styles.dashboardPage}>
-      <ThreeScene />
+      <Canvas className={styles.threeCanvas}> {/* Add Canvas and className */}
+        <ThreeScene />
+      </Canvas>
       <div className={styles.dashboardContainer}>
         <header className={styles.header}>
           <div className={styles.welcomeSection}>
