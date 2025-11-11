@@ -7,26 +7,19 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
-import { Job } from './job.entity'; // Import Job entity
 
 @Entity()
-export class WorkEntry {
+export class Job {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  startTime: Date;
+  name: string;
 
-  @Column()
-  endTime: Date;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  wagePerHour: number;
 
-  @Column({ type: 'int', default: 0 })
-  breakDuration: number; // in minutes
-
-  @ManyToOne(() => Job, (job) => job.id) // Many-to-one relationship with Job
-  job: Job;
-
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.jobs)
   user: User;
 
   @CreateDateColumn()

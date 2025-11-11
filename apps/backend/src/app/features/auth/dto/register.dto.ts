@@ -1,11 +1,24 @@
 
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsEmail,
   IsNotEmpty,
   IsNumber,
   IsString,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+
+class JobDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  wagePerHour: number;
+}
 
 export class RegisterDto {
   @IsNotEmpty()
@@ -21,7 +34,8 @@ export class RegisterDto {
   @MinLength(6)
   password: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  wagePerHour: number;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => JobDto)
+  jobs: JobDto[];
 }

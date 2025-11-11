@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AddEntryModal.module.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'; // Import useQuery
 import api from '../services/api';
-import type { CreateWorkEntryDto } from '../types/work-entry.ts';
+import type { CreateWorkEntryDto, Job } from '../types/work-entry.ts'; // Import Job
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 interface AddEntryModalProps {
@@ -17,7 +17,14 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
   const [startTime, setStartTime] = useState('');
   const [hoursWorked, setHoursWorked] = useState(8); // Default to 8 hours
   const [breakDuration, setBreakDuration] = useState(0);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null); // New state for selected job
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch jobs
+  const { data: jobs, isLoading: isLoadingJobs, isError: isErrorJobs } = useQuery<Job[]>({
+    queryKey: ['jobs'],
+    queryFn: () => api.get('/jobs').then(res => res.data),
+  });
 
   useEffect(() => {
     if (isOpen && selectedDate) {
@@ -31,9 +38,16 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
       setStartTime('');
       setHoursWorked(8);
       setBreakDuration(0);
+      setSelectedJobId(null); // Reset selected job
       setError(null);
     }
   }, [isOpen, selectedDate]);
+
+  useEffect(() => {
+    if (jobs && jobs.length > 0 && !selectedJobId) {
+      setSelectedJobId(jobs[0].id); // Automatically select the first job if available
+    }
+  }, [jobs, selectedJobId]);
 
   const addWorkEntryMutation = useMutation({
     mutationFn: (newEntry: CreateWorkEntryDto) => api.post('/work-entries', newEntry),
@@ -55,13 +69,19 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
       return;
     }
 
+    if (!selectedJobId) {
+      setError(t('pleaseSelectJob'));
+      return;
+    }
+
     const startDateTime = new Date(startTime);
-    const endDateTime = new Date(startDateTime.getTime() + (hoursWorked * 60 * 60 * 1000) + (breakDuration * 60 * 1000));
+    const endDateTime = new Date(startDateTime.getTime() + (hoursWorked * 60 * 60 * 1000) - (breakDuration * 60 * 1000)); // Subtract break duration
 
     const newEntry: CreateWorkEntryDto = {
       startTime: startDateTime.toISOString(),
       endTime: endDateTime.toISOString(),
       breakDuration: breakDuration,
+      jobId: selectedJobId, // Include jobId
     };
 
     addWorkEntryMutation.mutate(newEntry);
@@ -75,6 +95,26 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
         <h2 className={styles.modalTitle}>{t('addWorkEntry')}</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <p className={styles.error}>{error}</p>}
+          <div className={styles.formGroup}>
+            <label htmlFor="job">{t('job')}:</label>
+            {isLoadingJobs && <p>Loading jobs...</p>}
+            {isErrorJobs && <p>Error loading jobs.</p>}
+            {jobs && jobs.length > 0 && (
+              <select
+                id="job"
+                value={selectedJobId || ''}
+                onChange={(e) => setSelectedJobId(e.target.value)}
+                required
+              >
+                {jobs.map((job) => (
+                  <option key={job.id} value={job.id}>
+                    {job.name} ({job.wagePerHour} / hr)
+                  </option>
+                ))}
+              </select>
+            )}
+            {jobs && jobs.length === 0 && <p>{t('noJobsFound')}</p>}
+          </div>
           <div className={styles.formGroup}>
             <label htmlFor="hoursWorked">{t('hoursWorked')}:</label>
             <input

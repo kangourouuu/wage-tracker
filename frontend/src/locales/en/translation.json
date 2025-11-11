@@ -26,6 +26,8 @@
   "password": "Password",
   "name": "Name",
   "wagePerHour": "Wage per Hour",
+  "jobName": "Job Name",
+  "jobWagePerHour": "Job Wage per Hour",
   "loginButton": "Login",
   "registerButton": "Register",
   "dontHaveAccount": "Don't have an account?",

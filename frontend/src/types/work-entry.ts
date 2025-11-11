@@ -1,8 +1,16 @@
+export interface Job {
+  id: string;
+  name: string;
+  wagePerHour: number;
+  userId: string;
+}
+
 export interface WorkEntry {
   id: string;
   startTime: string;
   endTime: string;
-  breakDuration: number;
+  breakDuration: number; // in minutes
+  job: Job; // Link to Job
   details: string;
   createdAt: string;
   updatedAt: string;
@@ -12,5 +20,6 @@ export interface WorkEntry {
 export interface CreateWorkEntryDto {
   startTime: string;
   endTime: string;
-  breakDuration?: number;
+  jobId: string; // Link to Job
+  breakDuration?: number; // in minutes
 }

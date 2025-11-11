@@ -26,6 +26,8 @@
   "password": "Mật khẩu",
   "name": "Tên",
   "wagePerHour": "Lương mỗi giờ",
+  "jobName": "Tên công việc",
+  "jobWagePerHour": "Lương mỗi giờ của công việc",
   "loginButton": "Đăng nhập",
   "registerButton": "Đăng ký",
   "dontHaveAccount": "Chưa có tài khoản?",
