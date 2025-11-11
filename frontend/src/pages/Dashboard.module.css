@@ -116,11 +116,17 @@
 .totalHours,
 .totalEntries,
 .estimatedEarnings {
-  color: #007bff;
+  color: var(--pastel-orange);
+}
+
+.summary3DContainer {
+  height: 200px;
+  position: relative;
 }
 
 .mainContent {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
   flex-grow: 1;
   align-items: start; /* Align items to the start */

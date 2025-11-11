@@ -5,12 +5,14 @@ import type { WorkEntry } from '../types/work-entry';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/Calendar.css';
 import styles from './Dashboard.module.css';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import Calendar from 'react-calendar';
 import AddEntryModal from '../components/AddEntryModal';
-import ThreeScene from './ThreeScene'; // Import ThreeScene
+import ThreeScene from './ThreeScene';
 import WorkEntryList from '../components/WorkEntryList';
+import { Canvas } from '@react-three/fiber';
+import SummaryCard3D from '../components/SummaryCard3D';
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -89,24 +91,19 @@ export const Dashboard = () => {
               locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
             />
           </div>
-
         </div>
         <div className={styles.rightPanel}>
-          <section className={styles.summary}>
-            <div className={styles.summaryCard}>
-              <h3>{t('totalHours')}</h3>
-              <p className={styles.totalHours}>{summary.totalHours}</p>
-            </div>
-            <div className={styles.summaryCard}>
-              <h3>{t('totalEntries')}</h3>
-              <p className={styles.totalEntries}>{workEntries?.length || 0}</p>
-            </div>
-            <div className={styles.summaryCard}>
-              <h3>{t('estimatedEarnings')}</h3>
-              <p className={styles.estimatedEarnings}>{summary.totalEarnings}</p>
-              <p className={styles.wageUnit}>{t('wageUnit')}</p>
-            </div>
-          </section>
+          <div className={styles.summary3DContainer}>
+            <Canvas>
+              <ambientLight intensity={0.5} />
+              <pointLight position={[10, 10, 10]} />
+              <Suspense fallback={null}>
+                <SummaryCard3D title={t('totalHours')} value={summary.totalHours} position={[-5, 2, 0]} color="#C3E4FB" />
+                <SummaryCard3D title={t('totalEntries')} value={String(workEntries?.length || 0)} position={[0, 2, 0]} color="#94CEF7" />
+                <SummaryCard3D title={t('estimatedEarnings')} value={summary.totalEarnings} position={[5, 2, 0]} color="#82C6F6" />
+              </Suspense>
+            </Canvas>
+          </div>
           {workEntries && <WorkEntryList workEntries={workEntries} />}
         </div>
       </div>
