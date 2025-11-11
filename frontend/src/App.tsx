@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthForm } from './components/AuthForm';
 import { Dashboard } from './pages/Dashboard';
-import { ProtectedRoute } from './components/ProtectedRoute';
 import { ResponsiveProvider } from './contexts/ResponsiveProvider';
 import ThreeScene from './pages/ThreeScene'; // Import ThreeScene
 import './App.css';
@@ -23,11 +22,7 @@ function App() {
         <Route path="/register" element={<AuthForm isLogin={false} />} />
         <Route
           path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
+          element={<Dashboard />} // Temporarily removed ProtectedRoute
         />
       </Routes>
     </ResponsiveProvider>

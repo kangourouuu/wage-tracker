@@ -13,8 +13,6 @@ import HeroCard3D from '../components/HeroCard3D'; // Import HeroCard3D
 import Calendar3DPanel from '../components/Calendar3DPanel'; // Import Calendar3DPanel
 import WorkEntryList3D from '../components/WorkEntryList3D'; // Import WorkEntryList3D
 import AddEntryModal3D from '../components/AddEntryModal3D'; // Import AddEntryModal3D
-import CTAButton3D from '../components/CTAButton3D'; // Import CTAButton3D
-import Coin3D from '../components/Coin3D'; // Import Coin3D
 import MainDashboardPanel3D from '../components/MainDashboardPanel3D'; // Import MainDashboardPanel3D
 import { Canvas, useFrame } from '@react-three/fiber'; // Ensure Canvas and useFrame are imported
 import { OrbitControls } from '@react-three/drei'; // Import OrbitControls
@@ -85,8 +83,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   const heroCardRef = useRef<THREE.Mesh>(null!);
   const calendarPanelRef = useRef<THREE.Mesh>(null!);
   const mainDashboardPanelRef = useRef<THREE.Mesh>(null!);
-  const ctaButtonRef = useRef<THREE.Group>(null!);
-  const coinRef = useRef<THREE.Mesh>(null!);
 
   useFrame(() => {
     const parallaxX = mouse.current.x * 0.5; // Adjust sensitivity
@@ -109,18 +105,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
       mainDashboardPanelRef.current.position.x = THREE.MathUtils.lerp(mainDashboardPanelRef.current.position.x, parallaxX * 0.2, 0.1);
       mainDashboardPanelRef.current.position.y = THREE.MathUtils.lerp(mainDashboardPanelRef.current.position.y, -1 + parallaxY * 0.2, 0.1);
     }
-
-    // Apply parallax to CTAButton3D
-    if (ctaButtonRef.current) {
-      ctaButtonRef.current.position.x = THREE.MathUtils.lerp(ctaButtonRef.current.position.x, parallaxX * 0.4, 0.1);
-      ctaButtonRef.current.position.y = THREE.MathUtils.lerp(ctaButtonRef.current.position.y, -7 + parallaxY * 0.4, 0.1);
-    }
-
-    // Apply parallax to Coin3D
-    if (coinRef.current) {
-      coinRef.current.position.x = THREE.MathUtils.lerp(coinRef.current.position.x, 7 + parallaxX * 0.6, 0.1);
-      coinRef.current.position.y = THREE.MathUtils.lerp(coinRef.current.position.y, 5 + parallaxY * 0.6, 0.1);
-    }
   });
 
   return (
@@ -139,9 +123,9 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         }}
         onClickDay={handleDateClick}
         locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
-        position={[-5, -1, 0]} // Adjusted position
+        position={[-5, 0, 0]} // Adjusted position
       />
-      <MainDashboardPanel3D ref={mainDashboardPanelRef} position={[0, -1, 0]} scale={1}>
+      <MainDashboardPanel3D ref={mainDashboardPanelRef} position={[1, 0, 0]} scale={1}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-around', gap: '20px' }}>
             <SummaryCard3D title={t('totalHours')} value={summary.totalHours} position={[0, 0, 0]} color="#C3E4FB" />
@@ -151,8 +135,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           {workEntries && <WorkEntryList3D workEntries={workEntries} position={[0, 0, 0]} />}
         </div>
       </MainDashboardPanel3D>
-      <CTAButton3D ref={ctaButtonRef} onClick={() => setIsModalOpen(true)} label={t('addEntry')} position={[0, -7, 0]} /> {/* Adjusted position */}
-      <Coin3D ref={coinRef} position={[7, 5, 0]} scale={0.5} /> {/* Adjusted position */}
       <AddEntryModal3D isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </Suspense>
   );
