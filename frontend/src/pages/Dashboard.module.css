@@ -124,6 +124,15 @@
   position: relative;
 }
 
+.threeDContainer {
+  height: 400px; /* Adjust height as needed */
+  width: 100%;
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
 .mainContent {
   display: grid;
   grid-template-columns: 1fr 1fr;

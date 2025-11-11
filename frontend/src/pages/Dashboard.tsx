@@ -11,8 +11,10 @@ import Calendar from 'react-calendar';
 import AddEntryModal from '../components/AddEntryModal';
 import ThreeScene from './ThreeScene';
 import WorkEntryList from '../components/WorkEntryList';
-import { Canvas } from '@react-three/fiber';
+import Dashboard3D from '../components/Dashboard3D';
 import SummaryCard3D from '../components/SummaryCard3D';
+
+// This comment is added to trigger a re-compilation and potentially resolve MIME type issues.
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -93,11 +95,12 @@ export const Dashboard = () => {
           </div>
         </div>
         <div className={styles.rightPanel}>
-          <div className={styles.summary3DContainer}>
-            <Canvas>
+          <div className={styles.threeDContainer}>
+            <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
               <ambientLight intensity={0.5} />
               <pointLight position={[10, 10, 10]} />
               <Suspense fallback={null}>
+                <Dashboard3D workEntries={workEntries || []} selectedDate={selectedDate} onDateClick={handleDateClick} t={t} />
                 <SummaryCard3D title={t('totalHours')} value={summary.totalHours} position={[-5, 2, 0]} color="#C3E4FB" />
                 <SummaryCard3D title={t('totalEntries')} value={String(workEntries?.length || 0)} position={[0, 2, 0]} color="#94CEF7" />
                 <SummaryCard3D title={t('estimatedEarnings')} value={summary.totalEarnings} position={[5, 2, 0]} color="#82C6F6" />
