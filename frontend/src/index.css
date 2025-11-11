@@ -9,11 +9,11 @@
   --error-color-rgb: 229, 57, 53;
   --success-color: #43a047;   /* Material Design green for success */
 
-  /* Primary Palette - Professional and modern (Cyan) */
-  --primary-color: #00FFFF;    /* Cyan */
-  --primary-color-rgb: 0, 255, 255;
-  --primary-color-light: #E0FFFF; /* Light Cyan */
-  --primary-color-dark: #00CED1;  /* Dark Turquoise */
+  /* Primary Palette - Professional and modern (Blue Sky) */
+  --primary-color: #4FC3F7;    /* Light Blue */
+  --primary-color-rgb: 79, 195, 247;
+  --primary-color-light: #81D4FA; /* Lighter Blue */
+  --primary-color-dark: #03A9F4;  /* Blue */
 
   /* Accent Palette */
   --accent-color-1: #5a9bd5;   /* Steel Blue */
@@ -57,10 +57,13 @@ html,
 body,
 #root {
   width: 100%;
+  height: 100%; /* Ensure full height */
+  background-color: transparent; /* Explicitly set to transparent */
 }
 
 body {
-  background: radial-gradient(circle 300px at center, lightcyan, cyan, white); /* New cyan radial gradient */
+  background-color: #4FC3F7; /* Fallback solid color */
+  background: radial-gradient(circle 300px at center, #4FC3F7, #81D4FA, #B3E5FC, #E0F2F7); /* Blue Sky radial gradient - Reversed */
   color: var(--text-color);
   font-family: var(--font-family-body);
   -webkit-font-smoothing: antialiased;
