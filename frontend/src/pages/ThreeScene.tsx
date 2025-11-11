@@ -5,7 +5,7 @@ import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResp
 import RadialGradientShader from '../shaders/RadialGradientShader'; // Import the shader
 
 const PARTICLE_COUNT_PER_COLOR = 1000; // Increased particle count
-const COLORS = ['#E0F2F7', '#B3E5FC', '#81D4FA', '#FFFFFF']; // Updated colors to match theme (blue sky)
+const COLORS = ['#C6F2F7', '#B4EEF5', '#FFFFFF']; // Updated colors to match theme (blue sky)
 
 function Swarm() {
   const meshRefs = useRef<(THREE.InstancedMesh | null)[]>([]);
@@ -177,6 +177,7 @@ function ThreeScene() {
         <shaderMaterial
           ref={shaderMaterialRef}
           args={[RadialGradientShader]}
+          uniforms-u_radius-value={0.3} // Correct way to pass uniform value
           side={THREE.BackSide} // Render on the inside of the sphere
         />
       </mesh>
