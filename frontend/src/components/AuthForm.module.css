@@ -75,7 +75,7 @@
 
 .button {
   padding: 0.85rem 1rem;
-  border-radius: var(--border-radius-sm);
+  border-radius: 2rem; /* Increased border-radius for more rounded effect */
   border: none;
   background: var(--gradient-primary); /* Use primary gradient */
   color: #fff;
@@ -87,6 +87,8 @@
   font-size: 1rem;
   position: relative;
   overflow: hidden;
+  width: 210px; /* Fixed width as requested */
+  margin: 0 auto; /* Center the button */
 }
 
 .button:hover {
@@ -121,7 +123,7 @@
   margin-top: 1.5rem;
   background: none;
   border: none;
-  color: var(--primary-color);
+  color: #2c3e50; /* Suggested dark, desaturated blue for contrast */
   cursor: pointer;
   width: 100%;
   text-align: center;
