@@ -12,6 +12,7 @@ import Calendar from 'react-calendar'; // Import 2D Calendar
 import AddEntryModal from '../components/AddEntryModal'; // Import 2D AddEntryModal
 import TimeOfDayIcon from '../components/TimeOfDayIcon'; // Import TimeOfDayIcon
 import { Canvas } from '@react-three/fiber'; // Import Canvas
+import SummaryCard from '../components/SummaryCard3D'; // Import 2D SummaryCard
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -49,7 +50,7 @@ export const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
-  const { data: workEntries } = useQuery<WorkEntry[]>({
+  const { data: workEntries } = useQuery<WorkEntry[]> ({
     queryKey: ['workEntries'],
     queryFn: fetchWorkEntries,
   });
@@ -104,14 +105,8 @@ export const Dashboard = () => {
           </div>
 
           <div className={styles.summaryCardsContainer}>
-            <div className={styles.summaryCard}>
-              <h3>{t('totalHours')}</h3>
-              <p>{summary.totalHours}</p>
-            </div>
-            <div className={styles.summaryCard}>
-              <h3>{t('estimatedEarnings')}</h3>
-              <p>{summary.totalEarnings}</p>
-            </div>
+            <SummaryCard title={t('totalHours')} value={summary.totalHours} />
+            <SummaryCard title={t('estimatedEarnings')} value={summary.totalEarnings} />
           </div>
         </div>
       </div>
