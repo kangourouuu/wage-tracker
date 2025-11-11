@@ -35,12 +35,13 @@ const WorkEntryList3D: React.FC<WorkEntryList3DProps> = ({ workEntries }) => {
       <meshPhysicalMaterial
         color="#ffffff" // Base color for the glass
         transparent
-        opacity={0.1}
-        roughness={0.1}
-        metalness={0.9}
+        opacity={0.2} // Slightly increased opacity for frosted look
+        roughness={0.3} // Increased roughness for frosted look
+        metalness={0.5} // Adjusted metalness
         transmission={0.9} // For refraction
+        thickness={0.5} // Added thickness for better refraction
         clearcoat={1}
-        clearcoatRoughness={0.25}
+        clearcoatRoughness={0.5} // Increased clearcoat roughness for frosted look
         envMapIntensity={1}
       />
       <Html transform rotation={[0, 0, 0]} position={[0, 0, 0.06]} scale={0.01}> {/* Adjust scale to fit */}

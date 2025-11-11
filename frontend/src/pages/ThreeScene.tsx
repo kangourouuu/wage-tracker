@@ -2,6 +2,7 @@ import { useMemo, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResponsive
+import RadialGradientShader from '../shaders/RadialGradientShader'; // Import the shader
 
 const PARTICLE_COUNT_PER_COLOR = 1000; // Increased particle count
 const COLORS = ['#E0F2F7', '#B3E5FC', '#81D4FA', '#FFFFFF']; // Updated colors to match theme (blue sky)
@@ -90,12 +91,15 @@ function Swarm() {
 }
 
 function ThreeSceneContent() {
-  const { scene, camera, gl } = useThree();
+  const { scene, camera, gl, viewport } = useThree(); // Destructure viewport
   const { isMobile, isTablet, prefersReducedMotion } = useResponsive();
 
   const orbitingCircleRef1 = useRef<THREE.Mesh>(null!); // Ref for the first circle
   const orbitingCircleRef2 = useRef<THREE.Mesh>(null!); // Ref for the second circle
   const orbitingCircleRef3 = useRef<THREE.Mesh>(null!); // Ref for the third circle
+
+  // Ref for the shader material to update uniforms
+  const shaderMaterialRef = useRef<THREE.ShaderMaterial>(null!);
 
   useFrame((state) => {
     if (!prefersReducedMotion) {
@@ -125,6 +129,12 @@ function ThreeSceneContent() {
         orbitingCircleRef3.current.rotation.x -= 0.006;
         orbitingCircleRef3.current.rotation.y += 0.001;
       }
+    }
+
+    // Update shader resolution uniform
+    if (shaderMaterialRef.current) {
+      shaderMaterialRef.current.uniforms.u_resolution.value.x = viewport.width;
+      shaderMaterialRef.current.uniforms.u_resolution.value.y = viewport.height;
     }
   });
 
@@ -161,11 +171,21 @@ function ThreeSceneContent() {
 
   return (
     <>
-      <ambientLight intensity={0.8} /> {/* Increased ambient light */}
-      <directionalLight position={[5, 5, 5]} intensity={1} /> {/* Increased directional light */}
-      <pointLight position={[-10, -10, -10]} color="#81D4FA" intensity={1.5} /> {/* Blue accent light */}
-      <pointLight position={[10, 10, 10]} color="#E0F2F7" intensity={1.2} /> {/* Light blue accent light */}
-      <pointLight position={[0, -10, 0]} color="#B3E5FC" intensity={1} /> {/* Another blue accent light */}
+      {/* Radial Gradient Background Sphere */}
+      <mesh position={[0, 0, -100]} scale={[200, 200, 200]}> {/* Large sphere far back */}
+        <sphereGeometry args={[1, 64, 64]} />
+        <shaderMaterial
+          ref={shaderMaterialRef}
+          args={[RadialGradientShader]}
+          side={THREE.BackSide} // Render on the inside of the sphere
+        />
+      </mesh>
+
+      <ambientLight intensity={0.6} color={0xADD8E6} /> {/* Cool tone ambient light */}
+      <directionalLight position={[5, 5, 5]} intensity={0.8} color={0xFFD700} /> {/* Warm tone directional light */}
+      <pointLight position={[-10, -10, -10]} color={0x00FFFF} intensity={1.0} /> {/* Cyan hue point light */}
+      <pointLight position={[10, 10, 10]} color={0x00FFFF} intensity={0.8} /> {/* Another cyan point light */}
+      <pointLight position={[0, -10, 0]} color={0x00FFFF} intensity={0.6} /> {/* Another cyan point light */}
 
       {/* Orbiting Circle 1 around AuthForm */}
       <mesh ref={orbitingCircleRef1} position={[0, 0, -20]} scale={0.7}> {/* Smaller scale */}

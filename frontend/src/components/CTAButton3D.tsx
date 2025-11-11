@@ -9,7 +9,7 @@ interface CTAButton3DProps {
   position?: [number, number, number];
 }
 
-const CTAButton3D: React.FC<CTAButton3DProps> = ({ onClick, label, position = [0, 0, 0] }) => {
+const CTAButton3D = React.forwardRef<THREE.Group, CTAButton3DProps>(({ onClick, label, position = [0, 0, 0] }, ref) => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const [hovered, setHovered] = useState(false);
 
@@ -23,9 +23,8 @@ const CTAButton3D: React.FC<CTAButton3DProps> = ({ onClick, label, position = [0
   });
 
   return (
-    <group position={position}>
+    <group ref={ref} position={position}>
       <mesh
-        ref={meshRef}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         onClick={onClick}
@@ -33,11 +32,11 @@ const CTAButton3D: React.FC<CTAButton3DProps> = ({ onClick, label, position = [0
         <boxGeometry args={[2.5, 0.8, 0.2]} /> {/* Extruded button mesh */}
         <meshPhysicalMaterial
           color={hovered ? '#FFA500' : '#FFD700'} // Gold gradient effect
-          roughness={0.4}
-          metalness={0.8}
+          roughness={0.2} // Reduced roughness for more shine
+          metalness={0.9} // Increased metalness
           clearcoat={1}
-          clearcoatRoughness={0.2}
-          envMapIntensity={1}
+          clearcoatRoughness={0.1} // Reduced clearcoat roughness for more shine
+          envMapIntensity={1.5} // Increased environment map intensity for more reflection
         />
         <Text
           position={[0, 0, 0.11]} // Slightly in front of the button face
@@ -72,6 +71,6 @@ const CTAButton3D: React.FC<CTAButton3DProps> = ({ onClick, label, position = [0
       </Html>
     </group>
   );
-};
+});
 
 export default CTAButton3D;
