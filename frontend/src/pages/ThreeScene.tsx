@@ -93,6 +93,41 @@ function ThreeSceneContent() {
   const { scene, camera, gl } = useThree();
   const { isMobile, isTablet, prefersReducedMotion } = useResponsive();
 
+  const orbitingCircleRef1 = useRef<THREE.Mesh>(null!); // Ref for the first circle
+  const orbitingCircleRef2 = useRef<THREE.Mesh>(null!); // Ref for the second circle
+  const orbitingCircleRef3 = useRef<THREE.Mesh>(null!); // Ref for the third circle
+
+  useFrame((state) => {
+    if (!prefersReducedMotion) {
+      // Orbiting Circle 1
+      if (orbitingCircleRef1.current) {
+        orbitingCircleRef1.current.position.x = Math.sin(state.clock.elapsedTime * 0.3) * 8;
+        orbitingCircleRef1.current.position.y = Math.cos(state.clock.elapsedTime * 0.3) * 5;
+        orbitingCircleRef1.current.position.z = Math.sin(state.clock.elapsedTime * 0.2) * 3 - 25; // Even further back
+        orbitingCircleRef1.current.rotation.y += 0.005;
+        orbitingCircleRef1.current.rotation.x += 0.002;
+      }
+
+      // Orbiting Circle 2
+      if (orbitingCircleRef2.current) {
+        orbitingCircleRef2.current.position.x = Math.cos(state.clock.elapsedTime * 0.25) * 10;
+        orbitingCircleRef2.current.position.y = Math.sin(state.clock.elapsedTime * 0.25) * 6;
+        orbitingCircleRef2.current.position.z = Math.cos(state.clock.elapsedTime * 0.15) * 4 - 28; // Even further back
+        orbitingCircleRef2.current.rotation.y -= 0.003;
+        orbitingCircleRef2.current.rotation.z += 0.004;
+      }
+
+      // Orbiting Circle 3
+      if (orbitingCircleRef3.current) {
+        orbitingCircleRef3.current.position.x = Math.sin(state.clock.elapsedTime * 0.35) * 7;
+        orbitingCircleRef3.current.position.y = Math.cos(state.clock.elapsedTime * 0.35) * 4;
+        orbitingCircleRef3.current.position.z = Math.sin(state.clock.elapsedTime * 0.25) * 2 - 23; // Even further back
+        orbitingCircleRef3.current.rotation.x -= 0.006;
+        orbitingCircleRef3.current.rotation.y += 0.001;
+      }
+    }
+  });
+
   useEffect(() => {
     // Adjust camera based on breakpoints
     if (camera instanceof THREE.PerspectiveCamera) { // Add type guard here
@@ -132,13 +167,29 @@ function ThreeSceneContent() {
       <pointLight position={[10, 10, 10]} color="#E0F2F7" intensity={1.2} /> {/* Light blue accent light */}
       <pointLight position={[0, -10, 0]} color="#B3E5FC" intensity={1} /> {/* Another blue accent light */}
 
-      {/* Floating Icosahedron */}
-      <mesh position={[5, 0, -10]} rotation={[0.5, 0.5, 0]} scale={2}>
-        <icosahedronGeometry args={[1, 1]} />
+      {/* Orbiting Circle 1 around AuthForm */}
+      <mesh ref={orbitingCircleRef1} position={[0, 0, -5]} scale={1}>
+        <torusGeometry args={[3, 0.1, 16, 100]} /> {/* Large, thin torus */}
+        <meshPhysicalMaterial
+          color="#BCF0F6"
+          transparent
+          opacity={0.3}
+          roughness={0.1}
+          metalness={0.9}
+          transmission={0.9}
+          clearcoat={1}
+          clearcoatRoughness={0.25}
+          envMapIntensity={1}
+        />
+      </mesh>
+
+      {/* Orbiting Circle 2 */}
+      <mesh ref={orbitingCircleRef2} position={[0, 0, -8]} scale={0.8}>
+        <torusGeometry args={[2.5, 0.08, 16, 100]} />
         <meshPhysicalMaterial
           color="#B3E5FC"
           transparent
-          opacity={0.2}
+          opacity={0.25}
           roughness={0.1}
           metalness={0.9}
           transmission={0.9}
@@ -148,29 +199,13 @@ function ThreeSceneContent() {
         />
       </mesh>
 
-      {/* Floating TorusKnot */}
-      <mesh position={[-5, 5, -15]} rotation={[0, 0.8, 0.5]} scale={1.5}>
-        <torusKnotGeometry args={[1, 0.3, 100, 16]} />
+      {/* Orbiting Circle 3 */}
+      <mesh ref={orbitingCircleRef3} position={[0, 0, -3]} scale={1.2}>
+        <torusGeometry args={[3.5, 0.12, 16, 100]} />
         <meshPhysicalMaterial
           color="#81D4FA"
           transparent
-          opacity={0.2}
-          roughness={0.1}
-          metalness={0.9}
-          transmission={0.9}
-          clearcoat={1}
-          clearcoatRoughness={0.25}
-          envMapIntensity={1}
-        />
-      </mesh>
-
-      {/* Another Icosahedron */}
-      <mesh position={[0, -7, -8]} rotation={[0.2, 0, 0.7]} scale={1.8}>
-        <icosahedronGeometry args={[1, 0]} />
-        <meshPhysicalMaterial
-          color="#E0F2F7"
-          transparent
-          opacity={0.15}
+          opacity={0.35}
           roughness={0.1}
           metalness={0.9}
           transmission={0.9}
