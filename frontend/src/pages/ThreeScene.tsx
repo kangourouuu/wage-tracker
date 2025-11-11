@@ -92,7 +92,7 @@ import { Model } from '../components/Model';
 // }
 
 function ThreeScene() {
-  const { scene, camera, gl, viewport } = useThree(); // Destructure viewport
+  const { scene, camera, gl } = useThree(); // Destructure viewport
   const { isMobile, isTablet, prefersReducedMotion } = useResponsive();
 
   // const orbitingCircleRef1 = useRef<THREE.Mesh>(null!); // Ref for the first circle
