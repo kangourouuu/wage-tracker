@@ -1,8 +1,9 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, Suspense } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResponsive
 import RadialGradientShader from '../shaders/RadialGradientShader'; // Import the shader
+import { Model } from '../components/Model';
 
 // const PARTICLE_COUNT_PER_COLOR = 1000; // Increased particle count
 // const COLORS = ['#C6F2F7', '#B4EEF5', '#FFFFFF']; // Updated colors to match theme (blue sky)
@@ -132,10 +133,10 @@ function ThreeScene() {
     // }
 
     // Update shader resolution uniform
-    if (shaderMaterialRef.current) {
-      shaderMaterialRef.current.uniforms.u_resolution.value.x = viewport.width;
-      shaderMaterialRef.current.uniforms.u_resolution.value.y = viewport.height;
-    }
+    // if (shaderMaterialRef.current) {
+    //   shaderMaterialRef.current.uniforms.u_resolution.value.x = viewport.width;
+    //   shaderMaterialRef.current.uniforms.u_resolution.value.y = viewport.height;
+    // }
   });
 
   useEffect(() => {
@@ -236,6 +237,11 @@ function ThreeScene() {
         /> */}
       {/* </mesh> */}
 
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} intensity={1} />
+      <Suspense fallback={null}>
+        <Model />
+      </Suspense>
       {/* <Swarm /> */}
     </>
   );

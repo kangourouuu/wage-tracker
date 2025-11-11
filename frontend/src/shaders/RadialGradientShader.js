@@ -2,28 +2,28 @@ import * as THREE from 'three';
 
 const RadialGradientShader = {
   uniforms: {
-    u_resolution: { type: 'v2', value: new THREE.Vector2() },
     u_color1: { type: 'c', value: new THREE.Color(0xC6F2F7) }, // Inner color
     u_color2: { type: 'c', value: new THREE.Color(0xB4EEF5) }, // Middle color
     u_color3: { type: 'c', value: new THREE.Color(0xFFFFFF) }, // Outer color (white)
     u_radius: { type: 'f', value: 0.5 }, // Controls the spread of the gradient (0.5 for 300px effect)
   },
   vertexShader: `
+    varying vec2 vUv;
     void main() {
+      vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
   fragmentShader: `
-    uniform vec2 u_resolution;
     uniform vec3 u_color1;
     uniform vec3 u_color2;
     uniform vec3 u_color3;
     uniform float u_radius;
+    varying vec2 vUv;
 
     void main() {
-      vec2 st = gl_FragCoord.xy / u_resolution;
       vec2 center = vec2(0.5, 0.5);
-      float dist = distance(st, center);
+      float dist = distance(vUv, center);
 
       // Scale the distance by u_radius to control the spread
       dist /= u_radius;
