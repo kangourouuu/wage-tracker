@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import api from '../services/api';
@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
+import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResponsive
+import { AuthForm2D } from './AuthForm2D'; // Import the new 2D component
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -16,13 +18,14 @@ interface AuthFormProps {
 
 const AuthForm3D: React.FC<AuthFormProps> = ({ isLogin }) => {
   const { t, i18n } = useTranslation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [wagePerHour, setWagePerHour] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [wagePerHour, setWagePerHour] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
   const navigate = useNavigate();
   const { setTokens } = useAuthStore();
+  const { prefersReducedMotion } = useResponsive(); // Use the hook
 
   const mutation = useMutation({
     mutationFn: (payload: any) => {
@@ -58,7 +61,7 @@ const AuthForm3D: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   const groupRef = useRef<THREE.Group>(null!);
   useFrame((state) => {
-    if (groupRef.current) {
+    if (groupRef.current && !prefersReducedMotion) { // Stop animation for reduced motion
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, state.mouse.x * 0.1, 0.1);
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -state.mouse.y * 0.1, 0.1);
     }
@@ -66,7 +69,7 @@ const AuthForm3D: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   return (
     <group ref={groupRef}>
-      <Html center>
+      <Html center scale={0.01}>
         <div className={styles.authFormContainer}>
           <div className={styles.languageSwitcherContainer}>
             <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
@@ -128,8 +131,14 @@ const AuthForm3D: React.FC<AuthFormProps> = ({ isLogin }) => {
 };
 
 export const AuthForm: React.FC<AuthFormProps> = (props) => {
+  const { isMobile } = useResponsive(); // Use the hook
+
+  if (isMobile) {
+    return <AuthForm2D {...props} />;
+  }
+
   return (
-    <Canvas>
+    <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
       <AuthForm3D {...props} />

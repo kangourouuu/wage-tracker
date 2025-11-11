@@ -11,6 +11,7 @@
   max-height: 80vh; /* Constrain height to prevent overflow on smaller screens */
   overflow: auto; /* Add scrolling if content overflows wrapper */
   height: auto; /* Allow height to adjust based on content */
+  max-width: 400px; /* Limit width for better presentation in 3D */
 }
 
 .title {

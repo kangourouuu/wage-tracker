@@ -7,12 +7,16 @@ import '../styles/Calendar.css';
 import styles from './Dashboard.module.css';
 import { useState, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import Calendar from 'react-calendar';
-import AddEntryModal from '../components/AddEntryModal';
 import ThreeScene from './ThreeScene';
-import WorkEntryList from '../components/WorkEntryList';
-import Dashboard3D from '../components/Dashboard3D';
 import SummaryCard3D from '../components/SummaryCard3D';
+import HeroCard3D from '../components/HeroCard3D'; // Import HeroCard3D
+import Calendar3DPanel from '../components/Calendar3DPanel'; // Import Calendar3DPanel
+import WorkEntryList3D from '../components/WorkEntryList3D'; // Import WorkEntryList3D
+import AddEntryModal3D from '../components/AddEntryModal3D'; // Import AddEntryModal3D
+import CTAButton3D from '../components/CTAButton3D'; // Import CTAButton3D
+import Coin3D from '../components/Coin3D'; // Import Coin3D
+import { Canvas } from '@react-three/fiber'; // Ensure Canvas is imported
+import { OrbitControls } from '@react-three/drei'; // Import OrbitControls
 
 // This comment is added to trigger a re-compilation and potentially resolve MIME type issues.
 
@@ -64,54 +68,43 @@ export const Dashboard = () => {
   return (
     <div className={styles.dashboardContainer}>
       <ThreeScene />
-      <header className={styles.header}>
-        <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
-        <div className={styles.headerActions}>
-          <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
-            <option value="en">English</option>
-            <option value="vn">Tiếng Việt</option>
-          </select>
-          <button onClick={logout} className={styles.logoutButton}>
-            {t('logout')}
-          </button>
-        </div>
-      </header>
+      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        <Suspense fallback={null}>
+          <OrbitControls /> {/* Add OrbitControls for camera interaction */}
+          <HeroCard3D user={user} logout={logout} i18n={i18n} changeLanguage={changeLanguage} t={t} position={[0, 6, 0]} /> {/* Adjusted position */}
+          <Calendar3DPanel
+            selectedDate={selectedDate}
+            onDateChange={(value) => {
+              if (Array.isArray(value)) {
+                setSelectedDate(value[0]);
+              } else {
+                setSelectedDate(value);
+              }
+            }}
+            onClickDay={handleDateClick}
+            locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
+            position={[-5, -1, 0]} // Adjusted position
+          />
+          <SummaryCard3D title={t('totalHours')} value={summary.totalHours} position={[5, 3, 0]} color="#C3E4FB" /> {/* Adjusted position */}
+          <SummaryCard3D title={t('totalEntries')} value={String(workEntries?.length || 0)} position={[5, 0, 0]} color="#94CEF7" /> {/* Adjusted position */}
+          <SummaryCard3D title={t('estimatedEarnings')} value={summary.totalEarnings} position={[5, -3, 0]} color="#82C6F6" /> {/* Adjusted position */}
+          {workEntries && <WorkEntryList3D workEntries={workEntries} position={[-5, -6, 0]} />} {/* Adjusted position */}
+          <CTAButton3D onClick={() => setIsModalOpen(true)} label={t('addEntry')} position={[0, -7, 0]} /> {/* Adjusted position */}
+          <Coin3D position={[7, 5, 0]} scale={0.5} /> {/* Adjusted position */}
+          <AddEntryModal3D isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
+        </Suspense>
+      </Canvas>
 
       <div className={styles.mainContent}>
         <div className={styles.leftPanel}>
-          <div className={styles.calendarWrapper}>
-            <Calendar
-              onChange={(value) => {
-                if (Array.isArray(value)) {
-                  setSelectedDate(value[0]);
-                } else {
-                  setSelectedDate(value);
-                }
-              }}
-              value={selectedDate}
-              onClickDay={handleDateClick}
-              locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
-            />
-          </div>
+          {/* All content is now in 3D */}
         </div>
         <div className={styles.rightPanel}>
-          <div className={styles.threeDContainer}>
-            <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-              <ambientLight intensity={0.5} />
-              <pointLight position={[10, 10, 10]} />
-              <Suspense fallback={null}>
-                <Dashboard3D workEntries={workEntries || []} selectedDate={selectedDate} onDateClick={handleDateClick} t={t} />
-                <SummaryCard3D title={t('totalHours')} value={summary.totalHours} position={[-5, 2, 0]} color="#C3E4FB" />
-                <SummaryCard3D title={t('totalEntries')} value={String(workEntries?.length || 0)} position={[0, 2, 0]} color="#94CEF7" />
-                <SummaryCard3D title={t('estimatedEarnings')} value={summary.totalEarnings} position={[5, 2, 0]} color="#82C6F6" />
-              </Suspense>
-            </Canvas>
-          </div>
-          {workEntries && <WorkEntryList workEntries={workEntries} />}
+          {/* All content is now in 3D */}
         </div>
       </div>
-      <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </div>
   );
 };
-

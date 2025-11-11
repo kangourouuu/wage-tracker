@@ -23,12 +23,15 @@ const SummaryCard3D: React.FC<SummaryCard3DProps> = ({ title, value, position, c
   return (
     <mesh ref={meshRef} position={position}>
       <boxGeometry args={[4, 2, 0.2]} />
-      <meshStandardMaterial
-        color={color}
+      <meshPhysicalMaterial
+        color={color} // Base color for the glass, can be tinted
         transparent
-        opacity={0.2}
+        opacity={0.1}
         roughness={0.1}
         metalness={0.9}
+        transmission={0.9} // For refraction
+        clearcoat={1}
+        clearcoatRoughness={0.25}
         envMapIntensity={1}
       />
       <Text position={[0, 0.5, 0.15]} fontSize={0.3} color="white" anchorX="center" anchorY="middle">
