@@ -33,6 +33,7 @@
 
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-contrast: rgba(255, 255, 255, 0.15); /* Added for more contrast */
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-backdrop-filter: blur(15px) saturate(180%);
 
