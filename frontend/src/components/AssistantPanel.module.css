@@ -89,3 +89,17 @@
 .inputContainer button:hover {
   background: var(--primary-color-dark); /* Match theme */
 }
+
+.uploadButton {
+  border: none;
+  background: var(--gradient-accent-1); /* Using an accent gradient for distinction */
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* Add some space between upload and send button */
+}
+
+.uploadButton:hover {
+  background: var(--accent-color-1-dark);
+}
