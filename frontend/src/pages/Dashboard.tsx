@@ -70,7 +70,7 @@ export const Dashboard = () => {
   return (
     <div className={styles.dashboardPage}>
       <Canvas className={styles.threeCanvas} gl={{ alpha: true }}>
-        <ThreeScene />
+        {/* <ThreeScene /> */}
       </Canvas>
       <div className={styles.dashboardContainer}>
         <header className={styles.header}>
