@@ -42,5 +42,7 @@
   "wageUnit": "Unit: 1,000 VND",
   "confirmDelete": "Are you sure you want to delete this entry?",
   "actions": "Actions",
-  "delete": "Delete"
+  "delete": "Delete",
+  "existedJobs": "Existed Jobs",
+  "pleaseSelectJob": "Please select at least one job."
 }

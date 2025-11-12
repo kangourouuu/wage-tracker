@@ -34,10 +34,10 @@
 .modalTitle {
   text-align: center;
   margin-bottom: 2rem;
-  color: var(--pastel-orange);
+  color: var(--primary-color);
   font-size: 1.8rem; /* Increased size */
   font-weight: 700;
-  text-shadow: 0 2px 10px rgba(var(--pastel-orange-rgb), 0.3);
+  text-shadow: 0 2px 10px rgba(var(--primary-color-rgb), 0.3);
 }
 
 .form {
@@ -135,7 +135,7 @@
 }
 
 .hourInput:focus {
-  border-color: var(--pastel-orange);
+  border-color: var(--primary-color);
   outline: none;
 }
 
@@ -184,14 +184,14 @@
 }
 
 .submitButton {
-  background: var(--pastel-orange);
+  background: var(--primary-color);
   color: #fff;
 }
 
 .submitButton:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  background: var(--pastel-orange-dark);
+  background: var(--primary-color-dark);
 }
 
 .submitButton:disabled {

@@ -106,7 +106,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.formGroup}>
-            <label>{t('job')}:</label>
+            <label>{t('existedJobs')}:</label>
             {isLoadingJobs && <p>Loading jobs...</p>}
             {isErrorJobs && <p>Error loading jobs.</p>}
             {jobs && jobs.length > 0 && (

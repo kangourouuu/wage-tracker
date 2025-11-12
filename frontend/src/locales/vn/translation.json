@@ -42,5 +42,7 @@
   "wageUnit": "Đơn vị: 1.000 VNĐ",
   "confirmDelete": "Bạn có chắc chắn muốn xóa mục này không?",
   "actions": "Hành động",
-  "delete": "Xóa"
+  "delete": "Xóa",
+  "existedJobs": "Các công việc hiện có",
+  "pleaseSelectJob": "Vui lòng chọn ít nhất một công việc."
 }
