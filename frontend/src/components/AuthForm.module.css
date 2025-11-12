@@ -34,29 +34,28 @@
 
   /* New positioning and z-index */
   position: absolute;
-  top: 10vh; /* 10% from top */
+  top: 50%; /* Changed from 10vh to 50% for vertical centering */
   left: 50%;
   z-index: 100; /* Ensure it's above the 3D canvas */
 
   /* Initial transform for centering */
-  transform: translateX(-50%); /* Only horizontal centering */
-  height: 80vh; /* 100vh - 20vh (10vh top + 10vh bottom) */
-  max-height: 80vh; /* Ensure it doesn't exceed 80vh */
+  transform: translate(-50%, -50%); /* Combined horizontal and vertical centering */
+  height: auto; /* Changed from 80vh to auto to allow content to dictate height */
+  max-height: 90vh; /* Adjusted max-height to prevent overflow on smaller screens */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: float 6s ease-in-out infinite; /* Moved animation here */
   overflow-y: auto; /* Explicitly set overflow */
 }
 
 .formContainer:hover {
-  /* Combine centering transform with hover effect */
-  transform: translateX(-50%) translateY(-5px) scale(1.02);
+  transform: translate(-50%, -50%) translateY(-5px) scale(1.02); /* Adjusted hover transform */
   box-shadow:
-    0 15px 60px rgba(0, 0, 0, 0.6), /* Even more pronounced shadow on hover */
-    inset 0 1px 2px rgba(255, 255, 255, 0.4); /* Increased opacity */
+    0 15px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
 .registerForm {
-  /* The content will scroll within the 80vh height */
+  /* The content will scroll within the 90vh height */
 }
 
 /* === Title === */
@@ -126,9 +125,9 @@
 
 /* === Subtle floating animation (3D effect) === */
 @keyframes float {
-  0% { transform: translate(-50%, -50%) translateY(0px); } /* Apply centering in animation */
-  50% { transform: translate(-50%, -50%) translateY(-8px); }
-  100% { transform: translate(-50%, -50%) translateY(0px); }
+  0% { transform: translateY(0px); } /* Only floating effect */
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
 }
 
 .languageSwitcherContainer {
