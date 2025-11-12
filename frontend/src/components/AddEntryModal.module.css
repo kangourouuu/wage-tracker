@@ -64,80 +64,55 @@
   gap: 1rem;
 }
 
-.jobItem {
-  position: relative;
-  padding: 1rem;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.jobItem:hover {
-  transform: translateY(-3px);
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: var(--primary-color);
-}
-
-.jobItem.selected {
-  background-color: rgba(var(--primary-color-rgb), 0.2);
-  border-color: var(--primary-color);
-  box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.3);
-}
-
-.jobItem label {
+.jobItemWrapper {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-weight: 500;
+  flex-direction: column;
+  border-radius: var(--border-radius-lg);
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 0.5rem;
 }
 
-.customCheckbox {
-  display: none; /* Hide original checkbox */
+.jobItemWrapper.selected {
+  background: rgba(var(--primary-color-rgb), 0.15);
+  box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.2);
 }
 
-.customCheckbox + span {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--glass-border);
-  border-radius: 5px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.customCheckbox:checked + span {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color-dark);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+.jobItem {
+  padding: 1rem;
+  cursor: pointer;
 }
 
 .hourInputContainer {
-  animation: slideDown 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem 1rem 1rem;
+  gap: 1rem;
 }
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+.hourInputContainer label {
+  font-weight: 500;
+  color: var(--text-color);
+  flex-shrink: 0;
 }
 
 .hourInput {
-  padding: 0.75rem;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius-sm);
-  font-family: var(--font-family);
-  font-size: 1rem;
+  width: 80px;
+  padding: 0.5rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.2);
   color: var(--text-color);
-  background-color: var(--glass-bg);
-  transition: border-color 0.2s ease-in-out;
-  width: 100%;
+  text-align: center;
+  transition: border-color 0.2s;
 }
 
 .hourInput:focus {
   border-color: var(--primary-color);
   outline: none;
 }
+
 
 .summarySection {
   margin-top: 1rem;

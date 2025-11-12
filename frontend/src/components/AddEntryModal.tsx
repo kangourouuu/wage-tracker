@@ -16,7 +16,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
   const queryClient = useQueryClient();
   const [startTime, setStartTime] = useState('');
   const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
-  const [hours, setHours] = useState('8');
+  const [jobHours, setJobHours] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
 
   const { data: jobs, isLoading: isLoadingJobs, isError: isErrorJobs } = useQuery<Job[]>({
@@ -35,7 +35,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
     } else if (!isOpen) {
       setStartTime('');
       setSelectedJobIds([]);
-      setHours('8');
+      setJobHours({});
       setError(null);
     }
   }, [isOpen, selectedDate]);
@@ -50,24 +50,48 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
     },
   });
 
+  const handleJobSelection = (jobId: string) => {
+    setSelectedJobIds(prev => {
+      const newSelectedJobIds = prev.includes(jobId)
+        ? prev.filter(id => id !== jobId)
+        : [...prev, jobId];
+
+      setJobHours(currentHours => {
+        const newHours = { ...currentHours };
+        if (!newSelectedJobIds.includes(jobId)) {
+          delete newHours[jobId];
+        } else if (!(jobId in newHours)) {
+          newHours[jobId] = '8'; // Default hours
+        }
+        return newHours;
+      });
+
+      return newSelectedJobIds;
+    });
+  };
+
+  const handleHoursChange = (jobId: string, value: string) => {
+    setJobHours(prev => ({ ...prev, [jobId]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    if (!startTime || !hours || Number(hours) <= 0) {
-      setError(t('startTimeAndHoursRequired'));
-      return;
-    }
 
     if (selectedJobIds.length === 0) {
       setError(t('pleaseSelectJob'));
       return;
     }
 
+    if (!startTime || selectedJobIds.some(id => !jobHours[id] || Number(jobHours[id]) <= 0)) {
+      setError(t('startTimeAndHoursRequired'));
+      return;
+    }
+
     const startDateTime = new Date(startTime);
-    const hoursWorked = Number(hours);
 
     const entries: CreateWorkEntryDto[] = selectedJobIds.map(jobId => {
+      const hoursWorked = Number(jobHours[jobId]);
       const endDateTime = new Date(startDateTime.getTime() + hoursWorked * 60 * 60 * 1000);
       return {
         startTime: startDateTime.toISOString(),
@@ -87,7 +111,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
   const { totalHours, totalEarnings } = selectedJobIds.reduce(
     (acc, jobId) => {
       const job = jobs?.find((j) => j.id === jobId);
-      const hoursWorked = Number(hours) || 0;
+      const hoursWorked = Number(jobHours[jobId]) || 0;
       if (job) {
         acc.totalHours += hoursWorked;
         acc.totalEarnings += hoursWorked * job.wagePerHour;
@@ -112,29 +136,38 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
             {jobs && jobs.length > 0 && (
               <div className={styles.jobList}>
                 {jobs.map((job) => (
-                  <div
-                    key={job.id}
-                    className={`${styles.jobItem} ${selectedJobIds.includes(job.id) ? styles.selected : ''}`}
-                    onClick={() => {
-                      setSelectedJobIds(prev => {
-                        if (prev.includes(job.id)) {
-                          return prev.filter(id => id !== job.id);
-                        } else {
-                          return [...prev, job.id];
-                        }
-                      });
-                    }}
-                  >
-                    <label>
-                      <input
-                        type="checkbox"
-                        className={styles.customCheckbox}
-                        checked={selectedJobIds.includes(job.id)}
-                        readOnly
-                      />
-                      <span />
-                      {job.name} ({job.wagePerHour} / hr)
-                    </label>
+                  <div key={job.id} className={`${styles.jobItemWrapper} ${selectedJobIds.includes(job.id) ? styles.selected : ''}`}>
+                    <div
+                      className={styles.jobItem}
+                      onClick={() => handleJobSelection(job.id)}
+                    >
+                      <label>
+                        <input
+                          type="checkbox"
+                          className={styles.customCheckbox}
+                          checked={selectedJobIds.includes(job.id)}
+                          readOnly
+                        />
+                        <span />
+                        {job.name} ({job.wagePerHour} / hr)
+                      </label>
+                    </div>
+                    {selectedJobIds.includes(job.id) && (
+                      <div className={styles.hourInputContainer}>
+                        <label htmlFor={`hours-${job.id}`}>{t('hoursWorked')}:</label>
+                        <input
+                          id={`hours-${job.id}`}
+                          type="number"
+                          value={jobHours[job.id] || ''}
+                          onChange={(e) => handleHoursChange(job.id, e.target.value)}
+                          min="0.1"
+                          step="0.1"
+                          required
+                          className={styles.hourInput}
+                          onClick={(e) => e.stopPropagation()} // Prevent job deselection
+                        />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -144,18 +177,6 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
 
           {selectedJobIds.length > 0 && (
             <>
-              <div className={`${styles.formGroup} ${styles.hourInputContainer}`}>
-                <label>{t('hoursWorked')}:</label>
-                <input
-                  type="number"
-                  value={hours}
-                  onChange={(e) => setHours(e.target.value)}
-                  min="0.1"
-                  step="0.1"
-                  required
-                  className={styles.hourInput}
-                />
-              </div>
               <div className={styles.summarySection}>
                 <div className={styles.summaryItem}>
                   <h4>{t('totalHours')}</h4>
