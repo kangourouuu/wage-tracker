@@ -136,9 +136,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
                                     value={job.wagePerHour}
                                     onChange={(e) => handleJobChange(index, 'wagePerHour', e.target.value)}
                                     required
-                                  />                {jobs.length > 1 && (
+                                  />                {jobs.length > 2 && (
                   <button type="button" onClick={() => handleRemoveJob(index)} className={styles.removeJobButton}>
-                    <span className={styles.removeJobSymbol}>-</span> {/* Red circle with minus */}
+                    <span className={styles.removeJobSymbol}>-</span>
                   </button>
                 )}
               </div>

@@ -16,10 +16,26 @@ export const AuthForm2D: React.FC<AuthForm2DProps> = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [wagePerHour, setWagePerHour] = useState('');
+  const [jobs, setJobs] = useState([{ name: '', wagePerHour: '' }]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { setTokens } = useAuthStore();
+
+  const handleAddJob = () => {
+    setJobs([...jobs, { name: '', wagePerHour: '' }]);
+  };
+
+  const handleRemoveJob = (index: number) => {
+    const newJobs = jobs.filter((_, i) => i !== index);
+    setJobs(newJobs);
+  };
+
+  const handleJobChange = (index: number, field: 'name' | 'wagePerHour', value: string) => {
+    const newJobs = jobs.map((job, i) =>
+      i === index ? { ...job, [field]: value } : job
+    );
+    setJobs(newJobs);
+  };
 
   const mutation = useMutation({
     mutationFn: (payload: any) => {
@@ -41,11 +57,14 @@ export const AuthForm2D: React.FC<AuthForm2DProps> = (props) => {
     const payload = props.isLogin
       ? { email, password }
       : {
-            name,
-            email,
-            password,
-            jobs: [{ name: 'Default Job', wagePerHour: Number(wagePerHour) }],
-          };
+          name,
+          email,
+          password,
+          jobs: jobs.map(job => ({
+            name: job.name,
+            wagePerHour: Number(job.wagePerHour),
+          })),
+        };
     mutation.mutate(payload);
   };
 
@@ -91,14 +110,37 @@ export const AuthForm2D: React.FC<AuthForm2DProps> = (props) => {
           required
         />
         {!props.isLogin && (
-          <Input
-            id="wagePerHour"
-            label={t('wagePerHour')}
-            type="number"
-            value={wagePerHour}
-            onChange={(e) => setWagePerHour(e.target.value)}
-            required
-          />
+          <div className={styles.jobsSection}>
+            <h3>{t('yourJobs')}</h3>
+            {jobs.map((job, index) => (
+              <div key={index} className={styles.jobEntry}>
+                <Input
+                  id={`jobName-${index}`}
+                  label={t('jobName')}
+                  type="text"
+                  value={job.name}
+                  onChange={(e) => handleJobChange(index, 'name', e.target.value)}
+                  required
+                />
+                <Input
+                  id={`wagePerHour-${index}`}
+                  label={t('wagePerHour')}
+                  type="number"
+                  value={job.wagePerHour}
+                  onChange={(e) => handleJobChange(index, 'wagePerHour', e.target.value)}
+                  required
+                />
+                {jobs.length > 2 && (
+                  <button type="button" onClick={() => handleRemoveJob(index)} className={styles.removeJobButton}>
+                    <span className={styles.removeJobSymbol}>-</span>
+                  </button>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={handleAddJob} className={styles.addJobButton}>
+              {t('addJob')}
+            </button>
+          </div>
         )}
         <button type="submit" className={styles.submitButton} disabled={mutation.isPending}>
           {mutation.isPending ? t('submitting') : (props.isLogin ? t('loginButton') : t('registerButton'))}
