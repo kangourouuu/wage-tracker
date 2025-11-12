@@ -12,9 +12,9 @@
 
 .workEntryList h2 {
   margin-bottom: 1rem;
-  color: var(--primary-color-dark);
-  font-size: 1.8rem; /* Increased font size */
-  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.7); /* More pronounced text shadow */
+  color: #333; /* Applied color from Total Hours */
+  font-size: 1.8rem;
+  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.7);
 }
 
 .tableContainer {

@@ -9,11 +9,11 @@
 }
 
 .jobList h2 {
-  color: var(--primary-color-dark);
+  color: #333; /* Applied color from Total Hours */
   margin-bottom: 15px;
-  font-size: 1.8em; /* Increased font size */
+  font-size: 1.8em;
   text-align: center;
-  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.7); /* More pronounced text shadow */
+  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.7);
 }
 
 .tableContainer {
