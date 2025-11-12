@@ -1,7 +1,7 @@
 .panel {
   position: absolute; /* Changed from fixed to absolute */
   top: 100%; /* Position below the parent div */
-  left: 0; /* Align to the left of the parent div */
+  right: 0; /* Align to the right of the parent div */
   width: 300px; /* Adjusted width for dropdown */
   max-height: 400px; /* Adjusted max-height for dropdown */
   background: var(--glass-bg-contrast); /* Smoked background with more contrast */
@@ -105,5 +105,16 @@
 }
 
 .dropdownPanel {
-  /* Placeholder for dropdown specific styles */
+  /* Specific styles for when it acts as a dropdown */
+  position: absolute;
+  top: 100%; /* Position below the toggle icon */
+  right: 0; /* Align to the right of the toggle icon */
+  transform-origin: top right;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.dropdownPanel.hidden {
+  transform: scale(0.9);
+  opacity: 0;
+  pointer-events: none;
 }

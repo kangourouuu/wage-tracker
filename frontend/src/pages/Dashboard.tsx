@@ -156,7 +156,7 @@ export const Dashboard = () => {
         </div>
       </div>
       <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
-      <AssistantPanel />
+
     </>
   );
 };

@@ -243,4 +243,7 @@
 
 .assistantToggleContainer {
   position: relative;
+  display: flex; /* Added to align TimeOfDayIcon and potentially other elements */
+  align-items: center; /* Added to vertically align items */
+  cursor: pointer; /* Indicate it's clickable */
 }
