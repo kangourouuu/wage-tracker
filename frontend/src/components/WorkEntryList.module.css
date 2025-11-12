@@ -6,7 +6,8 @@
 
 .workEntryList h2 {
   margin-bottom: 1rem;
-  color: var(--text-color);
+  color: var(--primary-color-dark); /* Increased contrast */
+  text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5); /* Added text shadow */
 }
 
 .tableContainer {

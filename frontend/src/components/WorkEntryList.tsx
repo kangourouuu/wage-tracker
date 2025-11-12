@@ -46,15 +46,6 @@ const WorkEntryList: React.FC<WorkEntryListProps> = ({
                   <strong>{t('date')}:</strong> {start.toLocaleDateString()}
                 </div>
                 <div className={styles.cardRow}>
-                  <strong>{t('startTime')}:</strong> {start.toLocaleTimeString()}
-                </div>
-                <div className={styles.cardRow}>
-                  <strong>{t('endTime')}:</strong> {end.toLocaleTimeString()}
-                </div>
-                <div className={styles.cardRow}>
-                  <strong>{t('break')}:</strong> {entry.breakDuration}
-                </div>
-                <div className={styles.cardRow}>
                   <strong>{t('hoursWorked')}:</strong> {hours.toFixed(2)}
                 </div>
                 <div className={styles.cardActions}>
@@ -82,9 +73,6 @@ const WorkEntryList: React.FC<WorkEntryListProps> = ({
           <thead>
             <tr>
               <th>{t('date')}</th>
-              <th>{t('startTime')}</th>
-              <th>{t('endTime')}</th>
-              <th>{t('break')}</th>
               <th>{t('hoursWorked')}</th>
               <th>{t('actions')}</th>
             </tr>
@@ -100,9 +88,6 @@ const WorkEntryList: React.FC<WorkEntryListProps> = ({
               return (
                 <tr key={entry.id}>
                   <td>{start.toLocaleDateString()}</td>
-                  <td>{start.toLocaleTimeString()}</td>
-                  <td>{end.toLocaleTimeString()}</td>
-                  <td>{entry.breakDuration}</td>
                   <td>{hours.toFixed(2)}</td>
                   <td>
                     <button
