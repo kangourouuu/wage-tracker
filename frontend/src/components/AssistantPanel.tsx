@@ -130,7 +130,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({ isDropdown }) =>
 
       <div className={styles.messages}>
         {messages.map((msg, index) => (
-          <div key={index} classNameles.messageWrapper} ${styles[msg.sender]}`}>
+          <div key={index} className={`${styles.messageWrapper} ${styles[msg.sender]}`}>
             <div className={styles.messageAvatar}>
               {msg.sender === 'ai' ? (
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
