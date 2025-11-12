@@ -20,19 +20,5 @@ services:
     value: 30d
   - key: FRONTEND_URL
     value: "*" # WARNING: This should be replaced with your actual frontend URL in production for security.
-  - key: DB_HOST
-    value: dpg-d47t1a6r433s739na3u0-a
-  - key: DB_PORT
-    value: 5432
-  - key: DB_USERNAME
-    value: wage_tracker_db_user
-  - key: DB_PASSWORD
-    value: zRCtbhnBNAK9CQHx6BBmNpgfzP3eZpyg
-  - key: DB_DATABASE
-    value: wage_tracker_db
-
-databases:
-- name: wage-tracker-db
-  databaseName: wage_tracker_db
-  plan: free
-  region: oregon
+  - key: DATABASE_URL
+    value: "postgresql://neondb_owner:npg_fpo1bYjlQK7a@ep-jolly-sun-a1ptgjch-pooler.ap-southeast-1.aws.neon.tech/wage-tracker-db?sslmode=require&channel_binding=require"

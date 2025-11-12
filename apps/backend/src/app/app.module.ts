@@ -21,15 +21,30 @@ import { CommonModule } from './common/common.module';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('database.host'),
-        port: configService.get<number>('database.port'),
-        username: configService.get<string>('database.username'),
-        password: configService.get<string>('database.password'),
-        database: configService.get<string>('database.database'),
-        autoLoadEntities: true,
-        synchronize: true,      }),
+      useFactory: (configService: ConfigService) => {
+        const dbUrl = configService.get<string>('database.url');
+        if (dbUrl) {
+          return {
+            type: 'postgres',
+            url: dbUrl,
+            autoLoadEntities: true,
+            synchronize: true,
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          };
+        }
+        return {
+          type: 'postgres',
+          host: configService.get<string>('database.host'),
+          port: configService.get<number>('database.port'),
+          username: configService.get<string>('database.username'),
+          password: configService.get<string>('database.password'),
+          database: configService.get<string>('database.database'),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
       inject: [ConfigService],
     }),
     CommonModule,
