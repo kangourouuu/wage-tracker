@@ -168,6 +168,19 @@
   text-shadow: none;
 }
 
+.listsContainer {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column by default */
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .listsContainer {
+    grid-template-columns: 1fr 1fr; /* Two columns on larger screens */
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .dashboardContainer {

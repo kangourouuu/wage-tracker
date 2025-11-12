@@ -132,20 +132,22 @@ export const Dashboard = () => {
             <SummaryCard title={t('estimatedEarnings')} value={summary.totalEarnings} />
           </div>
         </div>
-        {workEntries && (
-          <WorkEntryList
-            workEntries={workEntries}
-            onDelete={deleteWorkEntryMutation}
-            isDeleting={isDeletingWorkEntry}
-          />
-        )}
-        {jobs && (
-          <JobList
-            jobs={jobs}
-            onDelete={deleteJobMutation}
-            isDeleting={isDeletingJob}
-          />
-        )}
+        <div className={styles.listsContainer}>
+          {workEntries && (
+            <WorkEntryList
+              workEntries={workEntries}
+              onDelete={deleteWorkEntryMutation}
+              isDeleting={isDeletingWorkEntry}
+            />
+          )}
+          {jobs && (
+            <JobList
+              jobs={jobs}
+              onDelete={deleteJobMutation}
+              isDeleting={isDeletingJob}
+            />
+          )}
+        </div>
       </div>
       <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </>
