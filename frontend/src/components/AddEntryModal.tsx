@@ -131,8 +131,8 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.formGroup}>
             <label>{t('existedJobs')}:</label>
-            {isLoadingJobs && <p>Loading jobs...</p>}
-            {isErrorJobs && <p>Error loading jobs.</p>}
+            {isLoadingJobs && <p>{t('loadingJobs')}</p>}
+            {isErrorJobs && <p>{t('errorLoadingJobs')}</p>}
             {jobs && jobs.length > 0 && (
               <div className={styles.jobList}>
                 {jobs.map((job) => (
