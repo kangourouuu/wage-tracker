@@ -7,11 +7,9 @@ import '../styles/Calendar.css';
 import styles from './Dashboard.module.css';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ThreeScene from './ThreeScene';
 import Calendar from 'react-calendar';
 import AddEntryModal from '../components/AddEntryModal';
 import TimeOfDayIcon from '../components/TimeOfDayIcon';
-import { Canvas } from '@react-three/fiber';
 import SummaryCard from '../components/SummaryCard';
 import WorkEntryList from '../components/WorkEntryList';
 
@@ -68,10 +66,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className={styles.dashboardPage}>
-      <Canvas className={styles.threeCanvas} gl={{ alpha: true }}>
-        <ThreeScene />
-      </Canvas>
+    <>
       <div className={styles.dashboardContainer}>
         <header className={styles.header}>
           <div className={styles.welcomeSection}>
@@ -113,6 +108,6 @@ export const Dashboard = () => {
         {workEntries && <WorkEntryList workEntries={workEntries} />}
       </div>
       <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
-    </div>
+    </>
   );
 };

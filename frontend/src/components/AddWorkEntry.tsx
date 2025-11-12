@@ -19,7 +19,8 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [startTime, setStartTime] = useState('');
-  const [selectedJobs, setSelectedJobs] = useState<Record<string, { hours: number }>>({});
+  const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
+  const [hours, setHours] = useState('8');
   const [error, setError] = useState<string | null>(null);
 
   const { data: jobs, isLoading: isLoadingJobs, isError: isErrorJobs } = useQuery<Job[]>({
@@ -53,19 +54,20 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
     e.preventDefault();
     setError(null);
 
-    if (!startTime) {
+    if (!startTime || !hours || Number(hours) <= 0) {
       setError(t('startTimeAndHoursRequired'));
       return;
     }
-    if (Object.keys(selectedJobs).length === 0) {
+    if (selectedJobIds.length === 0) {
       setError(t('jobRequired'));
       return;
     }
 
     const startDateTime = new Date(startTime);
+    const hoursWorked = Number(hours);
     
-    const entries: CreateWorkEntryDto[] = Object.entries(selectedJobs).map(([jobId, { hours }]) => {
-      const endDateTime = new Date(startDateTime.getTime() + hours * 60 * 60 * 1000);
+    const entries: CreateWorkEntryDto[] = selectedJobIds.map(jobId => {
+      const endDateTime = new Date(startDateTime.getTime() + hoursWorked * 60 * 60 * 1000);
       return {
         startTime: startDateTime.toISOString(),
         endTime: endDateTime.toISOString(),
@@ -81,12 +83,13 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
     }
   };
   
-  const { totalHours, totalEarnings } = Object.entries(selectedJobs).reduce(
-    (acc, [jobId, { hours }]) => {
+  const { totalHours, totalEarnings } = selectedJobIds.reduce(
+    (acc, jobId) => {
       const job = jobs?.find((j) => j.id === jobId);
+      const hoursWorked = Number(hours) || 0;
       if (job) {
-        acc.totalHours += hours;
-        acc.totalEarnings += hours * job.wagePerHour;
+        acc.totalHours += hoursWorked;
+        acc.totalEarnings += hoursWorked * job.wagePerHour;
       }
       return acc;
     },
@@ -111,43 +114,40 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedJobs[job.id]}
+                  checked={selectedJobIds.includes(job.id)}
                   onChange={(e) => {
-                    const newSelectedJobs = { ...selectedJobs };
                     if (e.target.checked) {
-                      newSelectedJobs[job.id] = { hours: 8 }; // Default hours
+                      setSelectedJobIds([...selectedJobIds, job.id]);
                     } else {
-                      delete newSelectedJobs[job.id];
+                      setSelectedJobIds(selectedJobIds.filter(id => id !== job.id));
                     }
-                    setSelectedJobs(newSelectedJobs);
                   }}
                 />
                 {job.name} (${job.wagePerHour}/hr)
               </label>
-              {selectedJobs[job.id] && (
-                <input
-                  type="number"
-                  value={selectedJobs[job.id].hours}
-                  onChange={(e) => {
-                    const newSelectedJobs = { ...selectedJobs };
-                    newSelectedJobs[job.id].hours = Number(e.target.value);
-                    setSelectedJobs(newSelectedJobs);
-                  }}
-                  min="0.1"
-                  step="0.1"
-                  required
-                  className={styles.hourInput}
-                />
-              )}
             </div>
           ))}
         </div>
 
-        {Object.keys(selectedJobs).length > 0 && (
-          <div>
-            <p>Total Hours: {totalHours.toFixed(2)}</p>
-            <p>Estimated Earnings: {totalEarnings.toFixed(2)}</p>
-          </div>
+        {selectedJobIds.length > 0 && (
+          <>
+            <div className={styles.formGroup}>
+              <label>{t('hoursWorked')}:</label>
+              <input
+                type="number"
+                value={hours}
+                onChange={(e) => setHours(e.target.value)}
+                min="0.1"
+                step="0.1"
+                required
+                className={styles.hourInput}
+              />
+            </div>
+            <div>
+              <p>Total Hours: {totalHours.toFixed(2)}</p>
+              <p>Estimated Earnings: {totalEarnings.toFixed(2)}</p>
+            </div>
+          </>
         )}
         
         <div className={styles.buttonGroup}>

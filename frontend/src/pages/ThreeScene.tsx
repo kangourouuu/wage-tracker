@@ -178,7 +178,7 @@ function ThreeScene() {
         <shaderMaterial
           ref={shaderMaterialRef}
           args={[RadialGradientShader]}
-          uniforms-u_radius-value={1.0} // Adjusted u_radius to spread gradient more evenly
+          uniforms-u_radius-value={0.5} // Adjusted u_radius to spread gradient more evenly
           side={THREE.BackSide} // Render on the inside of the sphere
         />
       </mesh>

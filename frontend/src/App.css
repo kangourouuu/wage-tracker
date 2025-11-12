@@ -1,3 +1,12 @@
+.threeCanvas {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -1; /* Place it behind all other content */
+}
+
 .mainContainer {
   width: 100vw;
   min-height: 100vh; /* Use min-height instead of height */
