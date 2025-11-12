@@ -32,23 +32,18 @@
   text-align: center;
   color: #333; /* Darker text for readability on white background */
 
-  /* New positioning and z-index */
-  position: absolute;
-  top: 50%; /* Changed from 10vh to 50% for vertical centering */
-  left: 50%;
+  /* Rely on parent's flexbox for centering */
+  /* Removed position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); */
   z-index: 100; /* Ensure it's above the 3D canvas */
-
-  /* Initial transform for centering */
-  transform: translate(-50%, -50%); /* Combined horizontal and vertical centering */
-  height: auto; /* Changed from 80vh to auto to allow content to dictate height */
+  height: auto; /* Allow content to dictate height */
   max-height: 90vh; /* Adjusted max-height to prevent overflow on smaller screens */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: float 6s ease-in-out infinite; /* Moved animation here */
+  /* Removed animation: float 6s ease-in-out infinite; */
   overflow-y: auto; /* Explicitly set overflow */
 }
 
 .formContainer:hover {
-  transform: translate(-50%, -50%) translateY(-5px) scale(1.02); /* Adjusted hover transform */
+  transform: translateY(-5px) scale(1.02); /* Adjusted hover transform */
   box-shadow:
     0 15px 60px rgba(0, 0, 0, 0.6),
     inset 0 1px 2px rgba(255, 255, 255, 0.4);
