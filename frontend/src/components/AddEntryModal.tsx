@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AddEntryModal.module.css';
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'; // Import useQuery
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import api from '../services/api';
-import type { CreateWorkEntryDto, Job } from '../types/work-entry.ts'; // Import Job
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import type { CreateWorkEntryDto, Job } from '../types/work-entry.ts';
+import { useTranslation } from 'react-i18next';
 
 interface AddEntryModalProps {
   isOpen: boolean;
@@ -12,15 +12,12 @@ interface AddEntryModalProps {
 }
 
 const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selectedDate }) => {
-  const { t } = useTranslation(); // Initialize useTranslation
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [startTime, setStartTime] = useState('');
-  const [hoursWorked, setHoursWorked] = useState(8); // Default to 8 hours
-  const [breakDuration, setBreakDuration] = useState(0);
-  const [selectedJobId, setSelectedJobId] = useState<string | null>(null); // New state for selected job
+  const [selectedJobs, setSelectedJobs] = useState<Record<string, { hours: number }>>({});
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch jobs
   const { data: jobs, isLoading: isLoadingJobs, isError: isErrorJobs } = useQuery<Job[]>({
     queryKey: ['jobs'],
     queryFn: () => api.get('/jobs').then(res => res.data),
@@ -36,56 +33,65 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
       setStartTime(`${year}-${month}-${day}T${hours}:${minutes}`);
     } else if (!isOpen) {
       setStartTime('');
-      setHoursWorked(8);
-      setBreakDuration(0);
-      setSelectedJobId(null); // Reset selected job
+      setSelectedJobs({});
       setError(null);
     }
   }, [isOpen, selectedDate]);
-
-  useEffect(() => {
-    if (jobs && jobs.length > 0 && !selectedJobId) {
-      setSelectedJobId(jobs[0].id); // Automatically select the first job if available
-    }
-  }, [jobs, selectedJobId]);
 
   const addWorkEntryMutation = useMutation({
     mutationFn: (newEntry: CreateWorkEntryDto) => api.post('/work-entries', newEntry),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workEntries'] });
-      onClose();
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t('failedToAddWorkEntry'));
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (!startTime || hoursWorked <= 0) {
-      setError(t('startTimeAndHoursRequired'));
+    if (!startTime) {
+      setError(t('startTimeAndHoursRequired')); // Consider a more specific message
       return;
     }
 
-    if (!selectedJobId) {
+    if (Object.keys(selectedJobs).length === 0) {
       setError(t('pleaseSelectJob'));
       return;
     }
 
     const startDateTime = new Date(startTime);
-    const endDateTime = new Date(startDateTime.getTime() + (hoursWorked * 60 * 60 * 1000) - (breakDuration * 60 * 1000)); // Subtract break duration
 
-    const newEntry: CreateWorkEntryDto = {
-      startTime: startDateTime.toISOString(),
-      endTime: endDateTime.toISOString(),
-      breakDuration: breakDuration,
-      jobId: selectedJobId, // Include jobId
-    };
+    const entries: CreateWorkEntryDto[] = Object.entries(selectedJobs).map(([jobId, { hours }]) => {
+      const endDateTime = new Date(startDateTime.getTime() + hours * 60 * 60 * 1000);
+      return {
+        startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
+        jobId: jobId,
+      };
+    });
 
-    addWorkEntryMutation.mutate(newEntry);
+    try {
+      await Promise.all(entries.map(entry => addWorkEntryMutation.mutateAsync(entry)));
+      onClose();
+    } catch (err: any) {
+      setError(err.response?.data?.message || t('failedToAddWorkEntry'));
+    }
   };
+
+  const { totalHours, totalEarnings } = Object.entries(selectedJobs).reduce(
+    (acc, [jobId, { hours }]) => {
+      const job = jobs?.find((j) => j.id === jobId);
+      if (job) {
+        acc.totalHours += hours;
+        acc.totalEarnings += hours * job.wagePerHour;
+      }
+      return acc;
+    },
+    { totalHours: 0, totalEarnings: 0 }
+  );
 
   if (!isOpen) return null;
 
@@ -96,47 +102,58 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.formGroup}>
-            <label htmlFor="job">{t('job')}:</label>
+            <label>{t('job')}:</label>
             {isLoadingJobs && <p>Loading jobs...</p>}
             {isErrorJobs && <p>Error loading jobs.</p>}
             {jobs && jobs.length > 0 && (
-              <select
-                id="job"
-                value={selectedJobId || ''}
-                onChange={(e) => setSelectedJobId(e.target.value)}
-                required
-              >
+              <div>
                 {jobs.map((job) => (
-                  <option key={job.id} value={job.id}>
-                    {job.name} ({job.wagePerHour} / hr)
-                  </option>
+                  <div key={job.id}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={!!selectedJobs[job.id]}
+                        onChange={(e) => {
+                          const newSelectedJobs = { ...selectedJobs };
+                          if (e.target.checked) {
+                            newSelectedJobs[job.id] = { hours: 8 }; // Default hours
+                          } else {
+                            delete newSelectedJobs[job.id];
+                          }
+                          setSelectedJobs(newSelectedJobs);
+                        }}
+                      />
+                      {job.name} ({job.wagePerHour} / hr)
+                    </label>
+                    {selectedJobs[job.id] && (
+                      <input
+                        type="number"
+                        value={selectedJobs[job.id].hours}
+                        onChange={(e) => {
+                          const newSelectedJobs = { ...selectedJobs };
+                          newSelectedJobs[job.id].hours = Number(e.target.value);
+                          setSelectedJobs(newSelectedJobs);
+                        }}
+                        min="0.1"
+                        step="0.1"
+                        required
+                        className={styles.hourInput}
+                      />
+                    )}
+                  </div>
                 ))}
-              </select>
+              </div>
             )}
             {jobs && jobs.length === 0 && <p>{t('noJobsFound')}</p>}
           </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="hoursWorked">{t('hoursWorked')}:</label>
-            <input
-              type="number"
-              id="hoursWorked"
-              value={hoursWorked}
-              onChange={(e) => setHoursWorked(Number(e.target.value))}
-              min="0.1"
-              step="0.1"
-              required
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="breakDuration">{t('breakDuration')}:</label>
-            <input
-              type="number"
-              id="breakDuration"
-              value={breakDuration}
-              onChange={(e) => setBreakDuration(Number(e.target.value))}
-              min="0"
-            />
-          </div>
+
+          {Object.keys(selectedJobs).length > 0 && (
+            <div>
+              <p>Total Hours: {totalHours.toFixed(2)}</p>
+              <p>Estimated Earnings: {totalEarnings.toFixed(2)}</p>
+            </div>
+          )}
+
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.submitButton} disabled={addWorkEntryMutation.isPending}>
               {addWorkEntryMutation.isPending ? t('submitting') : t('addEntryButton')}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AddWorkEntry.module.css';
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'; // Import useQuery
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import api from '../services/api';
-import type { CreateWorkEntryDto, Job } from '../types/work-entry.ts'; // Import Job type
+import type { CreateWorkEntryDto, Job } from '../types/work-entry.ts';
 import { useTranslation } from 'react-i18next';
 
 interface AddWorkEntryProps {
@@ -19,8 +19,7 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [startTime, setStartTime] = useState('');
-  const [hoursWorked, setHoursWorked] = useState(8);
-  const [selectedJobId, setSelectedJobId] = useState<string | undefined>(undefined); // New state for selected job
+  const [selectedJobs, setSelectedJobs] = useState<Record<string, { hours: number }>>({});
   const [error, setError] = useState<string | null>(null);
 
   const { data: jobs, isLoading: isLoadingJobs, isError: isErrorJobs } = useQuery<Job[]>({
@@ -39,12 +38,6 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
     }
   }, [selectedDate]);
 
-  useEffect(() => {
-    if (jobs && jobs.length > 0 && !selectedJobId) {
-      setSelectedJobId(jobs[0].id); // Select the first job by default
-    }
-  }, [jobs, selectedJobId]);
-
   const addWorkEntryMutation = useMutation({
     mutationFn: (newEntry: CreateWorkEntryDto) => api.post('/work-entries', newEntry),
     onSuccess: () => {
@@ -56,30 +49,49 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (!startTime || hoursWorked <= 0) {
+    if (!startTime) {
       setError(t('startTimeAndHoursRequired'));
       return;
     }
-    if (!selectedJobId) {
-      setError(t('jobRequired')); // New error message
+    if (Object.keys(selectedJobs).length === 0) {
+      setError(t('jobRequired'));
       return;
     }
 
     const startDateTime = new Date(startTime);
-    const endDateTime = new Date(startDateTime.getTime() + (hoursWorked * 60 * 60 * 1000));
+    
+    const entries: CreateWorkEntryDto[] = Object.entries(selectedJobs).map(([jobId, { hours }]) => {
+      const endDateTime = new Date(startDateTime.getTime() + hours * 60 * 60 * 1000);
+      return {
+        startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
+        jobId: jobId,
+      };
+    });
 
-    const newEntry: CreateWorkEntryDto = {
-      startTime: startDateTime.toISOString(),
-      endTime: endDateTime.toISOString(),
-      jobId: selectedJobId, // Include selected jobId
-    };
-
-    addWorkEntryMutation.mutate(newEntry);
+    try {
+      await Promise.all(entries.map(entry => addWorkEntryMutation.mutateAsync(entry)));
+      onClose();
+    } catch (err: any) {
+      setError(err.response?.data?.message || t('failedToAddWorkEntry'));
+    }
   };
+  
+  const { totalHours, totalEarnings } = Object.entries(selectedJobs).reduce(
+    (acc, [jobId, { hours }]) => {
+      const job = jobs?.find((j) => j.id === jobId);
+      if (job) {
+        acc.totalHours += hours;
+        acc.totalEarnings += hours * job.wagePerHour;
+      }
+      return acc;
+    },
+    { totalHours: 0, totalEarnings: 0 }
+  );
 
   if (isLoadingJobs) return <div>{t('loadingJobs')}</div>;
   if (isErrorJobs) return <div>{t('errorLoadingJobs')}</div>;
@@ -93,33 +105,51 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && <p className={styles.error}>{error}</p>}
         <div className={styles.formGroup}>
-          <label htmlFor="jobSelect">{t('selectJob')}:</label>
-          <select
-            id="jobSelect"
-            value={selectedJobId || ''}
-            onChange={(e) => setSelectedJobId(e.target.value)}
-            className={styles.selectInput} // Add a class for styling
-            required
-          >
-            {jobs?.map((job) => (
-              <option key={job.id} value={job.id}>
+          <label>{t('selectJob')}:</label>
+          {jobs?.map((job) => (
+            <div key={job.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={!!selectedJobs[job.id]}
+                  onChange={(e) => {
+                    const newSelectedJobs = { ...selectedJobs };
+                    if (e.target.checked) {
+                      newSelectedJobs[job.id] = { hours: 8 }; // Default hours
+                    } else {
+                      delete newSelectedJobs[job.id];
+                    }
+                    setSelectedJobs(newSelectedJobs);
+                  }}
+                />
                 {job.name} (${job.wagePerHour}/hr)
-              </option>
-            ))}
-          </select>
+              </label>
+              {selectedJobs[job.id] && (
+                <input
+                  type="number"
+                  value={selectedJobs[job.id].hours}
+                  onChange={(e) => {
+                    const newSelectedJobs = { ...selectedJobs };
+                    newSelectedJobs[job.id].hours = Number(e.target.value);
+                    setSelectedJobs(newSelectedJobs);
+                  }}
+                  min="0.1"
+                  step="0.1"
+                  required
+                  className={styles.hourInput}
+                />
+              )}
+            </div>
+          ))}
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="hoursWorked">{t('hoursWorked')}:</label>
-          <input
-            type="number"
-            id="hoursWorked"
-            value={hoursWorked}
-            onChange={(e) => setHoursWorked(Number(e.target.value))}
-            min="0.1"
-            step="0.1"
-            required
-          />
-        </div>
+
+        {Object.keys(selectedJobs).length > 0 && (
+          <div>
+            <p>Total Hours: {totalHours.toFixed(2)}</p>
+            <p>Estimated Earnings: {totalEarnings.toFixed(2)}</p>
+          </div>
+        )}
+        
         <div className={styles.buttonGroup}>
           <button type="submit" className={styles.submitButton} disabled={addWorkEntryMutation.isPending}>
             {addWorkEntryMutation.isPending ? t('submitting') : t('addEntryButton')}

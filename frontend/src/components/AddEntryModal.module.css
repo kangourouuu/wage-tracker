@@ -125,6 +125,18 @@
   border-radius: var(--border-radius-sm);
 }
 
+.hourInput {
+  margin-left: 1rem;
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  color: var(--text-color);
+  background-color: var(--glass-bg);
+}
+
 @media (max-width: 768px) {
   .modalContent {
     width: 100%;

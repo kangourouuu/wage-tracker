@@ -1,3 +1,4 @@
+import { Canvas } from '@react-three/fiber';
 import { useAuthStore } from '../store/authStore';
 import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
