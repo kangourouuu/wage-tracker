@@ -1,7 +1,7 @@
 import { useAuthStore } from '../store/authStore';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import api, { deleteWorkEntry } from '../services/api';
-import type { WorkEntry } from '../types/work-entry';
+import api, { deleteWorkEntry, deleteJob } from '../services/api';
+import type { WorkEntry, Job } from '../types/work-entry';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/Calendar.css';
 import styles from './Dashboard.module.css';
@@ -12,9 +12,15 @@ import AddEntryModal from '../components/AddEntryModal';
 import TimeOfDayIcon from '../components/TimeOfDayIcon';
 import SummaryCard from '../components/SummaryCard';
 import WorkEntryList from '../components/WorkEntryList';
+import JobList from '../components/JobList';
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
+  return data;
+};
+
+const fetchJobs = async (): Promise<Job[]> => {
+  const { data } = await api.get('/jobs');
   return data;
 };
 
@@ -55,10 +61,23 @@ export const Dashboard = () => {
     queryFn: fetchWorkEntries,
   });
 
-  const { mutate: deleteEntry, isPending: isDeleting } = useMutation({
+  const { data: jobs } = useQuery<Job[]>({
+    queryKey: ['jobs'],
+    queryFn: fetchJobs,
+  });
+
+  const { mutate: deleteWorkEntryMutation, isPending: isDeletingWorkEntry } = useMutation({
     mutationFn: deleteWorkEntry,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workEntries'] });
+    },
+  });
+
+  const { mutate: deleteJobMutation, isPending: isDeletingJob } = useMutation({
+    mutationFn: deleteJob,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      queryClient.invalidateQueries({ queryKey: ['workEntries'] }); // Invalidate work entries as well
     },
   });
 
@@ -116,8 +135,15 @@ export const Dashboard = () => {
         {workEntries && (
           <WorkEntryList
             workEntries={workEntries}
-            onDelete={deleteEntry}
-            isDeleting={isDeleting}
+            onDelete={deleteWorkEntryMutation}
+            isDeleting={isDeletingWorkEntry}
+          />
+        )}
+        {jobs && (
+          <JobList
+            jobs={jobs}
+            onDelete={deleteJobMutation}
+            isDeleting={isDeletingJob}
           />
         )}
       </div>

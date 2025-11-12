@@ -24,4 +24,8 @@ export const deleteWorkEntry = (id: string) => {
   return api.delete(`/work-entries/${id}`);
 };
 
+export const deleteJob = (id: string) => {
+  return api.delete(`/jobs/${id}`);
+};
+
 export default api;

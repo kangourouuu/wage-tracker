@@ -1,0 +1,84 @@
+.jobList {
+  background-color: var(--color-card-background);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  margin-top: 20px;
+}
+
+.jobList h2 {
+  color: var(--color-text-primary);
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.jobList table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.jobList th,
+.jobList td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.jobList th {
+  background-color: var(--color-table-header);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.jobList tr:hover {
+  background-color: var(--color-table-row-hover);
+}
+
+.deleteButton {
+  background-color: var(--color-danger);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background-color: var(--color-danger-dark);
+}
+
+.deleteButton:disabled {
+  background-color: var(--color-button-disabled);
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .jobList {
+    padding: 15px;
+  }
+
+  .jobList h2 {
+    font-size: 1.3em;
+  }
+
+  .jobList th,
+  .jobList td {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+
+  .deleteButton {
+    padding: 6px 10px;
+    font-size: 0.8em;
+  }
+}
