@@ -116,11 +116,13 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
                     key={job.id}
                     className={`${styles.jobItem} ${selectedJobIds.includes(job.id) ? styles.selected : ''}`}
                     onClick={() => {
-                      if (selectedJobIds.includes(job.id)) {
-                        setSelectedJobIds(selectedJobIds.filter(id => id !== job.id));
-                      } else {
-                        setSelectedJobIds([...selectedJobIds, job.id]);
-                      }
+                      setSelectedJobIds(prev => {
+                        if (prev.includes(job.id)) {
+                          return prev.filter(id => id !== job.id);
+                        } else {
+                          return [...prev, job.id];
+                        }
+                      });
                     }}
                   >
                     <label>
