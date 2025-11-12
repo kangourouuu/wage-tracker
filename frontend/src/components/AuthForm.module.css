@@ -53,6 +53,10 @@
     inset 0 1px 2px rgba(255, 255, 255, 0.4); /* Increased opacity */
 }
 
+.registerForm {
+  min-height: 700px; /* Increased min-height for desktop */
+}
+
 /* === Title === */
 .title { /* Renamed from .form-container h2 */
   font-size: 1.4rem;
@@ -178,6 +182,16 @@
     padding: 1.5rem;
     max-height: 80vh; /* 80% of viewport height */
     overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+  .registerForm {
+    max-height: 90vh; /* Increased max-height for mobile register form */
+    min-height: 0; /* Reset min-height for mobile */
+  }
+
+  .registerForm {
+    max-height: 90vh; /* Increased max-height for mobile register form */
+    min-height: 0; /* Reset min-height for mobile */
   }
 
   .title {

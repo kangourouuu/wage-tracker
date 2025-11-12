@@ -80,7 +80,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
   }
 
   return (
-    <div className={styles.formContainer}>
+    <div className={`${styles.formContainer} ${!isLogin ? styles.registerForm : ''}`}>
       <div className={styles.languageSwitcherContainer}>
         <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
           <option value="en">English</option>
@@ -92,7 +92,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
       <form onSubmit={handleSubmit} className={styles.form}>
         {!isLogin && (
           <Input
-            id="name"
+            id="register-name"
             label={t('name')}
             type="text"
             value={name}
@@ -101,7 +101,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
           />
         )}
         <Input
-          id="email"
+          id={isLogin ? 'login-email' : 'register-email'}
           label={t('email')}
           type="email"
           value={email}
@@ -109,7 +109,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
           required
         />
         <Input
-          id="password"
+          id={isLogin ? 'login-password' : 'register-password'}
           label={t('password')}
           type="password"
           value={password}
@@ -122,7 +122,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
             {jobs.map((job, index) => (
               <div key={index} className={styles.jobEntry}>
                 <Input
-                  id={`jobName-${index}`}
+                  id={`register-jobName-${index}`}
                   label={t('jobName')}
                   type="text"
                   value={job.name}
@@ -130,7 +130,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
                   required
                 />
                                   <Input
-                                    id={`wagePerHour-${index}`}
+                                    id={`register-wagePerHour-${index}`}
                                     label={t('wagePerHour')} // Changed to wagePerHour
                                     type="number"
                                     value={job.wagePerHour}
