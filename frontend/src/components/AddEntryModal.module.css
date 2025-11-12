@@ -91,6 +91,7 @@
   align-items: center;
   gap: 0.75rem;
   font-weight: 500;
+  pointer-events: none; /* Make the div the sole click target */
 }
 
 .customCheckbox {

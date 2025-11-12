@@ -66,7 +66,7 @@
 
 .description {
   margin-bottom: 1.5rem;
-  color: var(--text-color);
+  color: #555; /* Darker text for readability, matching switchButton */
   font-size: 0.95rem;
   line-height: 1.5;
 }
