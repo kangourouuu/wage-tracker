@@ -67,6 +67,7 @@ body,
 }
 
 body {
+  background: radial-gradient(circle 300px at center, #E6F7FF, #B3E5FC, #81D4FA, #F0F8FF);
   color: var(--text-color);
   font-family: var(--font-family-body);
   -webkit-font-smoothing: antialiased;
