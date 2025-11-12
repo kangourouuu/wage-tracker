@@ -10,11 +10,13 @@
 .mainContainer {
   width: 100vw;
   min-height: 100vh; /* Use min-height instead of height */
+  height: 100%; /* Added to ensure full height */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
   overflow-y: auto; /* Allow vertical scrolling */
+  position: relative; /* Added for absolute positioning context */
 }
 
 @media (max-width: 768px) {
