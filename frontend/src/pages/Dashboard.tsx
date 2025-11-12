@@ -13,6 +13,8 @@ import TimeOfDayIcon from '../components/TimeOfDayIcon';
 import SummaryCard from '../components/SummaryCard';
 import WorkEntryList from '../components/WorkEntryList';
 import JobList from '../components/JobList';
+import { useAiAssistantStore } from '../features/ai-assistant/store/aiAssistantStore';
+import { AssistantPanel } from '../components/AssistantPanel';
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get('/work-entries');
@@ -55,6 +57,7 @@ export const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const queryClient = useQueryClient();
+  const { toggle: toggleAssistant } = useAiAssistantStore();
 
   const { data: workEntries } = useQuery<WorkEntry[]>({
     queryKey: ['workEntries'],
@@ -97,7 +100,9 @@ export const Dashboard = () => {
       <div className={styles.dashboardContainer}>
         <header className={styles.header}>
           <div className={styles.welcomeSection}>
-            <TimeOfDayIcon />
+            <div onClick={toggleAssistant} style={{ cursor: 'pointer' }}>
+              <TimeOfDayIcon />
+            </div>
             <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
           </div>
           <div className={styles.headerActions}>
@@ -150,6 +155,7 @@ export const Dashboard = () => {
         </div>
       </div>
       <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
+      <AssistantPanel />
     </>
   );
 };

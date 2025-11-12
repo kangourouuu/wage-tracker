@@ -5,6 +5,7 @@ import { ResponsiveProvider } from './contexts/ResponsiveProvider';
 import { ProtectedRoute } from './components/ProtectedRoute'; // Import ProtectedRoute
 import { Canvas } from '@react-three/fiber';
 import ThreeScene from './pages/ThreeScene';
+import { Toaster } from 'react-hot-toast';
 import './App.css';
 
 function Root() {
@@ -14,6 +15,7 @@ function Root() {
 function App() {
   return (
     <ResponsiveProvider>
+      <Toaster position="bottom-right" />
       <Canvas className="threeCanvas" gl={{ alpha: true }}>
         <ThreeScene />
       </Canvas>

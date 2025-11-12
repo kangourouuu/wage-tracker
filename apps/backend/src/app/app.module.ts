@@ -12,6 +12,7 @@ import { UserModule } from './features/user/user.module';
 import { WageModule } from './features/wage/wage.module';
 import { CalendarModule } from './features/calendar/calendar.module';
 import { CommonModule } from './common/common.module';
+import { AssistantModule } from './features/assistant/assistant.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { CommonModule } from './common/common.module';
     UserModule,
     WageModule,
     CalendarModule,
+    AssistantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
