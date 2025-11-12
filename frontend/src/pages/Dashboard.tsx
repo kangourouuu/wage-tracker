@@ -1,6 +1,6 @@
 import { useAuthStore } from '../store/authStore';
-import { useQuery } from '@tanstack/react-query';
-import api from '../services/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import api, { deleteWorkEntry } from '../services/api';
 import type { WorkEntry } from '../types/work-entry';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/Calendar.css';
@@ -48,10 +48,18 @@ export const Dashboard = () => {
   const { user, logout } = useAuthStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const queryClient = useQueryClient();
 
-  const { data: workEntries } = useQuery<WorkEntry[]> ({
+  const { data: workEntries } = useQuery<WorkEntry[]>({
     queryKey: ['workEntries'],
     queryFn: fetchWorkEntries,
+  });
+
+  const { mutate: deleteEntry, isPending: isDeleting } = useMutation({
+    mutationFn: deleteWorkEntry,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workEntries'] });
+    },
   });
 
   const summary = workEntries ? calculateSummary(workEntries) : { totalHours: '0.00', totalEarnings: '0.00' };
@@ -105,7 +113,13 @@ export const Dashboard = () => {
             <SummaryCard title={t('estimatedEarnings')} value={summary.totalEarnings} />
           </div>
         </div>
-        {workEntries && <WorkEntryList workEntries={workEntries} />}
+        {workEntries && (
+          <WorkEntryList
+            workEntries={workEntries}
+            onDelete={deleteEntry}
+            isDeleting={isDeleting}
+          />
+        )}
       </div>
       <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
     </>

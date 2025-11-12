@@ -20,4 +20,8 @@ api.interceptors.request.use(
 
 // You can add response interceptors here to handle token refresh logic
 
+export const deleteWorkEntry = (id: string) => {
+  return api.delete(`/work-entries/${id}`);
+};
+
 export default api;

@@ -1,6 +1,4 @@
 import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '../services/api';
 import type { WorkEntry } from '../types/work-entry';
 import styles from './WorkEntryList.module.css';
 import { useTranslation } from 'react-i18next';
@@ -8,23 +6,21 @@ import { useResponsive } from '../contexts/ResponsiveContext';
 
 interface WorkEntryListProps {
   workEntries: WorkEntry[];
+  onDelete: (id: string) => void;
+  isDeleting: boolean;
 }
 
-const WorkEntryList: React.FC<WorkEntryListProps> = ({ workEntries }) => {
+const WorkEntryList: React.FC<WorkEntryListProps> = ({
+  workEntries,
+  onDelete,
+  isDeleting,
+}) => {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
   const { isMobile } = useResponsive();
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => api.delete(`/work-entries/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workEntries'] });
-    },
-  });
 
   const handleDelete = (id: string) => {
     if (window.confirm(t('confirmDelete'))) {
-      deleteMutation.mutate(id);
+      onDelete(id);
     }
   };
 
@@ -65,7 +61,7 @@ const WorkEntryList: React.FC<WorkEntryListProps> = ({ workEntries }) => {
                   <button
                     onClick={() => handleDelete(entry.id)}
                     className={styles.deleteButton}
-                    disabled={deleteMutation.isPending}
+                    disabled={isDeleting}
                   >
                     {t('delete')}
                   </button>
@@ -112,7 +108,7 @@ const WorkEntryList: React.FC<WorkEntryListProps> = ({ workEntries }) => {
                     <button
                       onClick={() => handleDelete(entry.id)}
                       className={styles.deleteButton}
-                      disabled={deleteMutation.isPending}
+                      disabled={isDeleting}
                     >
                       {t('delete')}
                     </button>
