@@ -2,11 +2,17 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import api from '../services/api'; // Import the api instance
 
+interface Job {
+  id: string; // Assuming job has an ID after creation
+  name: string;
+  wagePerHour: number;
+}
+
 interface User {
   id: string;
   name: string;
   email: string;
-  wagePerHour: number;
+  jobs: Job[]; // Added jobs array
 }
 
 interface AuthState {

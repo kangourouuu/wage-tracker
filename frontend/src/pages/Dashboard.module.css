@@ -1,28 +1,66 @@
+.dashboardPage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Hide overflow from ThreeScene */
+  background-image: url('/94301af597a30106e8b1c5774c8cbb87.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.threeCanvas {
+  position: fixed !important; /* Use fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0; /* Ensure it's behind other content */
+}
+
 .dashboardContainer {
+  position: relative;
+  z-index: 10; /* Ensure it's above the ThreeScene */
   padding: 2rem;
   border-radius: var(--border-radius-md);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
   color: var(--text-color);
-  width: 100%;
-  max-width: 1200px; /* Increased max-width for more content */
+  width: 90%;
+  max-width: 1000px; /* Adjusted max-width for a central container */
   height: 90%;
-  max-height: 800px; /* Increased max-height */
-  overflow-y: auto;
-  perspective: 1000px;
+  max-height: 700px; /* Adjusted max-height */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 1rem; /* Added padding */
-  z-index: 10;
+  width: 100%;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.welcomeSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .welcomeTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--pastel-orange);
-  text-shadow: none;
+  font-size: 1.8rem;
+  color: #333; /* Darker color for better visibility */
+  margin: 0;
+  text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
 }
 
 .headerActions {
@@ -31,225 +69,185 @@
   align-items: center;
 }
 
-.languageSwitcher {
-  padding: 0.5rem 1rem;
+.languageSwitcher,
+.logoutButton {
+  padding: 0.6rem 1.2rem;
   border-radius: var(--border-radius-sm);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px) saturate(150%);
   color: var(--text-color);
   font-family: var(--font-family);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.languageSwitcher:hover {
-  border-color: var(--primary-color-light);
-  box-shadow: var(--shadow-sm);
-}
-
-.logoutButton {
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--border-radius-sm);
-  border: none;
-  background: var(--pastel-orange);
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-  box-shadow: var(--shadow-md);
-  font-family: var(--font-family);
-  font-size: 0.9rem;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
+.languageSwitcher:hover,
 .logoutButton:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: var(--shadow-lg);
-  background: var(--pastel-orange);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.logoutButton:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow: var(--shadow-sm);
+.mainContent {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  gap: 2rem;
+  flex-grow: 1;
+  justify-content: center; /* Center items horizontally */
+  align-items: flex-start; /* Align items to the start vertically */
 }
 
-.summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive grid */
+.calendarWrapper {
+  flex: 1 1 400px; /* Allow calendar to grow/shrink, with a base of 400px */
+  min-width: 300px;
+  max-width: 450px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-md);
+  padding: 1rem;
+}
+
+/* React Calendar specific styling for liquid-glass */
+.react-calendar {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  font-family: var(--font-family-body);
+}
+
+.react-calendar__navigation button {
+  color: #333 !important; /* Darker color for navigation buttons */
+  font-weight: bold;
+  background: transparent !important;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--border-radius-sm);
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  color: #555 !important; /* Darker color for weekdays */
+  font-size: 0.9rem;
+}
+
+.react-calendar__tile {
+  color: #333 !important; /* Darker color for days */
+  background: transparent !important;
+  border-radius: var(--border-radius-sm);
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.react-calendar__tile--now {
+  background: rgba(var(--primary-color-rgb), 0.2) !important;
+  color: #333 !important;
+}
+
+.react-calendar__tile--active {
+  background: var(--primary-color) !important;
+  color: white !important;
+}
+
+.summaryCardsContainer {
+  flex: 1 1 400px; /* Allow container to grow/shrink, with a base of 400px */
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
 .summaryCard {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  padding: 1.5rem; /* Increased padding */
-  border-radius: 1.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-md);
   text-align: center;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transform: translateZ(0); /* Static 3D appearance */
-  transition: all 0.3s ease-in-out;
+  color: var(--text-color); /* Ensure text color is visible */
 }
 
 .summaryCard h3 {
-  font-size: 1rem; /* Increased font size */
-  color: #333;
-  margin-bottom: 0.75rem; /* Adjusted margin */
+  font-size: 1.2rem;
+  color: #333; /* Darker color for better visibility */
+  margin-bottom: 0.5rem;
 }
 
 .summaryCard p {
-  font-size: 2rem; /* Increased font size */
+  font-size: 2.2rem;
   font-weight: 700;
+  color: #333; /* Darker color for better visibility */
   text-shadow: none;
 }
 
-.wageUnit {
-  font-size: 0.8rem !important;
-  color: var(--text-light-color) !important;
-  margin-top: 0.5rem;
-}
-
-.totalHours,
-.totalEntries,
-.estimatedEarnings {
-  color: var(--pastel-orange);
-}
-
-.summary3DContainer {
-  height: 200px;
-  position: relative;
-}
-
-.threeDContainer {
-  height: 400px; /* Adjust height as needed */
-  width: 100%;
-  margin-bottom: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: var(--border-radius-md);
-  overflow: hidden;
-}
-
-.mainContent {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  flex-grow: 1;
-  align-items: start; /* Align items to the start */
-}
-
-.leftPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* Adjusted gap */
-}
-
-.rightPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* Adjusted gap */
-  min-width: 380px; /* Ensure summary cards have enough space */
-}
-
-.calendarWrapper {
-  background: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--border-radius-md);
-  padding: 1.5rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  transform: translateZ(0);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
-}
-
-
-
-/* Scrollbar Styling */
-.dashboardContainer::-webkit-scrollbar {
-  width: 8px;
-}
-
-.dashboardContainer::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-}
-
-.dashboardContainer::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  transition: background 0.3s ease-in-out;
-}
-
-.dashboardContainer::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
-}
-
-@media (max-width: 992px) {
-  .mainContent {
-    flex-direction: column;
-  }
-
-  .calendarWrapper {
-    max-width: 300px;
-    margin: 0 auto;
-  }
-
-  .summary {
-    grid-template-columns: 1fr;
-    max-width: 300px; /* Added for equal horizontal size with calendar */
-    margin: 0 auto;   /* Added for centering */
-  }
-
-  .dashboardContainer {
-    max-width: 700px;
-    height: auto;
-    padding: 1.5rem;
-  }
-}
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .dashboardContainer {
+    width: 95%;
+    height: 95%;
     padding: 1rem;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    width: 100%;
-    height: 100%;
-    max-height: none;
-    overflow-y: auto; /* Ensure scrolling on mobile */
-  }
-
-  .header {
-    flex-direction: row; /* Keep as row */
-    align-items: center;
     gap: 1rem;
   }
 
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
   .welcomeTitle {
-    font-size: 1.25rem; /* Smaller font size */
+    font-size: 1.5rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .mainContent {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .calendarWrapper,
+  .summaryCardsContainer {
+    flex: none;
+    width: 100%;
+    max-width: none;
   }
 }
 
 @media (max-width: 480px) {
-  .header {
-    flex-direction: column; /* Stack on very small screens */
-    align-items: flex-start;
+  .dashboardContainer {
+    padding: 0.8rem;
+  }
+
+  .welcomeTitle {
+    font-size: 1.2rem;
+  }
+
+  .languageSwitcher,
+  .logoutButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .summaryCard h3 {
+    font-size: 1rem;
   }
 
   .summaryCard p {
-    font-size: 1.5rem; /* Adjust font size for small screens */
-  }
-
-  .dashboardContainer {
-    padding: 0.5rem;
-  }
-
-  .addEntryButton {
-    width: 100%;
+    font-size: 1.8rem;
   }
 }

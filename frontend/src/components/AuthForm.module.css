@@ -1,142 +1,128 @@
-.authFormContainer {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
-  padding: 2.5rem;
-  border-radius: var(--border-radius-md);
-  color: var(--text-color);
-  width: 100%;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg);
-  transition: all 0.3s ease-in-out;
-  max-height: 80vh; /* Constrain height to prevent overflow on smaller screens */
-  overflow: auto; /* Add scrolling if content overflows wrapper */
-  height: auto; /* Allow height to adjust based on content */
+.authPage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Hide overflow from ThreeScene */
 }
 
-.title {
+.threeCanvas {
+  position: fixed !important; /* Use fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0; /* Ensure it's behind other content */
+}
+
+/* === Liquid Glass Form Container === */
+.formContainer { /* Renamed from .form-container */
+  width: 100%;
+  max-width: 550px; /* Increased max-width */
+  padding: 2rem 2.5rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2); /* Increased opacity */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Increased opacity */
+  backdrop-filter: blur(25px) saturate(180%); /* Increased blur and saturation */
+  box-shadow:
+    0 10px 50px rgba(0, 0, 0, 0.5), /* More pronounced shadow */
+    inset 0 1px 1px rgba(255, 255, 255, 0.35); /* Increased opacity */
   text-align: center;
-  margin-bottom: 0.5rem; /* Reduced margin to bring description closer */
+  color: #333; /* Darker text for readability on white background */
+
+  /* New positioning and z-index */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100; /* Ensure it's above the 3D canvas */
+
+  /* Initial transform for centering */
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: float 6s ease-in-out infinite; /* Moved animation here */
+  overflow: auto; /* Explicitly set overflow */
+}
+
+.formContainer:hover {
+  /* Combine centering transform with hover effect */
+  transform: translate(-50%, -50%) translateY(-5px) scale(1.02);
+  box-shadow:
+    0 15px 60px rgba(0, 0, 0, 0.6), /* Even more pronounced shadow on hover */
+    inset 0 1px 2px rgba(255, 255, 255, 0.4); /* Increased opacity */
+}
+
+/* === Title === */
+.title { /* Renamed from .form-container h2 */
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 1.5rem; /* Increased margin-top */
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Darker shadow for better contrast */
   color: var(--primary-color-dark); /* Use a darker primary color for titles */
-  font-weight: 900;
-  font-size: 2rem;
 }
 
 .description {
-  text-align: center;
-  margin-bottom: 1.5rem; /* Margin below description */
-  color: var(--text-light-color);
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
   font-size: 0.95rem;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.jobInputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem;
-  border-radius: var(--border-radius-sm);
-  margin-bottom: 1rem;
-}
-
-.removeJobButton {
-  background-color: var(--error-color);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.removeJobButton:hover {
-  background-color: var(--error-color-dark);
-}
-
-.addJobButton {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  margin-top: 0.5rem;
-}
-
-.addJobButton:hover {
-  background-color: var(--primary-color-dark);
-}
-
-.button {
-  padding: 0.85rem 1rem;
-  border-radius: 2rem; /* Increased border-radius for more rounded effect */
-  border: none;
-  background: var(--gradient-primary); /* Use primary gradient */
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-  box-shadow: var(--shadow-md);
-  font-family: var(--font-family);
-  font-size: 1rem;
-  position: relative;
-  overflow: hidden;
-  width: 210px; /* Fixed width as requested */
-  margin: 0 auto; /* Center the button */
-}
-
-.button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  background: var(--gradient-primary); /* Ensure gradient persists on hover */
-}
-
-.button:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-sm);
-}
-
-.button:disabled {
-  background: var(--border-color);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  color: var(--text-light-color);
-}
-
-.error {
-  color: var(--error-color);
-  text-align: center;
-  margin-top: 1rem;
-  background: rgba(var(--error-color-rgb), 0.1); /* Use RGB for transparency */
-  padding: 0.75rem;
-  border-radius: var(--border-radius-sm);
-}
-
-.switchButton {
-  margin-top: 1.5rem;
-  background: none;
-  border: none;
-  color: #2c3e50; /* Suggested dark, desaturated blue for contrast */
-  cursor: pointer;
+/* === Input Fields === */
+.formContainer input { /* Keep this for now, but be aware of Input component */
   width: 100%;
-  text-align: center;
-  font-family: var(--font-family);
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.2s ease-in-out;
+  padding: 0.9rem 1rem;
+  margin: 0.6rem 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* White input border */
+  background: transparent; /* Changed to transparent */
+  color: #333; /* Darker text for input fields */
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px); /* Increased blur for inputs */
 }
 
-.switchButton:hover {
-  text-decoration: underline;
-  color: var(--primary-color-dark);
+.formContainer input::placeholder {
+  color: rgba(51, 51, 51, 0.8); /* Increased opacity for more contrast */
+  background: transparent; /* Ensure placeholder background is transparent */
+}
+
+.formContainer input:focus {
+  background: rgba(255, 255, 255, 0.05); /* Subtle white background on focus */
+  border-color: rgba(255, 255, 255, 0.5); /* Slightly less opaque focus border */
+  box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6); /* More pronounced shadow on focus */
+}
+
+/* === Button === */
+.submitButton { /* Renamed from .form-container button */
+  width: 100%;
+  padding: 0.7rem 1rem; /* Reduced vertical padding */
+  margin-top: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  background: var(--gradient-primary); /* Changed to use variable */
+  box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.5); /* Changed to use variable */
+  transition: all 0.3s ease;
+}
+
+.submitButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.6); /* Changed to use variable */
+}
+
+/* === Subtle floating animation (3D effect) === */
+@keyframes float {
+  0% { transform: translate(-50%, -50%) translateY(0px); } /* Apply centering in animation */
+  50% { transform: translate(-50%, -50%) translateY(-8px); }
+  100% { transform: translate(-50%, -50%) translateY(0px); }
 }
 
 .languageSwitcherContainer {
@@ -148,38 +134,147 @@
 .languageSwitcher {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius-sm);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
-  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* White border */
+  background: rgba(255, 255, 255, 0.1); /* White background */
+  backdrop-filter: blur(10px) saturate(150%); /* Adjusted blur */
+  color: #333; /* Darker text */
   font-family: var(--font-family);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-@media (max-width: 480px) {
-  .authFormContainer {
-    padding: 2rem 1.5rem; /* Adjusted padding */
-    border: none;
-    box-shadow: none;
-    width: 100%;
-    /* height: 100%; */ /* Removed to allow height: auto to take effect */
-    border-radius: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.languageSwitcher:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.switchButton {
+  margin-top: 1.5rem;
+  background: none;
+  border: none;
+  color: #555; /* Darker text for readability */
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out, text-shadow 0.2s ease-in-out;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+}
+
+.switchButton:hover {
+  text-decoration: underline;
+  color: var(--primary-color); /* Use primary cyan on hover */
+  text-shadow: 0 0 8px rgba(var(--primary-color-rgb), 0.5); /* Cyan glow on hover */
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .formContainer {
+    max-width: 90%;
+    padding: 1.5rem;
   }
 
   .title {
-    margin-bottom: 2rem; /* Increased margin */
+    font-size: 1.2rem;
+  }
+
+  .formContainer input, /* Keep this for now */
+  .submitButton {
+    font-size: 0.9rem;
   }
 }
 
-.authFormWrapper {
-  max-width: 600px; /* Allow it to stretch more than before */
-  max-height: 80vh; /* Constrain height to prevent overflow on smaller screens */
-  width: 100%; /* Ensure it takes full width up to max-width */
-  height: auto; /* Allow height to adjust based on content */
-  overflow: auto; /* Add scrolling if content overflows wrapper */
+/* === Jobs Section === */
+.jobsSection {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); /* Subtle background for the section */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.jobsSection h3 {
+  font-size: 1.2rem; /* Increased font size */
+  font-weight: 700; /* Made bold */
+  margin-bottom: 0.8rem;
+  color: var(--primary-color-light);
+}
+
+.jobEntry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  align-items: center;
+  position: relative; /* Added for positioning the remove button */
+}
+
+.jobEntry > div { /* Target the Input component's div wrapper */
+  flex: 1;
+  min-width: 120px; /* Ensure inputs don't get too small */
+}
+
+.removeJobButton {
+  background: transparent; /* Make button background transparent */
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; /* Size of the circle */
+  height: 30px; /* Size of the circle */
+  border-radius: 50%; /* Make it a circle */
+  transition: background 0.3s ease;
+  flex-shrink: 0; /* Prevent shrinking */
+  margin-left: 0.5rem; /* Space from inputs */
+}
+
+.removeJobButton:hover {
+  background: rgba(var(--pastel-orange-rgb), 0.1); /* Subtle pastel orange background on hover */
+}
+
+.removeJobSymbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* Size of the inner circle */
+  height: 24px; /* Size of the inner circle */
+  border-radius: 50%;
+  background: var(--pastel-orange); /* Pastel orange circle */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1; /* Center the minus symbol vertically */
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.removeJobSymbol:hover {
+  background: var(--pastel-orange-dark); /* Darker pastel orange on hover */
+}
+
+.addJobButton {
+  width: 100%;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem 1rem; /* Increased vertical padding */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 600;
+  font-size: 1rem; /* Increased font size */
+  margin-top: 0.5rem;
+}
+
+.addJobButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(var(--primary-color-rgb), 0.4);
 }
