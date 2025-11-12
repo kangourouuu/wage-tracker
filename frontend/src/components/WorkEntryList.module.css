@@ -12,9 +12,9 @@
 
 .workEntryList h2 {
   margin-bottom: 1rem;
-  color: #333; /* Applied color from Total Hours */
+  color: #333;
   font-size: 1.8rem;
-  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.7);
+  text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.8); /* More prominent text shadow */
 }
 
 .tableContainer {
@@ -33,7 +33,7 @@
   padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid var(--glass-border);
-  color: var(--text-color);
+  color: #444; /* Applied friendlier dark grey */
   white-space: nowrap;
 }
 
@@ -83,11 +83,11 @@
   display: flex;
   justify-content: space-between;
   font-size: 1rem; /* Slightly larger font size */
-  color: var(--text-color); /* Ensure text color is visible */
+  color: #444; /* Applied friendlier dark grey */
 }
 
 .cardRow strong {
-  color: var(--primary-color-light); /* Use a primary color for labels for better contrast */
+  color: var(--primary-color-dark); /* Use a primary color for labels for better contrast */
 }
 
 .cardActions {
