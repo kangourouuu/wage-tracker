@@ -2,10 +2,12 @@
   margin-top: 2rem;
   width: 100%;
   overflow: hidden;
-  background: transparent; /* Removed background */
-  border: none; /* Removed border */
-  padding: 0; /* Removed padding */
-  box-shadow: none; /* Removed shadow */
+  background: var(--glass-bg); /* Re-introduce subtle glass background */
+  backdrop-filter: var(--glass-backdrop-filter); /* Apply backdrop filter */
+  border: 1px solid var(--glass-border); /* Re-introduce subtle border */
+  box-shadow: var(--shadow-md); /* Add a subtle shadow */
+  border-radius: var(--border-radius-sm); /* Apply border radius */
+  padding: 1.5rem; /* Add some padding inside the container */
 }
 
 .workEntryList h2 {

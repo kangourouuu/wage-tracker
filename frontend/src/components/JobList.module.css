@@ -1,9 +1,11 @@
 .jobList {
-  background-color: var(--color-card-background);
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: var(--shadow-card);
-  margin-top: 20px;
+  background: var(--glass-bg); /* Apply glass background */
+  backdrop-filter: var(--glass-backdrop-filter); /* Apply backdrop filter */
+  border: 1px solid var(--glass-border); /* Apply glass border */
+  box-shadow: var(--shadow-md); /* Apply subtle shadow */
+  border-radius: var(--border-radius-sm); /* Apply border radius */
+  padding: 1.5rem; /* Adjust padding */
+  margin-top: 2rem; /* Ensure consistent margin-top with WorkEntryList */
 }
 
 .jobList h2 {
