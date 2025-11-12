@@ -22,9 +22,9 @@
   --accent-color-1-light: #7baeda;
   --accent-color-1-dark: #4a8ac8;
   --gold-accent: #FFD700; /* Gold accent for CTAs */
-  --pastel-orange: #FFB74D; /* Pastel orange for specific elements */
-  --pastel-orange-rgb: 255, 183, 77;
-  --pastel-orange-dark: #FFA726; /* Darker pastel orange for hover states */
+  --pastel-orange: #FAC1B0; /* Updated pastel orange */
+  --pastel-orange-rgb: 250, 161, 176;
+  --pastel-orange-dark: #E0A7B5; /* Darker pastel orange for hover states */
 
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color)); /* Adjusted gradient direction */
