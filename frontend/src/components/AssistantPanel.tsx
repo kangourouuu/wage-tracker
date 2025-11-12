@@ -29,13 +29,32 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({ isDropdown }) =>
     scrollToBottom();
   }, [messages]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       console.log('Selected file:', file);
-      // Here you would typically upload the file or process it
-      // For now, just log and clear the input
-      event.target.value = ''; // Clear the input so the same file can be selected again
+      setIsLoading(true); // Set loading state
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await api.post('/assistant/upload-file', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        const aiMessage: Message = { sender: 'ai', text: response.data.message };
+        setMessages((prevMessages) => [...prevMessages, aiMessage]);
+        toast.success('File uploaded successfully!');
+      } catch (error) {
+        console.error('Error uploading file to AI assistant:', error);
+        toast.error('Failed to upload file to AI assistant.');
+        setMessages((prevMessages) => [...prevMessages, { sender: 'ai', text: 'Sorry, I am having trouble processing your file right now.' }]);
+      } finally {
+        setIsLoading(false); // Clear loading state
+        event.target.value = ''; // Clear the input
+      }
     }
   };
 

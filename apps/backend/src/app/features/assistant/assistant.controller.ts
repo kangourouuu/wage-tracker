@@ -1,4 +1,5 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AssistantService } from './assistant.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 
@@ -9,5 +10,13 @@ export class AssistantController {
   @Post('chat')
   async chat(@Body() createChatDto: CreateChatDto) {
     return this.assistantService.generateContent(createChatDto);
+  }
+
+  @Post('upload-file')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    // For now, just log the file and return a success message
+    console.log('Received file:', file);
+    return this.assistantService.processUploadedFile(file);
   }
 }
