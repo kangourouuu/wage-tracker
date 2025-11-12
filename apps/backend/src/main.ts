@@ -9,7 +9,7 @@ async function bootstrap() {
 
   // Enable CORS with specific origin
   app.enableCors({
-    origin: process.env.FRONTEND_URL,
+    origin: '*', // Temporarily set to '*' for diagnosis
     credentials: true,
   });
 
