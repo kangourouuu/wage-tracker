@@ -103,3 +103,7 @@
 .uploadButton:hover {
   background: var(--accent-color-1-dark);
 }
+
+.dropdownPanel {
+  /* Placeholder for dropdown specific styles */
+}

@@ -93,7 +93,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({ isDropdown }) =>
   };
 
   return (
-    <div className={`${styles.panel} ${!isOpen ? styles.hidden : ''}`}>
+    <div className={`${styles.panel} ${!isOpen ? styles.hidden : ''} ${isDropdown ? styles.dropdownPanel : ''}`}>
       <div className={styles.header}>
         <h3>AI Assistant</h3>
         <button onClick={toggle} className={styles.closeButton}>&times;</button>
