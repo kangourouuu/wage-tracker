@@ -253,7 +253,7 @@
   width: 28px; /* Larger inner circle */
   height: 28px; /* Larger inner circle */
   border-radius: 50%;
-  background: var(--error-color); /* Red for remove symbol */
+  background: var(--pastel-orange); /* Changed to pastel orange */
   color: white;
   font-size: 1.4rem; /* Larger font size */
   font-weight: bold;
@@ -263,7 +263,7 @@
 }
 
 .removeJobSymbol:hover {
-  background: #d32f2f; /* Darker red on hover */
+  background: var(--pastel-orange-dark); /* Darker pastel orange on hover */
 }
 
 .addJobButton {
