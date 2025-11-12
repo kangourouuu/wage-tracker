@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 const RadialGradientShader = {
   uniforms: {
-    u_color1: { type: 'c', value: new THREE.Color(0xC6F2F7) }, // Inner color
-    u_color2: { type: 'c', value: new THREE.Color(0xB4EEF5) }, // Middle color
-    u_color3: { type: 'c', value: new THREE.Color(0xFFFFFF) }, // Outer color (white)
+    u_color1: { type: 'c', value: new THREE.Color(0xf9feff) }, // Inner color
+    u_color2: { type: 'c', value: new THREE.Color(0xdafbff) }, // Middle color
+    u_color3: { type: 'c', value: new THREE.Color(0xbbf9ff) }, // Outer color (white)
     u_radius: { type: 'f', value: 0.5 }, // Controls the spread of the gradient (0.5 for 300px effect)
   },
   vertexShader: `

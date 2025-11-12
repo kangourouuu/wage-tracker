@@ -162,7 +162,7 @@ function ThreeScene() {
     if (isMobile || prefersReducedMotion) {
       scene.fog = null;
     } else {
-      scene.fog = new THREE.FogExp2(0x81D4FA, 0.005); // Blue Sky fog
+      scene.fog = null; // new THREE.FogExp2(0x81D4FA, 0.005); // Blue Sky fog
     }
 
     return () => {
