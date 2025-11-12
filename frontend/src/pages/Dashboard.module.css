@@ -51,9 +51,9 @@
   padding: 0.6rem 1.2rem;
   border-radius: var(--border-radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2); /* Increased opacity */
   backdrop-filter: blur(10px) saturate(150%);
-  color: var(--text-color);
+  color: #333; /* Darker color */
   font-family: var(--font-family);
   font-size: 0.9rem;
   cursor: pointer;

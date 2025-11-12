@@ -17,7 +17,7 @@
 }
 
 .react-calendar__navigation button {
-  color: var(--text-color);
+  color: #333; /* Darker color */
   font-weight: bold;
   transition: background-color 0.2s ease-in-out;
 }
@@ -29,13 +29,13 @@
 }
 
 .react-calendar__month-view__weekdays__weekday {
-  color: var(--text-light-color);
+  color: #555; /* Darker color */
   font-size: 0.8rem;
   text-transform: uppercase; /* Added for style */
 }
 
 .react-calendar__tile {
-  color: var(--text-color);
+  color: #333; /* Darker color */
   border-radius: 50%;
   transition: all 0.2s ease-in-out;
   display: flex;

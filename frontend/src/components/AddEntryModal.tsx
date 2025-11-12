@@ -110,21 +110,27 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
             {isLoadingJobs && <p>Loading jobs...</p>}
             {isErrorJobs && <p>Error loading jobs.</p>}
             {jobs && jobs.length > 0 && (
-              <div>
+              <div className={styles.jobList}>
                 {jobs.map((job) => (
-                  <div key={job.id}>
+                  <div
+                    key={job.id}
+                    className={`${styles.jobItem} ${selectedJobIds.includes(job.id) ? styles.selected : ''}`}
+                    onClick={() => {
+                      if (selectedJobIds.includes(job.id)) {
+                        setSelectedJobIds(selectedJobIds.filter(id => id !== job.id));
+                      } else {
+                        setSelectedJobIds([...selectedJobIds, job.id]);
+                      }
+                    }}
+                  >
                     <label>
                       <input
                         type="checkbox"
+                        className={styles.customCheckbox}
                         checked={selectedJobIds.includes(job.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedJobIds([...selectedJobIds, job.id]);
-                          } else {
-                            setSelectedJobIds(selectedJobIds.filter(id => id !== job.id));
-                          }
-                        }}
+                        readOnly
                       />
+                      <span />
                       {job.name} ({job.wagePerHour} / hr)
                     </label>
                   </div>
@@ -136,7 +142,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
 
           {selectedJobIds.length > 0 && (
             <>
-              <div className={styles.formGroup}>
+              <div className={`${styles.formGroup} ${styles.hourInputContainer}`}>
                 <label>{t('hoursWorked')}:</label>
                 <input
                   type="number"
@@ -148,19 +154,25 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
                   className={styles.hourInput}
                 />
               </div>
-              <div>
-                <p>Total Hours: {totalHours.toFixed(2)}</p>
-                <p>Estimated Earnings: {totalEarnings.toFixed(2)}</p>
+              <div className={styles.summarySection}>
+                <div className={styles.summaryItem}>
+                  <h4>{t('totalHours')}</h4>
+                  <p>{totalHours.toFixed(2)}</p>
+                </div>
+                <div className={styles.summaryItem}>
+                  <h4>{t('estimatedEarnings')}</h4>
+                  <p>{totalEarnings.toFixed(2)}</p>
+                </div>
               </div>
             </>
           )}
 
           <div className={styles.buttonGroup}>
-            <button type="submit" className={styles.submitButton} disabled={addWorkEntryMutation.isPending}>
-              {addWorkEntryMutation.isPending ? t('submitting') : t('addEntryButton')}
-            </button>
             <button type="button" className={styles.cancelButton} onClick={onClose} disabled={addWorkEntryMutation.isPending}>
               {t('cancelButton')}
+            </button>
+            <button type="submit" className={styles.submitButton} disabled={addWorkEntryMutation.isPending}>
+              {addWorkEntryMutation.isPending ? t('submitting') : t('addEntryButton')}
             </button>
           </div>
         </form>
