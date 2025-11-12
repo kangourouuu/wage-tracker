@@ -2,12 +2,17 @@
   margin-top: 2rem;
   width: 100%;
   overflow: hidden;
+  background: transparent; /* Removed background */
+  border: none; /* Removed border */
+  padding: 0; /* Removed padding */
+  box-shadow: none; /* Removed shadow */
 }
 
 .workEntryList h2 {
   margin-bottom: 1rem;
-  color: var(--primary-color-dark); /* Increased contrast */
-  text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5); /* Added text shadow */
+  color: var(--primary-color-dark);
+  font-size: 1.8rem; /* Increased font size */
+  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.7); /* More pronounced text shadow */
 }
 
 .tableContainer {
