@@ -185,7 +185,7 @@
 @media (max-width: 768px) {
   .dashboardContainer {
     width: 95%;
-    height: 95%;
+    height: 80vh;
     padding: 1rem;
     gap: 1rem;
   }

@@ -176,6 +176,8 @@
   .formContainer {
     max-width: 90%;
     padding: 1.5rem;
+    max-height: 80vh; /* 80% of viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
   }
 
   .title {
