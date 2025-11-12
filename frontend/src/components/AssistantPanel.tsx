@@ -104,8 +104,16 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({ isDropdown }) =>
     return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
+  const handlePanelClick = (e: React.MouseEvent) => {
+    // Stop propagation to prevent closing when clicking inside the panel
+    e.stopPropagation();
+  };
+
   return (
-    <div className={`${styles.panel} ${!isOpen ? styles.hidden : ''} ${isDropdown ? styles.dropdownPanel : ''}`}>
+    <div
+      className={`${styles.panel} ${!isOpen ? styles.hidden : ''} ${isDropdown ? styles.dropdownPanel : ''}`}
+      onClick={handlePanelClick}
+    >
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.aiAvatar}>
