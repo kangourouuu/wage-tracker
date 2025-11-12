@@ -102,6 +102,7 @@ export const Dashboard = () => {
           <div className={styles.welcomeSection}>
             <div onClick={toggleAssistant} style={{ cursor: 'pointer' }}>
               <TimeOfDayIcon />
+              <AssistantPanel isDropdown={true} />
             </div>
             <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
           </div>

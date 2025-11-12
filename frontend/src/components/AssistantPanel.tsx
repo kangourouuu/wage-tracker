@@ -9,7 +9,11 @@ interface Message {
   text: string;
 }
 
-export const AssistantPanel: React.FC = () => {
+interface AssistantPanelProps {
+  isDropdown?: boolean;
+}
+
+export const AssistantPanel: React.FC<AssistantPanelProps> = ({ isDropdown }) => {
   const { isOpen, toggle } = useAiAssistantStore();
   const [messages, setMessages] = useState<Message[]>([{ sender: 'ai', text: 'Welcome! How can I help you?' }]);
   const [inputMessage, setInputMessage] = useState('');
@@ -24,42 +28,8 @@ export const AssistantPanel: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  if (!isOpen) {
-    return null;
-  }
-
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() === '' || isLoading) {
-      return;
-    }
-
-    const userMessage: Message = { sender: 'user', text: inputMessage };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setInputMessage('');
-    setIsLoading(true);
-
-    try {
-      const response = await api.post('/assistant/chat', { message: inputMessage });
-      const aiMessage: Message = { sender: 'ai', text: response.data };
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
-      toast.success('Message sent successfully!');
-    } catch (error) {
-      console.error('Error sending message to AI assistant:', error);
-      toast.error('Failed to get response from AI assistant.');
-      setMessages((prevMessages) => [...prevMessages, { sender: 'ai', text: 'Sorry, I am having trouble connecting right now.' }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSendMessage();
-    }
-  };
-
   return (
-    <div className={styles.panel}>
+    <div className={`${styles.panel} ${!isOpen ? styles.hidden : ''}`}>
       <div className={styles.header}>
         <h3>AI Assistant</h3>
         <button onClick={toggle} className={styles.closeButton}>&times;</button>
