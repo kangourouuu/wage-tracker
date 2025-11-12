@@ -34,27 +34,29 @@
 
   /* New positioning and z-index */
   position: absolute;
-  top: 50%;
+  top: 10vh; /* 10% from top */
   left: 50%;
   z-index: 100; /* Ensure it's above the 3D canvas */
 
   /* Initial transform for centering */
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%); /* Only horizontal centering */
+  height: 80vh; /* 100vh - 20vh (10vh top + 10vh bottom) */
+  max-height: 80vh; /* Ensure it doesn't exceed 80vh */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: float 6s ease-in-out infinite; /* Moved animation here */
-  overflow: auto; /* Explicitly set overflow */
+  overflow-y: auto; /* Explicitly set overflow */
 }
 
 .formContainer:hover {
   /* Combine centering transform with hover effect */
-  transform: translate(-50%, -50%) translateY(-5px) scale(1.02);
+  transform: translateX(-50%) translateY(-5px) scale(1.02);
   box-shadow:
     0 15px 60px rgba(0, 0, 0, 0.6), /* Even more pronounced shadow on hover */
     inset 0 1px 2px rgba(255, 255, 255, 0.4); /* Increased opacity */
 }
 
 .registerForm {
-  min-height: 700px; /* Increased min-height for desktop */
+  /* The content will scroll within the 80vh height */
 }
 
 /* === Title === */
@@ -184,15 +186,7 @@
     overflow-y: auto; /* Enable vertical scrolling */
   }
 
-  .registerForm {
-    max-height: 90vh; /* Increased max-height for mobile register form */
-    min-height: 0; /* Reset min-height for mobile */
-  }
 
-  .registerForm {
-    max-height: 90vh; /* Increased max-height for mobile register form */
-    min-height: 0; /* Reset min-height for mobile */
-  }
 
   .title {
     font-size: 1.2rem;

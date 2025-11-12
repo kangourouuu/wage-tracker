@@ -10,8 +10,8 @@
   color: var(--text-color);
   width: 90%;
   max-width: 1000px; /* Adjusted max-width for a central container */
-  height: 90%;
-  max-height: 700px; /* Adjusted max-height */
+  height: 80vh; /* Set to 80vh */
+  max-height: 80vh; /* Set to 80vh */
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -185,7 +185,6 @@
 @media (max-width: 768px) {
   .dashboardContainer {
     width: 95%;
-    height: 80vh;
     padding: 1rem;
     gap: 1rem;
   }
