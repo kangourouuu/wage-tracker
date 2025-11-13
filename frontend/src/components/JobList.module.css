@@ -16,6 +16,38 @@
   text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.8); /* More prominent text shadow */
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header h2 {
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.jobCount {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-color-light));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1.1em;
+  color: #666;
+  font-style: italic;
+}
+
 .tableContainer {
   overflow-x: auto;
 }
@@ -40,6 +72,42 @@
   font-weight: 600;
 }
 
+.actionsColumn {
+  width: 200px;
+  text-align: center;
+}
+
+.jobNameCell {
+  font-weight: 600;
+  color: #333;
+}
+
+.wageCell {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 1.05em;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.inputWithUnit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.unit {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
 .jobList tr:hover {
   background-color: var(--color-table-row-hover);
 }
@@ -48,14 +116,16 @@
   background-color: var(--error-color);
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem; /* Increased padding */
+  padding: 0.5rem 1rem; /* Adjusted padding */
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 1em; /* Increased font size */
+  font-size: 0.9em; /* Adjusted font size */
   font-weight: 600; /* Made bolder */
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(var(--error-color-rgb), 0.4); /* Added box shadow */
-  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .deleteButton:hover:not(:disabled) {
@@ -67,20 +137,23 @@
 .deleteButton:disabled {
   background-color: var(--color-button-disabled);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .editButton {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: 600;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.4);
-  margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .editButton:hover:not(:disabled) {
@@ -92,20 +165,20 @@
 .editButton:disabled {
   background-color: var(--color-button-disabled);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .saveButton {
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: 600;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(40, 167, 69, 0.4);
-  margin-right: 0.5rem;
 }
 
 .saveButton:hover:not(:disabled) {
@@ -117,16 +190,17 @@
 .saveButton:disabled {
   background-color: var(--color-button-disabled);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .cancelButton {
   background-color: #6c757d;
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: 600;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(108, 117, 125, 0.4);
@@ -141,6 +215,7 @@
 .cancelButton:disabled {
   background-color: var(--color-button-disabled);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .editInput {
@@ -169,6 +244,63 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem; /* Increased gap */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.jobTitle {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.wageInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.wageAmount {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.wageCurrency {
+  font-size: 0.9em;
+  color: #666;
+  font-weight: 500;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: var(--primary-color-light);
+  font-size: 0.9em;
 }
 
 .cardRow {
@@ -186,6 +318,7 @@
   margin-top: 0.5rem;
   display: flex;
   justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 /* Responsive adjustments for smaller screens */
