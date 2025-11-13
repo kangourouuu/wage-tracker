@@ -18,7 +18,8 @@ export class AssistantController {
 
   @Post("chat")
   async chat(@Body() createChatDto: CreateChatDto) {
-    return this.assistantService.generateContent(createChatDto);
+    const response = await this.assistantService.generateContent(createChatDto);
+    return { message: response };
   }
 
   @Post("upload-file")

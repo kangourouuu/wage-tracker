@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import api from '../services/api'; // Import the api instance
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import api from "../services/api"; // Import the api instance
 
 interface Job {
   id: string; // Assuming job has an ID after creation
@@ -29,10 +29,14 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       setTokens: (accessToken, user) => set({ accessToken, user }),
       logout: async () => {
+        const currentUser = useAuthStore.getState().user;
         try {
-          await api.post('/auth/logout'); // Call backend logout endpoint
+          // Try to logout on backend if user exists
+          if (currentUser?.id) {
+            await api.post("/auth/logout", { userId: currentUser.id });
+          }
         } catch (error) {
-          console.error('Logout API call failed:', error);
+          console.error("Logout API call failed:", error);
           // Optionally handle error, but still clear local state
         } finally {
           set({ accessToken: null, user: null });
@@ -40,8 +44,8 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage', 
-      storage: createJSONStorage(() => localStorage), 
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

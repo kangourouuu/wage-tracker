@@ -19,7 +19,7 @@ services:
   - key: JWT_REFRESH_EXP
     value: 30d
   - key: FRONTEND_URL
-    value: "*" # WARNING: This should be replaced with your actual frontend URL in production for security.
+    value: "*"
   - key: DATABASE_URL
     value: "postgresql://neondb_owner:npg_fpo1bYjlQK7a@ep-jolly-sun-a1ptgjch-pooler.ap-southeast-1.aws.neon.tech/wage-tracker-db?sslmode=require&channel_binding=require"
   # Note: Add GEMINI_API_KEY and GEMINI_API_URL as secret environment variables in Render Dashboard
