@@ -33,7 +33,8 @@ export class AuthController {
   @Post("logout")
   @HttpCode(HttpStatus.OK)
   logout(@Body() body?: { userId?: string }) {
-    // Make logout optional - frontend can clear local state even if this fails
+    // Logout endpoint doesn't require authentication
+    // Frontend can clear local state even if backend logout fails
     if (body?.userId) {
       return this.authService.logout(body.userId);
     }

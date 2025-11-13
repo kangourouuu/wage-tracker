@@ -24,14 +24,24 @@ export class AssistantService {
     this.geminiApiUrl = this.configService.get<string>("app.geminiApiUrl");
 
     if (!this.geminiApiKey) {
-      throw new InternalServerErrorException(
-        "Gemini API Key is not configured."
+      console.warn(
+        "⚠️ Gemini API Key is not configured. AI assistant features will be disabled."
+      );
+      console.warn(
+        "Please set GEMINI_API_KEY environment variable to enable AI features."
       );
     }
   }
 
   async generateContent(createChatDto: CreateChatDto): Promise<string> {
     const { message } = createChatDto;
+
+    // Check if API key is configured
+    if (!this.geminiApiKey) {
+      throw new InternalServerErrorException(
+        "AI Assistant is not configured. Please contact the administrator to set up the GEMINI_API_KEY."
+      );
+    }
 
     const requestBody = {
       contents: [
@@ -60,7 +70,7 @@ export class AssistantService {
                 error.response?.data || error.message
               );
               throw new InternalServerErrorException(
-                "Error communicating with Gemini API"
+                "Error communicating with Gemini AI. Please try again later."
               );
             })
           )
