@@ -8,6 +8,7 @@ interface Message {
   sender: "user" | "ai";
   text: string;
   timestamp?: Date;
+  confirmationData?: any;
 }
 
 interface AssistantPanelProps {
@@ -27,6 +28,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [pendingConfirmation, setPendingConfirmation] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -55,12 +57,46 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
             "Content-Type": "multipart/form-data",
           },
         });
-        const aiMessage: Message = {
-          sender: "ai",
-          text: response.data.message,
-        };
-        setMessages((prevMessages) => [...prevMessages, aiMessage]);
-        toast.success("File uploaded successfully!");
+
+        // Check if we need user confirmation
+        if (response.data.needsConfirmation) {
+          setPendingConfirmation(response.data.data);
+          const confirmMessage =
+            `${response.data.message}\n\n` +
+            `Work Entries Found: ${response.data.data.workEntries.length}\n\n` +
+            response.data.data.workEntries
+              .slice(0, 5)
+              .map((entry: any, idx: number) => {
+                const job = response.data.data.jobs.find(
+                  (j: any) => j.id === entry.jobId
+                );
+                const start = new Date(entry.startTime);
+                const end = new Date(entry.endTime);
+                return `${idx + 1}. ${
+                  job?.name || "Unknown Job"
+                } - ${start.toLocaleDateString()} ${start.toLocaleTimeString()} to ${end.toLocaleTimeString()} (Break: ${
+                  entry.breakDuration || 0
+                }min)`;
+              })
+              .join("\n") +
+            (response.data.data.workEntries.length > 5 ? "\n...and more" : "") +
+            "\n\nPlease confirm to import these entries.";
+
+          const aiMessage: Message = {
+            sender: "ai",
+            text: confirmMessage,
+            confirmationData: response.data.data,
+          };
+          setMessages((prevMessages) => [...prevMessages, aiMessage]);
+        } else {
+          const aiMessage: Message = {
+            sender: "ai",
+            text: response.data.message,
+          };
+          setMessages((prevMessages) => [...prevMessages, aiMessage]);
+        }
+
+        toast.success("File analyzed successfully!");
       } catch (error) {
         console.error("Error uploading file to AI assistant:", error);
         toast.error("Failed to upload file to AI assistant.");
@@ -80,6 +116,52 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
 
   const handleFileUploadClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleConfirmImport = async () => {
+    if (!pendingConfirmation) return;
+
+    setIsLoading(true);
+    try {
+      const response = await api.post("/assistant/confirm-import", {
+        workEntries: pendingConfirmation.workEntries,
+      });
+
+      const aiMessage: Message = {
+        sender: "ai",
+        text: response.data.message,
+        timestamp: new Date(),
+      };
+      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      setPendingConfirmation(null);
+      toast.success("Work entries imported successfully!");
+
+      // Refresh the page data
+      window.location.reload();
+    } catch (error) {
+      console.error("Error importing work entries:", error);
+      toast.error("Failed to import work entries.");
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          sender: "ai",
+          text: "Sorry, there was an error importing the work entries.",
+          timestamp: new Date(),
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelImport = () => {
+    setPendingConfirmation(null);
+    const aiMessage: Message = {
+      sender: "ai",
+      text: "Import cancelled. You can upload another file whenever you're ready.",
+      timestamp: new Date(),
+    };
+    setMessages((prevMessages) => [...prevMessages, aiMessage]);
   };
 
   const handleSendMessage = async () => {
@@ -258,6 +340,31 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
         )}
         <div ref={messagesEndRef} />
       </div>
+
+      {pendingConfirmation && (
+        <div className={styles.confirmationBar}>
+          <span className={styles.confirmationText}>
+            Ready to import {pendingConfirmation.workEntries.length} work
+            entries?
+          </span>
+          <div className={styles.confirmationButtons}>
+            <button
+              onClick={handleConfirmImport}
+              className={styles.confirmButton}
+              disabled={isLoading}
+            >
+              Confirm Import
+            </button>
+            <button
+              onClick={handleCancelImport}
+              className={styles.cancelButtonBar}
+              disabled={isLoading}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className={styles.inputContainer}>
         <input

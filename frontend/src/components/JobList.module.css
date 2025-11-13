@@ -55,6 +55,7 @@
   font-weight: 600; /* Made bolder */
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(var(--error-color-rgb), 0.4); /* Added box shadow */
+  margin-left: 0.5rem;
 }
 
 .deleteButton:hover:not(:disabled) {
@@ -66,6 +67,90 @@
 .deleteButton:disabled {
   background-color: var(--color-button-disabled);
   cursor: not-allowed;
+}
+
+.editButton {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.4);
+  margin-right: 0.5rem;
+}
+
+.editButton:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.6);
+}
+
+.editButton:disabled {
+  background-color: var(--color-button-disabled);
+  cursor: not-allowed;
+}
+
+.saveButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.4);
+  margin-right: 0.5rem;
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.6);
+}
+
+.saveButton:disabled {
+  background-color: var(--color-button-disabled);
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.4);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.6);
+}
+
+.cancelButton:disabled {
+  background-color: var(--color-button-disabled);
+  cursor: not-allowed;
+}
+
+.editInput {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  font-size: 1em;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
 }
 
 /* Card view for mobile */

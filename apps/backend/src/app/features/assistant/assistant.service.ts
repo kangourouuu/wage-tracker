@@ -6,6 +6,8 @@ import { catchError, firstValueFrom } from "rxjs";
 import * as csv from "csv-parser"; // Import csv-parser
 import * as xlsx from "xlsx"; // Import xlsx
 import { Readable } from "stream"; // Import Readable stream
+import { WageService } from "../wage/wage.service";
+import { JobService } from "../wage/job.service";
 
 @Injectable()
 export class AssistantService {
@@ -14,7 +16,9 @@ export class AssistantService {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly wageService: WageService,
+    private readonly jobService: JobService
   ) {
     this.geminiApiKey = this.configService.get<string>("app.geminiApiKey");
     this.geminiApiUrl = this.configService.get<string>("app.geminiApiUrl");
@@ -77,7 +81,7 @@ export class AssistantService {
     }
   }
 
-  async processUploadedFile(file: Express.Multer.File) {
+  async processUploadedFile(file: Express.Multer.File, userId: string) {
     if (!file) {
       return { message: "No file uploaded." };
     }
@@ -90,35 +94,178 @@ export class AssistantService {
     let responseMessage: string = "";
 
     try {
+      // Step 1: Extract data from file
       switch (file.mimetype) {
         case "text/csv":
           extractedData = await this.parseCsv(file.buffer);
-          responseMessage = `Successfully processed CSV file: ${file.originalname}. Extracted ${extractedData.length} rows.`;
           break;
         case "application/vnd.ms-excel": // .xls
         case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": // .xlsx
           extractedData = this.parseExcel(file.buffer);
-          responseMessage = `Successfully processed Excel file: ${file.originalname}. Extracted ${extractedData.length} rows.`;
           break;
         case "image/jpeg":
         case "image/png":
         case "image/gif":
-          responseMessage = `Successfully received image file: ${file.originalname}. OCR integration needed for content extraction.`;
-          break;
+          return {
+            message: `Image file received: ${file.originalname}. OCR for image processing is not yet implemented. Please use CSV or Excel files.`,
+            data: [],
+          };
         default:
-          responseMessage = `Unsupported file type: ${file.mimetype}`;
-          break;
+          return {
+            message: `Unsupported file type: ${file.mimetype}. Please upload CSV or Excel files.`,
+            data: [],
+          };
       }
 
-      // Here you would typically process extractedData further, e.g.,
-      // send it to the AI for analysis or save to database.
-      console.log("Extracted Data:", extractedData);
-      return { message: responseMessage, data: extractedData };
+      if (extractedData.length === 0) {
+        return {
+          message: "No data found in the file.",
+          data: [],
+        };
+      }
+
+      // Step 2: Get user's jobs
+      const userJobs = await this.jobService.findAll(userId);
+
+      if (userJobs.length === 0) {
+        return {
+          message:
+            "Please create at least one job before importing work entries.",
+          data: extractedData,
+        };
+      }
+
+      // Step 3: Use AI to analyze and structure the data
+      const aiAnalysis = await this.analyzeWorkDataWithAI(
+        extractedData,
+        userJobs
+      );
+
+      if (!aiAnalysis.workEntries || aiAnalysis.workEntries.length === 0) {
+        return {
+          message: `Analyzed ${extractedData.length} rows, but couldn't identify valid work entries. ${aiAnalysis.message || "Please ensure your file has columns for date, start time, end time, and job/shift name."}`,
+          data: extractedData,
+        };
+      }
+
+      // Step 4: Return analysis for user confirmation
+      return {
+        message: `Found ${aiAnalysis.workEntries.length} work entries in ${file.originalname}. Please review and confirm to import.`,
+        needsConfirmation: true,
+        data: {
+          workEntries: aiAnalysis.workEntries,
+          jobs: userJobs,
+          aiMessage: aiAnalysis.message,
+        },
+      };
     } catch (error) {
       console.error("Error processing uploaded file:", error);
       throw new InternalServerErrorException(
-        `Failed to process file: ${file.originalname}`
+        `Failed to process file: ${error.message}`
       );
+    }
+  }
+
+  async confirmAndImportEntries(confirmImportDto: any, userId: string) {
+    const createdEntries = [];
+    const errors = [];
+
+    for (const entry of confirmImportDto.workEntries) {
+      try {
+        const workEntry = await this.wageService.create(userId, {
+          startTime: entry.startTime,
+          endTime: entry.endTime,
+          jobId: entry.jobId,
+          breakDuration: entry.breakDuration || 0,
+        });
+        createdEntries.push(workEntry);
+      } catch (error) {
+        errors.push(
+          `Failed to create entry for ${entry.startTime}: ${error.message}`
+        );
+      }
+    }
+
+    let responseMessage = `Successfully imported ${createdEntries.length} work entries.`;
+
+    if (errors.length > 0) {
+      responseMessage += ` ${errors.length} entries failed: ${errors.slice(0, 3).join(", ")}${errors.length > 3 ? "..." : ""}`;
+    }
+
+    return {
+      message: responseMessage,
+      data: {
+        created: createdEntries.length,
+        failed: errors.length,
+        entries: createdEntries,
+        errors: errors,
+      },
+    };
+  }
+
+  private async analyzeWorkDataWithAI(
+    data: any[],
+    userJobs: any[]
+  ): Promise<any> {
+    // Prepare the prompt for AI analysis
+    const jobsList = userJobs
+      .map((j) => `- ${j.name} (ID: ${j.id}, Rate: $${j.wagePerHour}/hour)`)
+      .join("\n");
+
+    const prompt = `You are analyzing work schedule data to extract work entries.
+
+User's available jobs:
+${jobsList}
+
+Raw data from file (${data.length} rows):
+${JSON.stringify(data.slice(0, 20), null, 2)}${data.length > 20 ? "\n... (and more rows)" : ""}
+
+Instructions:
+1. Identify columns that represent: date, start time, end time, job/shift name, break duration
+2. Match job names from the data to the user's available jobs (be flexible with naming variations)
+3. Calculate work hours from start/end times
+4. Format each work entry as:
+   {
+     "startTime": "ISO 8601 datetime string",
+     "endTime": "ISO 8601 datetime string",
+     "jobId": "matching job ID from user's jobs",
+     "breakDuration": number (in minutes, default 0)
+   }
+
+Return ONLY a valid JSON object in this exact format:
+{
+  "workEntries": [...array of work entry objects...],
+  "message": "brief explanation of what was found"
+}
+
+If you cannot identify work data, return:
+{
+  "workEntries": [],
+  "message": "explanation of what's missing or unclear"
+}`;
+
+    try {
+      const aiResponse = await this.generateContent({ message: prompt });
+
+      // Extract JSON from AI response (it might include markdown code blocks)
+      let jsonStr = aiResponse.trim();
+
+      // Remove markdown code blocks if present
+      if (jsonStr.includes("```json")) {
+        jsonStr = jsonStr.split("```json")[1].split("```")[0].trim();
+      } else if (jsonStr.includes("```")) {
+        jsonStr = jsonStr.split("```")[1].split("```")[0].trim();
+      }
+
+      const parsed = JSON.parse(jsonStr);
+      return parsed;
+    } catch (error) {
+      console.error("AI analysis error:", error);
+      return {
+        workEntries: [],
+        message:
+          "Failed to analyze the data structure. Please ensure your file has clear columns for date, time, and job information.",
+      };
     }
   }
 

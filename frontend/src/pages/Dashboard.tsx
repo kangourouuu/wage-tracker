@@ -1,28 +1,28 @@
-import { useAuthStore } from '../store/authStore';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import api, { deleteWorkEntry, deleteJob } from '../services/api';
-import type { WorkEntry, Job } from '../types/work-entry';
-import 'react-calendar/dist/Calendar.css';
-import '../styles/Calendar.css';
-import styles from './Dashboard.module.css';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Calendar from 'react-calendar';
-import AddEntryModal from '../components/AddEntryModal';
-import TimeOfDayIcon from '../components/TimeOfDayIcon';
-import SummaryCard from '../components/SummaryCard';
-import WorkEntryList from '../components/WorkEntryList';
-import JobList from '../components/JobList';
-import { useAiAssistantStore } from '../features/ai-assistant/store/aiAssistantStore';
-import { AssistantPanel } from '../components/AssistantPanel';
+import { useAuthStore } from "../store/authStore";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import api, { deleteWorkEntry, deleteJob } from "../services/api";
+import type { WorkEntry, Job } from "../types/work-entry";
+import "react-calendar/dist/Calendar.css";
+import "../styles/Calendar.css";
+import styles from "./Dashboard.module.css";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import Calendar from "react-calendar";
+import AddEntryModal from "../components/AddEntryModal";
+import TimeOfDayIcon from "../components/TimeOfDayIcon";
+import SummaryCard from "../components/SummaryCard";
+import WorkEntryList from "../components/WorkEntryList";
+import JobList from "../components/JobList";
+import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
+import { AssistantPanel } from "../components/AssistantPanel";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
-  const { data } = await api.get('/work-entries');
+  const { data } = await api.get("/work-entries");
   return data;
 };
 
 const fetchJobs = async (): Promise<Job[]> => {
-  const { data } = await api.get('/jobs');
+  const { data } = await api.get("/jobs");
   return data;
 };
 
@@ -42,7 +42,7 @@ const calculateSummary = (entries: WorkEntry[]) => {
     const durationMs = end - start;
     const breakMs = entry.breakDuration * 60 * 1000;
     const hours = (durationMs - breakMs) / (1000 * 60 * 60);
-    return acc + (hours * entry.job.wagePerHour);
+    return acc + hours * entry.job.wagePerHour;
   }, 0);
 
   return {
@@ -60,31 +60,48 @@ export const Dashboard = () => {
   const { toggle: toggleAssistant } = useAiAssistantStore();
 
   const { data: workEntries } = useQuery<WorkEntry[]>({
-    queryKey: ['workEntries'],
+    queryKey: ["workEntries"],
     queryFn: fetchWorkEntries,
   });
 
   const { data: jobs } = useQuery<Job[]>({
-    queryKey: ['jobs'],
+    queryKey: ["jobs"],
     queryFn: fetchJobs,
   });
 
-  const { mutate: deleteWorkEntryMutation, isPending: isDeletingWorkEntry } = useMutation({
-    mutationFn: deleteWorkEntry,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workEntries'] });
-    },
-  });
+  const { mutate: deleteWorkEntryMutation, isPending: isDeletingWorkEntry } =
+    useMutation({
+      mutationFn: deleteWorkEntry,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["workEntries"] });
+      },
+    });
 
   const { mutate: deleteJobMutation, isPending: isDeletingJob } = useMutation({
     mutationFn: deleteJob,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['jobs'] });
-      queryClient.invalidateQueries({ queryKey: ['workEntries'] }); // Invalidate work entries as well
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["workEntries"] }); // Invalidate work entries as well
     },
   });
 
-  const summary = workEntries ? calculateSummary(workEntries) : { totalHours: '0.00', totalEarnings: '0.00' };
+  const { mutate: updateJobMutation, isPending: isUpdatingJob } = useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: { name: string; wagePerHour: number };
+    }) => api.patch(`/jobs/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["workEntries"] });
+    },
+  });
+
+  const summary = workEntries
+    ? calculateSummary(workEntries)
+    : { totalHours: "0.00", totalEarnings: "0.00" };
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
@@ -100,19 +117,29 @@ export const Dashboard = () => {
       <div className={styles.dashboardContainer}>
         <header className={styles.header}>
           <div className={styles.welcomeSection}>
-            <div onClick={toggleAssistant} className={styles.assistantToggleContainer} style={{ cursor: 'pointer' }}>
+            <div
+              onClick={toggleAssistant}
+              className={styles.assistantToggleContainer}
+              style={{ cursor: "pointer" }}
+            >
               <TimeOfDayIcon />
               <AssistantPanel isDropdown={true} />
             </div>
-            <h1 className={styles.welcomeTitle}>{t('welcome', { name: user?.name })}</h1>
+            <h1 className={styles.welcomeTitle}>
+              {t("welcome", { name: user?.name })}
+            </h1>
           </div>
           <div className={styles.headerActions}>
-            <select onChange={(e) => changeLanguage(e.target.value)} value={i18n.language} className={styles.languageSwitcher}>
+            <select
+              onChange={(e) => changeLanguage(e.target.value)}
+              value={i18n.language}
+              className={styles.languageSwitcher}
+            >
               <option value="en">English</option>
               <option value="vn">Tiếng Việt</option>
             </select>
             <button onClick={logout} className={styles.logoutButton}>
-              {t('logout')}
+              {t("logout")}
             </button>
           </div>
         </header>
@@ -129,13 +156,16 @@ export const Dashboard = () => {
               }}
               value={selectedDate}
               onClickDay={handleDateClick}
-              locale={i18n.language === 'vn' ? 'vi' : 'en-US'}
+              locale={i18n.language === "vn" ? "vi" : "en-US"}
             />
           </div>
 
           <div className={styles.summaryCardsContainer}>
-            <SummaryCard title={t('totalHours')} value={summary.totalHours} />
-            <SummaryCard title={t('estimatedEarnings')} value={summary.totalEarnings} />
+            <SummaryCard title={t("totalHours")} value={summary.totalHours} />
+            <SummaryCard
+              title={t("estimatedEarnings")}
+              value={summary.totalEarnings}
+            />
           </div>
         </div>
         <div className={styles.listsContainer}>
@@ -150,13 +180,18 @@ export const Dashboard = () => {
             <JobList
               jobs={jobs}
               onDelete={deleteJobMutation}
+              onUpdate={(id, data) => updateJobMutation({ id, data })}
               isDeleting={isDeletingJob}
+              isUpdating={isUpdatingJob}
             />
           )}
         </div>
       </div>
-      <AddEntryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedDate={selectedDate} />
-
+      <AddEntryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        selectedDate={selectedDate}
+      />
     </>
   );
 };
