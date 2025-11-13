@@ -117,12 +117,16 @@ export const Dashboard = () => {
       <div className={styles.dashboardContainer}>
         <header className={styles.header}>
           <div className={styles.welcomeSection}>
-            <div
-              onClick={toggleAssistant}
-              className={styles.assistantToggleContainer}
-              style={{ cursor: "pointer" }}
-            >
-              <TimeOfDayIcon />
+            <div className={styles.assistantToggleContainer}>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleAssistant();
+                }}
+                style={{ cursor: "pointer", display: "inline-flex" }}
+              >
+                <TimeOfDayIcon />
+              </div>
               <AssistantPanel isDropdown={true} />
             </div>
             <h1 className={styles.welcomeTitle}>

@@ -7,7 +7,7 @@ import api from "@/services/api";
 interface Message {
   sender: "user" | "ai";
   text: string;
-  timestamp?: Date;
+  timestamp?: string | Date;
   confirmationData?: any;
 }
 
@@ -23,7 +23,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
     {
       sender: "ai",
       text: "Hello! I'm your AI assistant. How can I help you today?",
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     },
   ]);
   const [inputMessage, setInputMessage] = useState("");
@@ -86,12 +86,14 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
             sender: "ai",
             text: confirmMessage,
             confirmationData: response.data.data,
+            timestamp: new Date().toISOString(),
           };
           setMessages((prevMessages) => [...prevMessages, aiMessage]);
         } else {
           const aiMessage: Message = {
             sender: "ai",
             text: response.data.message,
+            timestamp: new Date().toISOString(),
           };
           setMessages((prevMessages) => [...prevMessages, aiMessage]);
         }
@@ -105,6 +107,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
           {
             sender: "ai",
             text: "Sorry, I am having trouble processing your file right now.",
+            timestamp: new Date().toISOString(),
           },
         ]);
       } finally {
@@ -146,7 +149,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
         {
           sender: "ai",
           text: "Sorry, there was an error importing the work entries.",
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
         },
       ]);
     } finally {
@@ -159,7 +162,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
     const aiMessage: Message = {
       sender: "ai",
       text: "Import cancelled. You can upload another file whenever you're ready.",
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     };
     setMessages((prevMessages) => [...prevMessages, aiMessage]);
   };
@@ -172,7 +175,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
     const userMessage: Message = {
       sender: "user",
       text: inputMessage,
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInputMessage("");
@@ -185,7 +188,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
       const aiMessage: Message = {
         sender: "ai",
         text: response.data.message,
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
       };
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
       toast.success("Message sent successfully!");
@@ -197,7 +200,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
         {
           sender: "ai",
           text: "Sorry, I am having trouble connecting right now.",
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
         },
       ]);
     } finally {
@@ -207,13 +210,16 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission
       handleSendMessage();
     }
   };
 
-  const formatTime = (date?: Date) => {
+  const formatTime = (date?: Date | string) => {
     if (!date) return "";
-    return date.toLocaleTimeString("en-US", {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    if (isNaN(dateObj.getTime())) return "";
+    return dateObj.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     });

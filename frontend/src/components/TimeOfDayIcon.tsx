@@ -1,11 +1,7 @@
 import React from 'react';
 import styles from './TimeOfDayIcon.module.css'; // Assuming a new CSS module for styling
 
-interface TimeOfDayIconProps {
-  // No props needed for now, as it will use system time
-}
-
-const TimeOfDayIcon: React.FC<TimeOfDayIconProps> = () => {
+const TimeOfDayIcon: React.FC = () => {
   const [isDay, setIsDay] = React.useState(true); // Default to day
 
   React.useEffect(() => {
