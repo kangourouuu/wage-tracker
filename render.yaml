@@ -20,9 +20,7 @@ services:
     value: 30d
   - key: FRONTEND_URL
     value: "*" # WARNING: This should be replaced with your actual frontend URL in production for security.
-  - key: GEMINI_API_KEY
-    value: AIzaSyBsl8pr3AAvlP0yfaAbbaua_dqM-LrZ57Q
-  - key: GEMINI_API_URL
-    value: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
   - key: DATABASE_URL
     value: "postgresql://neondb_owner:npg_fpo1bYjlQK7a@ep-jolly-sun-a1ptgjch-pooler.ap-southeast-1.aws.neon.tech/wage-tracker-db?sslmode=require&channel_binding=require"
+  # Note: Add GEMINI_API_KEY and GEMINI_API_URL as secret environment variables in Render Dashboard
+  # Go to: Service Settings > Environment > Add Environment Variable
