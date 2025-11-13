@@ -191,13 +191,6 @@ export const Dashboard = () => {
           </div>
 
           <div className={styles.listsContainer}>
-            {workEntries && (
-              <WorkEntryList
-                workEntries={workEntries}
-                onDelete={deleteWorkEntryMutation}
-                isDeleting={isDeletingWorkEntry}
-              />
-            )}
             {jobs && (
               <JobList
                 jobs={jobs}
@@ -205,6 +198,13 @@ export const Dashboard = () => {
                 onUpdate={(id, data) => updateJobMutation({ id, data })}
                 isDeleting={isDeletingJob}
                 isUpdating={isUpdatingJob}
+              />
+            )}
+            {workEntries && (
+              <WorkEntryList
+                workEntries={workEntries}
+                onDelete={deleteWorkEntryMutation}
+                isDeleting={isDeletingWorkEntry}
               />
             )}
           </div>
