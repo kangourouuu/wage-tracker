@@ -1,4 +1,3 @@
-
 import {
   Column,
   CreateDateColumn,
@@ -6,13 +5,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { WorkEntry } from '../../wage/entities/work-entry.entity';
-import { Job } from '../../wage/entities/job.entity'; // Import Job entity
+} from "typeorm";
+import { WorkEntry } from "../../wage/entities/work-entry.entity";
+import { Job } from "../../wage/entities/job.entity"; // Import Job entity
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()

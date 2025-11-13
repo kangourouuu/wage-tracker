@@ -1,8 +1,7 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { HttpService } from "@nestjs/axios";
 import { CreateChatDto } from "./dto/create-chat.dto";
-import { catchError, firstValueFrom } from "rxjs";
+import Groq from "groq-sdk";
 import * as csv from "csv-parser"; // Import csv-parser
 import * as xlsx from "xlsx"; // Import xlsx
 import { Readable } from "stream"; // Import Readable stream
@@ -11,31 +10,37 @@ import { JobService } from "../wage/job.service";
 
 @Injectable()
 export class AssistantService {
-  private readonly geminiApiKey: string;
-  private readonly geminiApiUrl: string;
+  private readonly groqClient: Groq | null;
+  private readonly groqModel: string;
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly httpService: HttpService,
     private readonly wageService: WageService,
-    private readonly jobService: JobService
+    private readonly jobService: JobService,
   ) {
-    this.geminiApiKey = this.configService.get<string>("app.geminiApiKey");
-    this.geminiApiUrl = this.configService.get<string>("app.geminiApiUrl");
+    const groqApiKey = this.configService.get<string>("app.groqApiKey");
+    this.groqModel = this.configService.get<string>("app.groqModel");
 
     console.log("🔧 Assistant Service Initialization:");
-    console.log("  - GEMINI_API_KEY present:", this.geminiApiKey ? "Yes (length: " + this.geminiApiKey.length + ")" : "No");
-    console.log("  - GEMINI_API_URL:", this.geminiApiUrl);
+    console.log(
+      "  - GROQ_API_KEY present:",
+      groqApiKey ? "Yes (length: " + groqApiKey.length + ")" : "No",
+    );
+    console.log("  - GROQ_MODEL:", this.groqModel);
 
-    if (!this.geminiApiKey) {
+    if (!groqApiKey) {
       console.warn(
-        "⚠️ Gemini API Key is not configured. AI assistant features will be disabled."
+        "⚠️ Groq API Key is not configured. AI assistant features will be disabled.",
       );
       console.warn(
-        "Please set GEMINI_API_KEY environment variable to enable AI features."
+        "Please set GROQ_API_KEY environment variable to enable AI features.",
       );
+      this.groqClient = null;
     } else {
-      console.log("✅ Gemini API Key is configured - AI Assistant is ready");
+      this.groqClient = new Groq({
+        apiKey: groqApiKey,
+      });
+      console.log("✅ Groq API Key is configured - AI Assistant is ready");
     }
   }
 
@@ -43,88 +48,61 @@ export class AssistantService {
     const { message } = createChatDto;
 
     // Check if API key is configured
-    if (!this.geminiApiKey) {
-      console.error("❌ GEMINI_API_KEY is not set in environment variables");
+    if (!this.groqClient) {
+      console.error("❌ GROQ_API_KEY is not set in environment variables");
       throw new InternalServerErrorException(
-        "AI Assistant is not configured. Please contact the administrator to set up the GEMINI_API_KEY."
+        "AI Assistant is not configured. Please contact the administrator to set up the GROQ_API_KEY.",
       );
     }
 
-    console.log("🔑 API Key present:", this.geminiApiKey ? "Yes" : "No");
-    console.log("🌐 API URL:", this.geminiApiUrl);
-
-    const requestBody = {
-      contents: [
-        {
-          parts: [
-            {
-              text: message,
-            },
-          ],
-        },
-      ],
-    };
+    console.log("🔑 Using Groq model:", this.groqModel);
 
     try {
-      const { data } = await firstValueFrom(
-        this.httpService
-          .post(this.geminiApiUrl, requestBody, {
-            params: {
-              key: this.geminiApiKey,
-            },
-          })
-          .pipe(
-            catchError((error) => {
-              console.error("❌ Gemini API Error Details:");
-              console.error("Status:", error.response?.status);
-              console.error("Status Text:", error.response?.statusText);
-              console.error("Response Data:", JSON.stringify(error.response?.data, null, 2));
-              console.error("Error Message:", error.message);
-              
-              // Provide more specific error messages based on status code
-              if (error.response?.status === 400) {
-                throw new InternalServerErrorException(
-                  "Invalid request to Gemini AI. Please check the API configuration."
-                );
-              } else if (error.response?.status === 401 || error.response?.status === 403) {
-                throw new InternalServerErrorException(
-                  "Gemini API Key is invalid or lacks permissions. Please check your API key."
-                );
-              } else if (error.response?.status === 429) {
-                throw new InternalServerErrorException(
-                  "Gemini API rate limit exceeded. Please try again later."
-                );
-              }
-              
-              throw new InternalServerErrorException(
-                "Error communicating with Gemini AI. Please try again later."
-              );
-            })
-          )
-      );
+      const chatCompletion = await this.groqClient.chat.completions.create({
+        messages: [
+          {
+            role: "user",
+            content: message,
+          },
+        ],
+        model: this.groqModel,
+        temperature: 0.7,
+        max_tokens: 4096,
+      });
 
-      console.log("✅ Received response from Gemini API");
+      console.log("✅ Received response from Groq API");
 
-      // Assuming the response structure has candidates[0].content.parts[0].text
-      const geminiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      const groqResponse = chatCompletion.choices?.[0]?.message?.content;
 
-      if (!geminiResponse) {
-        console.error("❌ Invalid response structure:", JSON.stringify(data, null, 2));
+      if (!groqResponse) {
+        console.error("❌ Invalid response structure from Groq API");
         throw new InternalServerErrorException(
-          "Invalid response from Gemini API"
+          "Invalid response from Groq API",
         );
       }
 
-      return geminiResponse;
+      return groqResponse;
     } catch (error) {
-      // Re-throw if it's already an InternalServerErrorException
-      if (error instanceof InternalServerErrorException) {
-        throw error;
+      // Handle Groq-specific errors
+      console.error("❌ Groq API Error Details:");
+      console.error("Error:", error.message);
+
+      if (error.status === 400) {
+        throw new InternalServerErrorException(
+          "Invalid request to Groq AI. Please check the API configuration.",
+        );
+      } else if (error.status === 401) {
+        throw new InternalServerErrorException(
+          "Groq API Key is invalid or lacks permissions. Please check your API key.",
+        );
+      } else if (error.status === 429) {
+        throw new InternalServerErrorException(
+          "Groq API rate limit exceeded. Please try again later.",
+        );
       }
-      // Log unexpected errors
-      console.error("❌ Unexpected error in generateContent:", error);
+
       throw new InternalServerErrorException(
-        "An unexpected error occurred while processing your request."
+        "Error communicating with Groq AI. Please try again later.",
       );
     }
   }
@@ -135,11 +113,11 @@ export class AssistantService {
     }
 
     console.log(
-      `Processing file: ${file.originalname}, type: ${file.mimetype}`
+      `Processing file: ${file.originalname}, type: ${file.mimetype}`,
     );
 
     let extractedData: any[] = [];
-    let responseMessage: string = "";
+    const responseMessage: string = "";
 
     try {
       // Step 1: Extract data from file
@@ -186,7 +164,7 @@ export class AssistantService {
       // Step 3: Use AI to analyze and structure the data
       const aiAnalysis = await this.analyzeWorkDataWithAI(
         extractedData,
-        userJobs
+        userJobs,
       );
 
       if (!aiAnalysis.workEntries || aiAnalysis.workEntries.length === 0) {
@@ -209,7 +187,7 @@ export class AssistantService {
     } catch (error) {
       console.error("Error processing uploaded file:", error);
       throw new InternalServerErrorException(
-        `Failed to process file: ${error.message}`
+        `Failed to process file: ${error.message}`,
       );
     }
   }
@@ -229,7 +207,7 @@ export class AssistantService {
         createdEntries.push(workEntry);
       } catch (error) {
         errors.push(
-          `Failed to create entry for ${entry.startTime}: ${error.message}`
+          `Failed to create entry for ${entry.startTime}: ${error.message}`,
         );
       }
     }
@@ -253,7 +231,7 @@ export class AssistantService {
 
   private async analyzeWorkDataWithAI(
     data: any[],
-    userJobs: any[]
+    userJobs: any[],
   ): Promise<any> {
     // Prepare the prompt for AI analysis
     const jobsList = userJobs
