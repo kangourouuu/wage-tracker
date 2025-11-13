@@ -218,7 +218,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
   const formatAIMessage = (text: string) => {
     // Split text into lines and format them
     const lines = text.split('\n');
-    const formatted: JSX.Element[] = [];
+    const formatted: React.ReactNode[] = [];
     let key = 0;
 
     for (let i = 0; i < lines.length; i++) {
@@ -233,7 +233,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
       // Format bold text (**text**)
       let formattedLine = line;
       const boldRegex = /\*\*([^*]+)\*\*/g;
-      const parts: (string | JSX.Element)[] = [];
+      const parts: (string | React.ReactElement)[] = [];
       let lastIndex = 0;
       let match;
 
