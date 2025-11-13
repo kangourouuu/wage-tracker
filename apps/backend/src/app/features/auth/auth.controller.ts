@@ -46,7 +46,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   refresh(
     @GetCurrentUserId() userId: string,
-    @Body() refreshTokenDto: RefreshTokenDto
+    @Body() refreshTokenDto: RefreshTokenDto,
   ) {
     return this.authService.refresh(userId, refreshTokenDto.refreshToken);
   }

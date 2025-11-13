@@ -114,7 +114,8 @@ export class AuthService {
 
     const accessExp = this.configService.getOrThrow<string>("jwt.accessExp");
     const refreshExp = this.configService.getOrThrow<string>("jwt.refreshExp");
-    const refreshSecret = this.configService.getOrThrow<string>("jwt.refreshSecret");
+    const refreshSecret =
+      this.configService.getOrThrow<string>("jwt.refreshSecret");
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {

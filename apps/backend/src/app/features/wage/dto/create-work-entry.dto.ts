@@ -1,5 +1,10 @@
-
-import { IsDateString, IsUUID, IsNumber, IsOptional, Min } from 'class-validator';
+import {
+  IsDateString,
+  IsUUID,
+  IsNumber,
+  IsOptional,
+  Min,
+} from "class-validator";
 
 export class CreateWorkEntryDto {
   @IsDateString()

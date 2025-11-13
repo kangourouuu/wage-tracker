@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Job } from './entities/job.entity';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
-import { UserService } from '../user/user.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Job } from "./entities/job.entity";
+import { CreateJobDto } from "./dto/create-job.dto";
+import { UpdateJobDto } from "./dto/update-job.dto";
+import { UserService } from "../user/user.service";
 
 @Injectable()
 export class JobService {
@@ -17,7 +17,7 @@ export class JobService {
   async create(userId: string, createJobDto: CreateJobDto): Promise<Job> {
     const user = await this.userService.findById(userId);
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     const job = this.jobRepository.create({ ...createJobDto, user });
     return this.jobRepository.save(job);
@@ -32,7 +32,7 @@ export class JobService {
       where: { id, user: { id: userId } },
     });
     if (!job) {
-      throw new NotFoundException('Job not found');
+      throw new NotFoundException("Job not found");
     }
     return job;
   }
@@ -53,7 +53,7 @@ export class JobService {
       user: { id: userId },
     });
     if (result.affected === 0) {
-      throw new NotFoundException('Job not found');
+      throw new NotFoundException("Job not found");
     }
   }
 }

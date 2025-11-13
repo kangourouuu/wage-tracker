@@ -1,5 +1,4 @@
-
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 
 type JwtPayload = {
   sub: string;
