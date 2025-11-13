@@ -39,18 +39,21 @@ If you see the following errors:
 - **"AI Assistant is not configured"**: The GEMINI_API_KEY is not set in Render Dashboard
 - **"Error communicating with Gemini AI"**: Check that your API key is valid and has not exceeded quota limits
 - **"models/gemini-pro is not found"**: The API URL is using an outdated model name. Make sure `GEMINI_API_URL` is set to use `gemini-1.5-flash` or `gemini-1.5-pro`
+- **"models/gemini-1.5-flash is not found for API version v1beta"**: The API key may have restrictions. Try using the v1 API endpoint instead of v1beta
 
 ### Model Information
 
-The application uses `gemini-1.5-flash` by default, which is:
+The application uses `gemini-1.5-flash` with the v1 API by default, which is:
 - Fast and efficient for most use cases
 - Cost-effective
 - Suitable for chat and content generation
 
 If you need more advanced capabilities, you can set `GEMINI_API_URL` to use `gemini-1.5-pro` instead:
 ```
-https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent
+https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent
 ```
+
+**Note:** If you encounter model not found errors, ensure your API key has access to the Gemini 1.5 models. Some API keys may be restricted to older models or specific API versions.
 
 ### For Local Development
 
