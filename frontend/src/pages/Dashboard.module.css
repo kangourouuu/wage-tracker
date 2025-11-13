@@ -9,8 +9,7 @@
   box-shadow: var(--shadow-lg);
   color: var(--text-color);
   width: 90%;
-  max-width: 1000px; /* Adjusted max-width for a central container */
-  /* Removed height: 80vh; and max-height: 80vh; to allow flexbox to center vertically */
+  max-width: 1200px; /* Increased max-width for better use of space */
   max-height: 90vh; /* Allow content to dictate height, but limit for small screens */
   display: flex;
   flex-direction: column;
@@ -69,19 +68,26 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+.summaryCardsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
 .mainContent {
   display: flex;
   flex-wrap: wrap; /* Allow items to wrap on smaller screens */
   gap: 2rem;
   flex-grow: 1;
-  justify-content: center; /* Center items horizontally */
+  justify-content: space-between; /* Better spacing */
   align-items: flex-start; /* Align items to the start vertically */
 }
 
 .calendarWrapper {
   flex: 1 1 400px; /* Allow calendar to grow/shrink, with a base of 400px */
   min-width: 300px;
-  max-width: 450px;
+  max-width: 500px;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   border: 1px solid var(--glass-border);
@@ -136,8 +142,8 @@
   color: white !important;
 }
 
-.summaryCardsContainer {
-  flex: 1 1 400px; /* Allow container to grow/shrink, with a base of 400px */
+.listsContainer {
+  flex: 1 1 500px;
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -168,19 +174,6 @@
   text-shadow: none;
 }
 
-.listsContainer {
-  display: grid;
-  grid-template-columns: 1fr; /* Single column by default */
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .listsContainer {
-    grid-template-columns: 1fr 1fr; /* Two columns on larger screens */
-  }
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .dashboardContainer {
@@ -204,13 +197,17 @@
     justify-content: space-between;
   }
 
+  .summaryCardsContainer {
+    grid-template-columns: 1fr;
+  }
+
   .mainContent {
     flex-direction: column;
     gap: 1.5rem;
   }
 
   .calendarWrapper,
-  .summaryCardsContainer {
+  .listsContainer {
     flex: none;
     width: 100%;
     max-width: none;

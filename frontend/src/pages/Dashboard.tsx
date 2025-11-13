@@ -148,6 +148,14 @@ export const Dashboard = () => {
           </div>
         </header>
 
+        <div className={styles.summaryCardsContainer}>
+          <SummaryCard title={t("totalHours")} value={summary.totalHours} />
+          <SummaryCard
+            title={t("estimatedEarnings")}
+            value={summary.totalEarnings}
+          />
+        </div>
+
         <div className={styles.mainContent}>
           <div className={styles.calendarWrapper}>
             <Calendar
@@ -164,31 +172,24 @@ export const Dashboard = () => {
             />
           </div>
 
-          <div className={styles.summaryCardsContainer}>
-            <SummaryCard title={t("totalHours")} value={summary.totalHours} />
-            <SummaryCard
-              title={t("estimatedEarnings")}
-              value={summary.totalEarnings}
-            />
+          <div className={styles.listsContainer}>
+            {workEntries && (
+              <WorkEntryList
+                workEntries={workEntries}
+                onDelete={deleteWorkEntryMutation}
+                isDeleting={isDeletingWorkEntry}
+              />
+            )}
+            {jobs && (
+              <JobList
+                jobs={jobs}
+                onDelete={deleteJobMutation}
+                onUpdate={(id, data) => updateJobMutation({ id, data })}
+                isDeleting={isDeletingJob}
+                isUpdating={isUpdatingJob}
+              />
+            )}
           </div>
-        </div>
-        <div className={styles.listsContainer}>
-          {workEntries && (
-            <WorkEntryList
-              workEntries={workEntries}
-              onDelete={deleteWorkEntryMutation}
-              isDeleting={isDeletingWorkEntry}
-            />
-          )}
-          {jobs && (
-            <JobList
-              jobs={jobs}
-              onDelete={deleteJobMutation}
-              onUpdate={(id, data) => updateJobMutation({ id, data })}
-              isDeleting={isDeletingJob}
-              isUpdating={isUpdatingJob}
-            />
-          )}
         </div>
       </div>
       <AddEntryModal

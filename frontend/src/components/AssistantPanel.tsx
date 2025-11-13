@@ -22,7 +22,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "ai",
-      text: "Hello! I'm your AI assistant. How can I help you today?",
+      text: "👋 Hello! I'm your AI assistant.\n\n**I can help you with:**\n• Understanding your work data and earnings\n• Analyzing your productivity patterns\n• Answering questions about your jobs\n• Processing imported work entry files\n\n**What would you like to know?**",
       timestamp: new Date().toISOString(),
     },
   ]);
@@ -215,6 +215,72 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
     }
   };
 
+  const formatAIMessage = (text: string) => {
+    // Split text into lines and format them
+    const lines = text.split('\n');
+    const formatted: JSX.Element[] = [];
+    let key = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      
+      // Skip empty lines
+      if (line.trim() === '') {
+        formatted.push(<br key={`br-${key++}`} />);
+        continue;
+      }
+
+      // Format bold text (**text**)
+      let formattedLine = line;
+      const boldRegex = /\*\*([^*]+)\*\*/g;
+      const parts: (string | JSX.Element)[] = [];
+      let lastIndex = 0;
+      let match;
+
+      while ((match = boldRegex.exec(line)) !== null) {
+        // Add text before the match
+        if (match.index > lastIndex) {
+          parts.push(line.substring(lastIndex, match.index));
+        }
+        // Add bold text
+        parts.push(<strong key={`bold-${key++}`}>{match[1]}</strong>);
+        lastIndex = match.index + match[0].length;
+      }
+      
+      // Add remaining text
+      if (lastIndex < line.length) {
+        parts.push(line.substring(lastIndex));
+      }
+
+      // Check if it's a bullet point
+      if (line.trim().match(/^[•\-\*]\s/)) {
+        formatted.push(
+          <div key={`bullet-${key++}`} style={{ paddingLeft: '1rem', marginBottom: '0.5rem' }}>
+            {parts.length > 0 ? parts : formattedLine}
+          </div>
+        );
+      }
+      // Check if it's a numbered list
+      else if (line.trim().match(/^\d+\.\s/)) {
+        formatted.push(
+          <div key={`number-${key++}`} style={{ paddingLeft: '1rem', marginBottom: '0.5rem' }}>
+            {parts.length > 0 ? parts : formattedLine}
+          </div>
+        );
+      }
+      // Regular paragraph
+      else {
+        formatted.push(
+          <div key={`line-${key++}`} style={{ marginBottom: '0.5rem' }}>
+            {parts.length > 0 ? parts : formattedLine}
+          </div>
+        );
+      }
+    }
+
+    return formatted;
+  };
+
   const formatTime = (date?: Date | string) => {
     if (!date) return "";
     const dateObj = typeof date === 'string' ? new Date(date) : date;
@@ -312,7 +378,9 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
               )}
             </div>
             <div className={styles.messageContent}>
-              <div className={styles.messageBubble}>{msg.text}</div>
+              <div className={styles.messageBubble}>
+                {msg.sender === "ai" ? formatAIMessage(msg.text) : msg.text}
+              </div>
               {msg.timestamp && (
                 <span className={styles.messageTime}>
                   {formatTime(msg.timestamp)}

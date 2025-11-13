@@ -44,7 +44,7 @@ export class AssistantService {
     }
   }
 
-  async generateContent(createChatDto: CreateChatDto): Promise<string> {
+  async generateContent(createChatDto: CreateChatDto, userId?: string): Promise<string> {
     const { message } = createChatDto;
 
     // Check if API key is configured
@@ -58,8 +58,58 @@ export class AssistantService {
     console.log("🔑 Using Groq model:", this.groqModel);
 
     try {
+      // Get user's jobs and work entries for context
+      let contextInfo = "";
+      if (userId) {
+        try {
+          const userJobs = await this.jobService.findAll(userId);
+          const workEntries = await this.wageService.findAll(userId);
+
+          if (userJobs.length > 0) {
+            contextInfo += "\n\n**User's Saved Jobs:**\n";
+            userJobs.forEach((job, idx) => {
+              contextInfo += `${idx + 1}. **${job.name}** - ${job.wagePerHour.toLocaleString()} VND/hour\n`;
+            });
+          }
+
+          if (workEntries.length > 0) {
+            const recentEntries = workEntries.slice(-5);
+            contextInfo += "\n**Recent Work Entries:**\n";
+            recentEntries.forEach((entry, idx) => {
+              const date = new Date(entry.startTime).toLocaleDateString();
+              const hours = ((new Date(entry.endTime).getTime() - new Date(entry.startTime).getTime() - entry.breakDuration * 60 * 1000) / (1000 * 60 * 60)).toFixed(2);
+              contextInfo += `${idx + 1}. ${entry.job.name} on ${date} - ${hours} hours\n`;
+            });
+          }
+        } catch (error) {
+          console.log("Could not fetch user context:", error.message);
+        }
+      }
+
+      const systemPrompt = `You are a helpful work tracking assistant for a wage tracker application. 
+
+Your role is to:
+- Help users understand their work data, earnings, and productivity
+- Provide insights about work patterns and time management
+- Answer questions about their jobs and work entries
+- Offer suggestions for better work-life balance
+
+When responding:
+- Be clear, concise, and friendly
+- Use bullet points and numbered lists for better readability
+- Provide specific numbers and data when relevant
+- Format currency as VND (Vietnamese Dong)
+- Use emojis sparingly but appropriately to make responses engaging
+${contextInfo ? `\nUser's Current Data:${contextInfo}` : ""}
+
+Always structure your responses in a clear, easy-to-read format.`;
+
       const chatCompletion = await this.groqClient.chat.completions.create({
         messages: [
+          {
+            role: "system",
+            content: systemPrompt,
+          },
           {
             role: "user",
             content: message,
@@ -235,40 +285,57 @@ export class AssistantService {
   ): Promise<any> {
     // Prepare the prompt for AI analysis
     const jobsList = userJobs
-      .map((j) => `- ${j.name} (ID: ${j.id}, Rate: $${j.wagePerHour}/hour)`)
+      .map((j) => `- ${j.name} (ID: ${j.id}, Rate: ${j.wagePerHour.toLocaleString()} VND/hour)`)
       .join("\n");
 
     const prompt = `You are analyzing work schedule data to extract work entries.
 
-User's available jobs:
+**User's Saved Jobs:**
 ${jobsList}
 
-Raw data from file (${data.length} rows):
+**Raw data from uploaded file (${data.length} rows):**
 ${JSON.stringify(data.slice(0, 20), null, 2)}${data.length > 20 ? "\n... (and more rows)" : ""}
 
-Instructions:
-1. Identify columns that represent: date, start time, end time, job/shift name, break duration
-2. Match job names from the data to the user's available jobs (be flexible with naming variations)
-3. Calculate work hours from start/end times
-4. Format each work entry as:
-   {
-     "startTime": "ISO 8601 datetime string",
-     "endTime": "ISO 8601 datetime string",
-     "jobId": "matching job ID from user's jobs",
-     "breakDuration": number (in minutes, default 0)
-   }
+**Your Task:**
+Carefully analyze the uploaded data and match it with the user's saved jobs.
 
-Return ONLY a valid JSON object in this exact format:
+**Instructions:**
+1. Identify columns that represent: date, start time, end time, job/shift name, break duration
+2. **Match job names** from the data to the user's available jobs listed above
+   - Be flexible with naming (e.g., "Backend Dev" matches "Backend Developer")
+   - Look for partial matches and common abbreviations
+   - Consider case-insensitive matching
+3. Parse dates and times correctly (support various formats)
+4. Calculate work hours from start/end times
+5. Extract break duration if present (default to 0 if not specified)
+
+**Output Format:**
+Return ONLY a valid JSON object with this EXACT structure:
+
 {
-  "workEntries": [...array of work entry objects...],
-  "message": "brief explanation of what was found"
+  "workEntries": [
+    {
+      "startTime": "ISO 8601 datetime string (e.g., 2023-11-13T09:00:00.000Z)",
+      "endTime": "ISO 8601 datetime string",
+      "jobId": "matching job ID from user's jobs list",
+      "breakDuration": number (in minutes, default 0)
+    }
+  ],
+  "message": "Clear explanation of what was found and how jobs were matched. Use bullet points for clarity."
 }
 
-If you cannot identify work data, return:
-{
-  "workEntries": [],
-  "message": "explanation of what's missing or unclear"
-}`;
+**Important:**
+- If you cannot identify work data or match jobs, return an empty workEntries array
+- In the message, explain what columns you found and how you matched jobs
+- If there are ambiguities, mention them in the message
+- Be specific about which jobs were matched and why
+
+**Example message format:**
+"✅ Successfully matched work entries:
+• Found 5 entries for 'Backend Developer' (matched with your saved job 'Backend Dev')
+• Date range: Nov 1-5, 2023
+• Total hours: 40.5 hours
+• Break time included: Yes (30 min per day)"`;
 
     try {
       const aiResponse = await this.generateContent({ message: prompt });
@@ -290,7 +357,7 @@ If you cannot identify work data, return:
       return {
         workEntries: [],
         message:
-          "Failed to analyze the data structure. Please ensure your file has clear columns for date, time, and job information.",
+          "❌ Failed to analyze the data structure.\n\n**Possible reasons:**\n• The file format is not recognized\n• Column names are unclear\n• Data format is inconsistent\n\n**Please ensure your file has:**\n• A column for dates\n• Columns for start and end times\n• A column for job/shift names\n• (Optional) Break duration column",
       };
     }
   }
