@@ -23,15 +23,35 @@ export class AssistantService {
     this.geminiApiKey = this.configService.get<string>("app.geminiApiKey");
     this.geminiApiUrl = this.configService.get<string>("app.geminiApiUrl");
 
+    console.log("🔧 Assistant Service Initialization:");
+    console.log("  - GEMINI_API_KEY present:", this.geminiApiKey ? "Yes (length: " + this.geminiApiKey.length + ")" : "No");
+    console.log("  - GEMINI_API_URL:", this.geminiApiUrl);
+
     if (!this.geminiApiKey) {
-      throw new InternalServerErrorException(
-        "Gemini API Key is not configured."
+      console.warn(
+        "⚠️ Gemini API Key is not configured. AI assistant features will be disabled."
       );
+      console.warn(
+        "Please set GEMINI_API_KEY environment variable to enable AI features."
+      );
+    } else {
+      console.log("✅ Gemini API Key is configured - AI Assistant is ready");
     }
   }
 
   async generateContent(createChatDto: CreateChatDto): Promise<string> {
     const { message } = createChatDto;
+
+    // Check if API key is configured
+    if (!this.geminiApiKey) {
+      console.error("❌ GEMINI_API_KEY is not set in environment variables");
+      throw new InternalServerErrorException(
+        "AI Assistant is not configured. Please contact the administrator to set up the GEMINI_API_KEY."
+      );
+    }
+
+    console.log("🔑 API Key present:", this.geminiApiKey ? "Yes" : "No");
+    console.log("🌐 API URL:", this.geminiApiUrl);
 
     const requestBody = {
       contents: [
@@ -55,21 +75,41 @@ export class AssistantService {
           })
           .pipe(
             catchError((error) => {
-              console.error(
-                "Gemini API Error:",
-                error.response?.data || error.message
-              );
+              console.error("❌ Gemini API Error Details:");
+              console.error("Status:", error.response?.status);
+              console.error("Status Text:", error.response?.statusText);
+              console.error("Response Data:", JSON.stringify(error.response?.data, null, 2));
+              console.error("Error Message:", error.message);
+              
+              // Provide more specific error messages based on status code
+              if (error.response?.status === 400) {
+                throw new InternalServerErrorException(
+                  "Invalid request to Gemini AI. Please check the API configuration."
+                );
+              } else if (error.response?.status === 401 || error.response?.status === 403) {
+                throw new InternalServerErrorException(
+                  "Gemini API Key is invalid or lacks permissions. Please check your API key."
+                );
+              } else if (error.response?.status === 429) {
+                throw new InternalServerErrorException(
+                  "Gemini API rate limit exceeded. Please try again later."
+                );
+              }
+              
               throw new InternalServerErrorException(
-                "Error communicating with Gemini API"
+                "Error communicating with Gemini AI. Please try again later."
               );
             })
           )
       );
 
+      console.log("✅ Received response from Gemini API");
+
       // Assuming the response structure has candidates[0].content.parts[0].text
       const geminiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
       if (!geminiResponse) {
+        console.error("❌ Invalid response structure:", JSON.stringify(data, null, 2));
         throw new InternalServerErrorException(
           "Invalid response from Gemini API"
         );
@@ -77,7 +117,15 @@ export class AssistantService {
 
       return geminiResponse;
     } catch (error) {
-      throw error;
+      // Re-throw if it's already an InternalServerErrorException
+      if (error instanceof InternalServerErrorException) {
+        throw error;
+      }
+      // Log unexpected errors
+      console.error("❌ Unexpected error in generateContent:", error);
+      throw new InternalServerErrorException(
+        "An unexpected error occurred while processing your request."
+      );
     }
   }
 
