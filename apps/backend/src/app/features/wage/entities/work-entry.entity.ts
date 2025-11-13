@@ -5,13 +5,13 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { User } from '../../user/entities/user.entity';
-import { Job } from './job.entity'; // Import Job entity
+} from "typeorm";
+import { User } from "../../user/entities/user.entity";
+import { Job } from "./job.entity"; // Import Job entity
 
 @Entity()
 export class WorkEntry {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -20,7 +20,7 @@ export class WorkEntry {
   @Column()
   endTime: Date;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: "int", default: 0 })
   breakDuration: number; // in minutes
 
   @ManyToOne(() => Job, (job) => job.id) // Many-to-one relationship with Job

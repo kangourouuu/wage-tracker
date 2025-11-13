@@ -1,12 +1,11 @@
-
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
-import { WorkEntry } from './entities/work-entry.entity';
-import { CreateWorkEntryDto } from './dto/create-work-entry.dto';
-import { UpdateWorkEntryDto } from './dto/update-work-entry.dto';
-import { UserService } from '../user/user.service';
-import { JobService } from './job.service'; // Import JobService
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Between, Repository } from "typeorm";
+import { WorkEntry } from "./entities/work-entry.entity";
+import { CreateWorkEntryDto } from "./dto/create-work-entry.dto";
+import { UpdateWorkEntryDto } from "./dto/update-work-entry.dto";
+import { UserService } from "../user/user.service";
+import { JobService } from "./job.service"; // Import JobService
 
 @Injectable()
 export class WageService {
@@ -23,12 +22,12 @@ export class WageService {
   ): Promise<WorkEntry> {
     const user = await this.userService.findById(userId);
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
 
     const job = await this.jobService.findOne(createWorkEntryDto.jobId, userId); // Find the job
     if (!job) {
-      throw new NotFoundException('Job not found');
+      throw new NotFoundException("Job not found");
     }
 
     const startTime = new Date(createWorkEntryDto.startTime);
@@ -58,16 +57,16 @@ export class WageService {
       where.startTime = Between(startDate, endDate);
     }
 
-    return this.workEntryRepository.find({ where, relations: ['job'] }); // Load job relation
+    return this.workEntryRepository.find({ where, relations: ["job"] }); // Load job relation
   }
 
   async findOne(id: string, userId: string): Promise<WorkEntry> {
     const workEntry = await this.workEntryRepository.findOne({
       where: { id, user: { id: userId } },
-      relations: ['job'], // Load job relation
+      relations: ["job"], // Load job relation
     });
     if (!workEntry) {
-      throw new NotFoundException('Work entry not found');
+      throw new NotFoundException("Work entry not found");
     }
     return workEntry;
   }
@@ -86,7 +85,7 @@ export class WageService {
     if (updateWorkEntryDto.jobId) {
       job = await this.jobService.findOne(updateWorkEntryDto.jobId, userId);
       if (!job) {
-        throw new NotFoundException('Job not found');
+        throw new NotFoundException("Job not found");
       }
       updatedWorkEntry.job = job;
     }
@@ -97,7 +96,10 @@ export class WageService {
     // Recalculate wage based on the (potentially new) job's wagePerHour
     // This part needs to be updated to consider breakDuration
     // For now, I'll just update the workEntryRepository.update call
-    await this.workEntryRepository.update(id, { ...updatedWorkEntry, breakDuration: updateWorkEntryDto.breakDuration });
+    await this.workEntryRepository.update(id, {
+      ...updatedWorkEntry,
+      breakDuration: updateWorkEntryDto.breakDuration,
+    });
 
     return this.findOne(id, userId);
   }
@@ -108,7 +110,7 @@ export class WageService {
       user: { id: userId },
     });
     if (result.affected === 0) {
-      throw new NotFoundException('Work entry not found');
+      throw new NotFoundException("Work entry not found");
     }
   }
 }

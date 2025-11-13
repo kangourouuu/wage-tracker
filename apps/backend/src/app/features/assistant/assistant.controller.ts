@@ -21,7 +21,7 @@ export class AssistantController {
   @Post("chat")
   async chat(
     @Body() createChatDto: CreateChatDto,
-    @GetCurrentUserId() userId: string
+    @GetCurrentUserId() userId: string,
   ) {
     const response = await this.assistantService.generateContent(createChatDto);
     return { message: response };
@@ -31,7 +31,7 @@ export class AssistantController {
   @UseInterceptors(FileInterceptor("file"))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    @GetCurrentUserId() userId: string
+    @GetCurrentUserId() userId: string,
   ) {
     console.log("Received file:", file);
     return this.assistantService.processUploadedFile(file, userId);
@@ -40,11 +40,11 @@ export class AssistantController {
   @Post("confirm-import")
   async confirmImport(
     @Body() confirmImportDto: ConfirmImportDto,
-    @GetCurrentUserId() userId: string
+    @GetCurrentUserId() userId: string,
   ) {
     return this.assistantService.confirmAndImportEntries(
       confirmImportDto,
-      userId
+      userId,
     );
   }
 }

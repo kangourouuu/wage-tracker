@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsNotEmpty, IsPositive } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsPositive } from "class-validator";
 
 export class CreateJobDto {
   @IsString()

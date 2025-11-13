@@ -1,5 +1,4 @@
-
-import { Type } from 'class-transformer';
+import { Type } from "class-transformer";
 import {
   IsArray,
   IsEmail,
@@ -8,7 +7,7 @@ import {
   IsString,
   MinLength,
   ValidateNested,
-} from 'class-validator';
+} from "class-validator";
 
 class JobDto {
   @IsNotEmpty()
