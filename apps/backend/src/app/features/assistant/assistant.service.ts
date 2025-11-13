@@ -24,7 +24,7 @@ export class AssistantService {
     console.log("🔧 Assistant Service Initialization:");
     console.log(
       "  - GROQ_API_KEY present:",
-      groqApiKey ? "Yes (length: " + groqApiKey.length + ")" : "No",
+      groqApiKey ? "Yes" : "No",
     );
     console.log("  - GROQ_MODEL:", this.groqModel);
 
