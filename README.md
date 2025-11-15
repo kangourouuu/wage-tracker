@@ -22,6 +22,12 @@ Wage Tracker is a monorepo web application built with a powerful tech stack, fea
     -   Weekly work pattern tracking (bar charts)
     -   Summary statistics with trends compared to previous periods
     -   Flexible period selection (day, week, month, year)
+-   **Progressive Web App (PWA):** Install on any device and use offline with:
+    -   Service worker for offline support
+    -   Installable on mobile and desktop
+    -   App shortcuts for quick actions
+    -   Optimized caching strategies
+    -   See [PWA_GUIDE.md](./PWA_GUIDE.md) for details
 -   **Dynamic UI:** A responsive and elegant interface built with React and styled with CSS Modules.
 -   **3D Experience:** An animated background created with `@react-three/fiber`.
 -   **Internationalization:** Support for multiple languages (English and Vietnamese) using `i18next`.
