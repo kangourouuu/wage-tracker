@@ -12,6 +12,7 @@ import { WageModule } from "./features/wage/wage.module";
 import { CalendarModule } from "./features/calendar/calendar.module";
 import { CommonModule } from "./common/common.module";
 import { AssistantModule } from "./features/assistant/assistant.module";
+import { AnalyticsModule } from "./features/analytics/analytics.module";
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { AssistantModule } from "./features/assistant/assistant.module";
     WageModule,
     CalendarModule,
     AssistantModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

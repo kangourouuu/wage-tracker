@@ -37,4 +37,47 @@ export const deleteJob = (id: string) => {
   return api.delete(`/jobs/${id}`);
 };
 
+// Analytics API
+export const analyticsApi = {
+  getEarningsTrend: (period: string = "month", startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams({ period });
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+    return api.get(`/analytics/earnings-trend?${params}`);
+  },
+
+  getJobDistribution: (startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams();
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+    return api.get(`/analytics/job-distribution?${params}`);
+  },
+
+  getWeeklyPattern: (startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams();
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+    return api.get(`/analytics/weekly-pattern?${params}`);
+  },
+
+  getSummary: (period: string = "week") => {
+    return api.get(`/analytics/summary?period=${period}`);
+  },
+
+  getComparison: (
+    currentStart: string,
+    currentEnd: string,
+    previousStart: string,
+    previousEnd: string
+  ) => {
+    const params = new URLSearchParams({
+      currentStart,
+      currentEnd,
+      previousStart,
+      previousEnd,
+    });
+    return api.get(`/analytics/comparison?${params}`);
+  },
+};
+
 export default api;

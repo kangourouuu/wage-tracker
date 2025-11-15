@@ -14,16 +14,25 @@ Wage Tracker is a monorepo web application built with a powerful tech stack, fea
 
 -   **Secure Authentication:** JWT-based login and registration system with access and refresh tokens.
 -   **Job & Work Entry Management:** A dashboard to view, add, and delete jobs and daily work logs.
+-   **Clock In/Out System:** Quick clock in/out widget for tracking ongoing work entries.
+-   **Analytics & Insights:** Comprehensive analytics dashboard with:
+    -   Earnings trend visualization (line charts)
+    -   Job distribution analysis (pie charts)
+    -   Weekly work pattern tracking (bar charts)
+    -   Summary statistics with trends compared to previous periods
+    -   Flexible period selection (day, week, month, year)
 -   **Dynamic UI:** A responsive and elegant interface built with React and styled with CSS Modules.
 -   **3D Experience:** An animated background created with `@react-three/fiber`.
 -   **Internationalization:** Support for multiple languages (English and Vietnamese) using `i18next`.
+-   **Dark Mode:** Toggle between light and dark themes.
+-   **AI Assistant:** Interactive AI assistant for help and queries.
 -   **Full-Stack Architecture:** Clear separation of concerns between the NestJS backend API and the React frontend.
 
 ## Tech Stack
 
 | Category      | Technology                                                              |
 | :------------ | :---------------------------------------------------------------------- |
-| **Frontend**  | React, TypeScript, Vite, Zustand, React Query, React Router, Three.js, i18next |
+| **Frontend**  | React, TypeScript, Vite, Zustand, React Query, React Router, Three.js, i18next, Recharts |
 | **Backend**   | NestJS, TypeScript, TypeORM                               |
 | **Database**  | PostgreSQL (with Neon)                                                  |
 | **Auth**      | JWT, Passport.js, bcrypt                                                |
@@ -99,6 +108,35 @@ yarn dev
 ```
 
 The frontend will be available at `http://localhost:5173` (or another port if 5173 is busy), and the backend will be running at `http://localhost:3000`.
+
+## Features Guide
+
+### Analytics Dashboard
+
+The application includes a comprehensive analytics dashboard accessible from the main dashboard. Navigate to `/analytics` or click the "📊 Analytics" button.
+
+**Features:**
+- **Summary Cards with Trends**: View total hours, earnings, entries, and average earnings per entry with percentage changes compared to the previous period
+- **Earnings Trend Chart**: Line chart showing earnings and hours worked over time
+- **Job Distribution Chart**: Pie chart displaying earnings breakdown by job
+- **Weekly Pattern Chart**: Bar chart showing work patterns by day of the week
+- **Flexible Period Selection**: Choose between Day, Week, Month, or Year views
+
+For detailed documentation about the analytics features, see [ANALYTICS_FEATURES.md](./ANALYTICS_FEATURES.md).
+
+### Clock In/Out Widget
+
+Track ongoing work entries with the clock in/out feature:
+- Click "Clock In" to start tracking time for a job
+- Click "Clock Out" to end the current work entry
+- The widget shows the current running time and job information
+
+### AI Assistant
+
+Access the AI assistant by clicking the time-of-day icon or pressing `/`:
+- Ask questions about your work entries
+- Get help with features
+- Upload files for processing
 
 ## Deployment
 
