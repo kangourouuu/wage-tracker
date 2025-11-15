@@ -72,7 +72,6 @@ export const Dashboard = () => {
     queryFn: fetchJobs,
   });
 
-  // Keyboard shortcuts
   useKeyboardShortcut('n', () => setIsModalOpen(true));
   useKeyboardShortcut('/', () => toggleAssistant());
 

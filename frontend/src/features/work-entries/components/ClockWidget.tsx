@@ -28,7 +28,6 @@ export const ClockWidget = () => {
     },
   });
 
-  // Check for ongoing entry on mount
   useEffect(() => {
     const checkOngoingEntry = async () => {
       try {
@@ -37,13 +36,12 @@ export const ClockWidget = () => {
           setOngoingEntry(data);
         }
       } catch (error) {
-        // No ongoing entry
+        return;
       }
     };
     checkOngoingEntry();
   }, []);
 
-  // Update elapsed time
   useEffect(() => {
     if (!ongoingEntry) return;
 
@@ -94,8 +92,7 @@ export const ClockWidget = () => {
       setElapsedTime(0);
       showSuccessToast('Clocked out successfully!');
       
-      // Invalidate work entries query
-      window.location.reload(); // Temporary - should use queryClient.invalidateQueries
+      window.location.reload();
     } catch (error) {
       showErrorToast(error);
     }

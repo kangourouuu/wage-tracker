@@ -1,15 +1,12 @@
 export const getErrorMessage = (error: any): string => {
-  // Check for response data message
   if (error.response?.data?.message) {
     return error.response.data.message;
   }
   
-  // Check for direct error message
   if (error.message) {
     return error.message;
   }
 
-  // Friendly fallback messages based on status code
   const errorMap: Record<number, string> = {
     400: 'Invalid request. Please check your input.',
     401: 'Session expired. Please log in again.',

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api', // Use environment variable for API URL
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
 });
 
 api.interceptors.request.use(
@@ -18,12 +18,10 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor for handling token refresh and errors
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      // Token expired - logout user
       useAuthStore.getState().logout();
       window.location.href = '/login';
     }

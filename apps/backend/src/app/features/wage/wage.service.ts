@@ -93,9 +93,6 @@ export class WageService {
     const startTime = new Date(updatedWorkEntry.startTime);
     const endTime = new Date(updatedWorkEntry.endTime);
 
-    // Recalculate wage based on the (potentially new) job's wagePerHour
-    // This part needs to be updated to consider breakDuration
-    // For now, I'll just update the workEntryRepository.update call
     await this.workEntryRepository.update(id, {
       ...updatedWorkEntry,
       breakDuration: updateWorkEntryDto.breakDuration,
@@ -125,7 +122,6 @@ export class WageService {
       throw new NotFoundException("Job not found");
     }
 
-    // Check if there's already an ongoing entry
     const ongoingEntry = await this.workEntryRepository.findOne({
       where: { user: { id: userId }, endTime: null as any },
       relations: ["job"],
