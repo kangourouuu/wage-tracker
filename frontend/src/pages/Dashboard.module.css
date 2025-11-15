@@ -9,11 +9,11 @@
   box-shadow: var(--shadow-lg);
   color: var(--text-color);
   width: 90%;
-  max-width: 1200px; /* Increased max-width for better use of space */
+  max-width: 1400px; /* Increased max-width for better use of space */
   max-height: 90vh; /* Allow content to dictate height, but limit for small screens */
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem; /* Increased gap for better spacing */
   overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
@@ -115,7 +115,13 @@
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
-  padding: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.calendarWrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* React Calendar specific styling for liquid-glass */

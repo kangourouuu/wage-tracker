@@ -1,9 +1,9 @@
 import { useRef } from 'react';
-import { useFBX } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
 export function Model() {
-  const fbx = useFBX('/lod.fbx');
+  const gltf = useGLTF('/lod.glb');
   const modelRef = useRef<any>(null);
 
   // Add animation and interactivity
@@ -20,7 +20,7 @@ export function Model() {
   return (
     <primitive
       ref={modelRef}
-      object={fbx}
+      object={gltf.scene}
       scale={0.01}
       position={[0, -1, 0]}
       castShadow
