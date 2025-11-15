@@ -173,76 +173,39 @@ function ThreeScene() {
   return (
     <>
       {/* Radial Gradient Background Sphere */}
-      <mesh position={[0, 0, -100]} scale={[200, 200, 200]}> {/* Large sphere far back */}
+      <mesh position={[0, 0, -100]} scale={[200, 200, 200]}>
         <sphereGeometry args={[1, 64, 64]} />
         <shaderMaterial
           ref={shaderMaterialRef}
           args={[RadialGradientShader]}
-          uniforms-u_radius-value={0.5} // Adjusted u_radius to spread gradient more evenly
-          side={THREE.BackSide} // Render on the inside of the sphere
+          uniforms-u_radius-value={0.5}
+          side={THREE.BackSide}
         />
       </mesh>
 
-      {/* <ambientLight intensity={0.6} color={0xADD8E6} /> */} {/* Cool tone ambient light */}
-      {/* <directionalLight position={[5, 5, 5]} intensity={0.8} color={0xFFD700} /> */} {/* Warm tone directional light */}
-      {/* <pointLight position={[-10, -10, -10]} color={0x00FFFF} intensity={1.0} /> */} {/* Cyan hue point light */}
-      {/* <pointLight position={[10, 10, 10]} color={0x00FFFF} intensity={0.8} /> */} {/* Another cyan point light */}
-      {/* <pointLight position={[0, -10, 0]} color={0x00FFFF} intensity={0.6} /> */} {/* Another cyan point light */}
+      {/* Enhanced Lighting Setup */}
+      <ambientLight intensity={0.6} color="#ADD8E6" />
+      <directionalLight position={[5, 5, 5]} intensity={1.2} color="#FFD700" castShadow />
+      <directionalLight position={[-5, -5, 5]} intensity={0.4} color="#87CEEB" />
+      
+      {/* Accent Point Lights for Depth */}
+      <pointLight position={[-10, 10, -10]} color="#00FFFF" intensity={0.5} distance={30} />
+      <pointLight position={[10, -10, 10]} color="#9370DB" intensity={0.4} distance={25} />
+      <pointLight position={[0, 15, 0]} color="#FFD700" intensity={0.3} distance={20} />
+      
+      {/* Spot Light for Drama */}
+      <spotLight
+        position={[0, 10, 10]}
+        angle={0.3}
+        penumbra={0.5}
+        intensity={0.8}
+        color="#FFFFFF"
+        castShadow
+      />
 
-      {/* Orbiting Circle 1 around AuthForm */}
-      {/* <mesh ref={orbitingCircleRef1} position={[0, 0, -20]} scale={0.7}> */} {/* Smaller scale */}
-        {/* <torusGeometry args={[3, 0.1, 16, 100]} /> */}
-        {/* <meshPhysicalMaterial
-          color="#BCF0F6" // Original color
-          transparent
-          opacity={0.3} // Original opacity
-          roughness={0.1}
-          metalness={0.9}
-          transmission={0.9}
-          clearcoat={1}
-          clearcoatRoughness={0.25}
-          envMapIntensity={1}
-        /> */}
-      {/* </mesh> */}
-
-      {/* Orbiting Circle 2 */}
-      {/* <mesh ref={orbitingCircleRef2} position={[0, 0, -25]} scale={0.6}> */} {/* Smaller scale */}
-        {/* <torusGeometry args={[2.5, 0.08, 16, 100]} /> */}
-        {/* <meshPhysicalMaterial
-          color="#B3E5FC" // Original color
-          transparent
-          opacity={0.25} // Original opacity
-          roughness={0.1}
-          metalness={0.9}
-          transmission={0.9}
-          clearcoat={1}
-          clearcoatRoughness={0.25}
-          envMapIntensity={1}
-        /> */}
-      {/* </mesh> */}
-
-      {/* Orbiting Circle 3 */}
-      {/* <mesh ref={orbitingCircleRef3} position={[0, 0, -18]} scale={0.8}> */} {/* Smaller scale */}
-        {/* <torusGeometry args={[3.5, 0.12, 16, 100]} /> */}
-        {/* <meshPhysicalMaterial
-          color="#81D4FA" // Original color
-          transparent
-          opacity={0.35} // Original opacity
-          roughness={0.1}
-          metalness={0.9}
-          transmission={0.9}
-          clearcoat={1}
-          clearcoatRoughness={0.25}
-          envMapIntensity={1}
-        /> */}
-      {/* </mesh> */}
-
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 5]} intensity={1} />
       <Suspense fallback={null}>
         <Model />
       </Suspense>
-      {/* <Swarm /> */}
     </>
   );
 }
