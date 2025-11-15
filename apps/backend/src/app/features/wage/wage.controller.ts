@@ -50,4 +50,26 @@ export class WageController {
   remove(@Param("id") id: string, @GetCurrentUserId() userId: string) {
     return this.wageService.remove(id, userId);
   }
+
+  @Post("clock-in")
+  clockIn(
+    @GetCurrentUserId() userId: string,
+    @Body() body: { jobId: string; startTime: string },
+  ) {
+    return this.wageService.clockIn(userId, body.jobId, body.startTime);
+  }
+
+  @Post(":id/clock-out")
+  clockOut(
+    @Param("id") id: string,
+    @GetCurrentUserId() userId: string,
+    @Body() body: { endTime: string; breakDuration: number },
+  ) {
+    return this.wageService.clockOut(id, userId, body.endTime, body.breakDuration);
+  }
+
+  @Get("ongoing/current")
+  getOngoingEntry(@GetCurrentUserId() userId: string) {
+    return this.wageService.getOngoingEntry(userId);
+  }
 }

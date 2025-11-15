@@ -32,7 +32,7 @@ export const ClockWidget = () => {
   useEffect(() => {
     const checkOngoingEntry = async () => {
       try {
-        const { data } = await api.get('/work-entries/ongoing');
+        const { data } = await api.get('/work-entries/ongoing/current');
         if (data) {
           setOngoingEntry(data);
         }

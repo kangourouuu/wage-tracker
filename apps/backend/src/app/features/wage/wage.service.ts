@@ -113,4 +113,61 @@ export class WageService {
       throw new NotFoundException("Work entry not found");
     }
   }
+
+  async clockIn(userId: string, jobId: string, startTime: string): Promise<WorkEntry> {
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const job = await this.jobService.findOne(jobId, userId);
+    if (!job) {
+      throw new NotFoundException("Job not found");
+    }
+
+    // Check if there's already an ongoing entry
+    const ongoingEntry = await this.workEntryRepository.findOne({
+      where: { user: { id: userId }, endTime: null as any },
+      relations: ["job"],
+    });
+
+    if (ongoingEntry) {
+      throw new Error("You already have an ongoing work entry. Please clock out first.");
+    }
+
+    const workEntry = this.workEntryRepository.create({
+      startTime: new Date(startTime),
+      endTime: null,
+      job,
+      user,
+      breakDuration: 0,
+    });
+
+    return this.workEntryRepository.save(workEntry);
+  }
+
+  async clockOut(
+    id: string,
+    userId: string,
+    endTime: string,
+    breakDuration: number,
+  ): Promise<WorkEntry> {
+    const workEntry = await this.findOne(id, userId);
+    
+    if (workEntry.endTime) {
+      throw new Error("This work entry has already been clocked out.");
+    }
+
+    workEntry.endTime = new Date(endTime);
+    workEntry.breakDuration = breakDuration || 0;
+
+    return this.workEntryRepository.save(workEntry);
+  }
+
+  async getOngoingEntry(userId: string): Promise<WorkEntry | null> {
+    return this.workEntryRepository.findOne({
+      where: { user: { id: userId }, endTime: null as any },
+      relations: ["job"],
+    });
+  }
 }
