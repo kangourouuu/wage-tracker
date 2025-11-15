@@ -206,7 +206,7 @@ export const Dashboard = () => {
               />
               <SummaryCardWithTrend
                 title={t("estimatedEarnings")}
-                value={`$${analyticsSummary.current.totalEarnings.toFixed(2)}`}
+                value={analyticsSummary.current.totalEarnings.toFixed(2)}
                 trend={{
                   value: analyticsSummary.trend.earnings,
                   isPositive: analyticsSummary.trend.earnings >= 0,
