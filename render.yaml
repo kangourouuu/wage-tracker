@@ -19,10 +19,10 @@ services:
   - key: JWT_REFRESH_EXP
     value: 30d
   - key: FRONTEND_URL
-    value: "*"
+    value: "https://wage-tracker-delta.vercel.app"
   - key: DATABASE_URL
     value: "postgresql://neondb_owner:npg_fpo1bYjlQK7a@ep-jolly-sun-a1ptgjch-pooler.ap-southeast-1.aws.neon.tech/wage-tracker-db?sslmode=require&channel_binding=require"
-  - key: GEMINI_API_KEY
+  - key: GROQ_API_KEY
     sync: false  # This should be set in Render Dashboard for security
-  - key: GEMINI_API_URL
-    value: "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
+  - key: GROQ_MODEL
+    value: "llama-3.3-70b-versatile"
