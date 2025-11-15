@@ -169,13 +169,6 @@ export const Dashboard = () => {
             >
               📊 {t('analytics', 'Analytics')}
             </button>
-            <button 
-              onClick={() => setIsJobModalOpen(true)} 
-              className={styles.addJobButton}
-              title={t('addJob')}
-            >
-              + {t('addJob')}
-            </button>
             <DarkModeToggle />
             <select
               onChange={(e) => changeLanguage(e.target.value)}

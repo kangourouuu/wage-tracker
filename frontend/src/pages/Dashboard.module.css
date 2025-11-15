@@ -92,21 +92,17 @@
 }
 
 .mainContent {
-  display: flex;
-  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
   gap: 2rem;
   flex-grow: 1;
-  justify-content: space-between; /* Better spacing */
-  align-items: flex-start; /* Align items to the start vertically */
+  align-items: flex-start;
 }
 
 .leftColumn {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  flex: 1 1 400px;
-  min-width: 300px;
-  max-width: 500px;
 }
 
 .calendarWrapper {
@@ -117,11 +113,13 @@
   border-radius: var(--border-radius-md);
   padding: 1.5rem;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .calendarWrapper:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+  border-color: rgba(79, 195, 247, 0.3);
 }
 
 /* React Calendar specific styling for liquid-glass */
@@ -171,11 +169,10 @@
 }
 
 .listsContainer {
-  flex: 1 1 500px;
-  min-width: 300px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-height: 400px;
 }
 
 .summaryCard {
@@ -230,15 +227,13 @@
   }
 
   .mainContent {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
   .calendarWrapper,
   .listsContainer {
-    flex: none;
     width: 100%;
-    max-width: none;
   }
 }
 
