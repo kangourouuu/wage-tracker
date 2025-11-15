@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
+import AddJobModal from "../components/AddJobModal";
 import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
 import WorkEntryList from "../components/WorkEntryList";
@@ -58,6 +59,7 @@ export const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const { user, logout } = useAuthStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const queryClient = useQueryClient();
   const { toggle: toggleAssistant } = useAiAssistantStore();
@@ -105,6 +107,15 @@ export const Dashboard = () => {
     },
   });
 
+  const { mutate: addJobMutation, isPending: isAddingJob } = useMutation({
+    mutationFn: (data: { name: string; wagePerHour: number }) =>
+      api.post("/jobs", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      setIsJobModalOpen(false);
+    },
+  });
+
   const summary = workEntries
     ? calculateSummary(workEntries)
     : { totalHours: "0.00", totalEarnings: "0.00" };
@@ -140,6 +151,13 @@ export const Dashboard = () => {
             </h1>
           </div>
           <div className={styles.headerActions}>
+            <button 
+              onClick={() => setIsJobModalOpen(true)} 
+              className={styles.addJobButton}
+              title={t('addJob')}
+            >
+              + {t('addJob')}
+            </button>
             <DarkModeToggle />
             <select
               onChange={(e) => changeLanguage(e.target.value)}
@@ -154,6 +172,14 @@ export const Dashboard = () => {
             </button>
           </div>
         </header>
+
+        <div className={styles.summaryCardsContainer}>
+          <SummaryCard title={t("totalHours")} value={summary.totalHours} />
+          <SummaryCard
+            title={t("estimatedEarnings")}
+            value={summary.totalEarnings}
+          />
+        </div>
 
         <div className={styles.mainContent}>
           <div className={styles.leftColumn}>
@@ -174,37 +200,36 @@ export const Dashboard = () => {
             <ClockWidget />
           </div>
 
-          <div className={styles.summaryCardsContainer}>
-            <SummaryCard title={t("totalHours")} value={summary.totalHours} />
-            <SummaryCard
-              title={t("estimatedEarnings")}
-              value={summary.totalEarnings}
-            />
+          <div className={styles.listsContainer}>
+            {jobs && (
+              <JobList
+                jobs={jobs}
+                onDelete={deleteJobMutation}
+                onUpdate={(id, data) => updateJobMutation({ id, data })}
+                isDeleting={isDeletingJob}
+                isUpdating={isUpdatingJob}
+              />
+            )}
+            {workEntries && (
+              <WorkEntryList
+                workEntries={workEntries}
+                onDelete={deleteWorkEntryMutation}
+                isDeleting={isDeletingWorkEntry}
+              />
+            )}
           </div>
-        </div>
-        <div className={styles.listsContainer}>
-          {workEntries && (
-            <WorkEntryList
-              workEntries={workEntries}
-              onDelete={deleteWorkEntryMutation}
-              isDeleting={isDeletingWorkEntry}
-            />
-          )}
-          {jobs && (
-            <JobList
-              jobs={jobs}
-              onDelete={deleteJobMutation}
-              onUpdate={(id, data) => updateJobMutation({ id, data })}
-              isDeleting={isDeletingJob}
-              isUpdating={isUpdatingJob}
-            />
-          )}
         </div>
       </div>
       <AddEntryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         selectedDate={selectedDate}
+      />
+      <AddJobModal
+        isOpen={isJobModalOpen}
+        onClose={() => setIsJobModalOpen(false)}
+        onSubmit={addJobMutation}
+        isLoading={isAddingJob}
       />
     </>
   );
