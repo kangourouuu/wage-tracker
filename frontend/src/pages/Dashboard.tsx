@@ -16,6 +16,9 @@ import WorkEntryList from "../components/WorkEntryList";
 import JobList from "../components/JobList";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
+import { DarkModeToggle } from "../shared/components/ui";
+import { useKeyboardShortcut } from "../shared/hooks";
+import { ClockWidget } from "../features/work-entries/components/ClockWidget";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -70,6 +73,9 @@ export const Dashboard = () => {
     queryKey: ["jobs"],
     queryFn: fetchJobs,
   });
+
+  useKeyboardShortcut('n', () => setIsModalOpen(true));
+  useKeyboardShortcut('/', () => toggleAssistant());
 
   const { mutate: deleteWorkEntryMutation, isPending: isDeletingWorkEntry } =
     useMutation({
@@ -152,6 +158,7 @@ export const Dashboard = () => {
             >
               + {t('addJob')}
             </button>
+            <DarkModeToggle />
             <select
               onChange={(e) => changeLanguage(e.target.value)}
               value={i18n.language}
@@ -175,19 +182,22 @@ export const Dashboard = () => {
         </div>
 
         <div className={styles.mainContent}>
-          <div className={styles.calendarWrapper}>
-            <Calendar
-              onChange={(value) => {
-                if (Array.isArray(value)) {
-                  handleDateClick(value[0] as Date);
-                } else {
-                  handleDateClick(value as Date);
-                }
-              }}
-              value={selectedDate}
-              onClickDay={handleDateClick}
-              locale={i18n.language === "vn" ? "vi" : "en-US"}
-            />
+          <div className={styles.leftColumn}>
+            <div className={styles.calendarWrapper}>
+              <Calendar
+                onChange={(value) => {
+                  if (Array.isArray(value)) {
+                    handleDateClick(value[0] as Date);
+                  } else {
+                    handleDateClick(value as Date);
+                  }
+                }}
+                value={selectedDate}
+                onClickDay={handleDateClick}
+                locale={i18n.language === "vn" ? "vi" : "en-US"}
+              />
+            </div>
+            <ClockWidget />
           </div>
 
           <div className={styles.listsContainer}>

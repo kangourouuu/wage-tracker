@@ -388,6 +388,11 @@
   resolved "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.0.0-beta.41.tgz"
   integrity sha512-m66M61fizvRCwt5pOEiZQMiwBL9/y0bwU/+Kc4Ce/Pef6YfoEkR28y+DzN9rMdjo8Z28NXjsDPq9nH4mXnAP0g==
 
+"@rolldown/binding-linux-x64-musl@1.0.0-beta.41":
+  version "1.0.0-beta.41"
+  resolved "https://registry.npmjs.org/@rolldown/binding-linux-x64-musl/-/binding-linux-x64-musl-1.0.0-beta.41.tgz"
+  integrity sha512-yRxlSfBvWnnfrdtJfvi9lg8xfG5mPuyoSHm0X01oiE8ArmLRvoJGHUTJydCYz+wbK2esbq5J4B4Tq9WAsOlP1Q==
+
 "@rolldown/pluginutils@1.0.0-beta.41":
   version "1.0.0-beta.41"
   resolved "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.41.tgz"
@@ -792,9 +797,9 @@ callsites@^3.0.0:
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
 camera-controls@^3.0.1, camera-controls@^3.1.0:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/camera-controls/-/camera-controls-3.0.1.tgz"
-  integrity sha512-73DqkvhH5QM6rABBqPqWVvjgH7H4RtFC7dRwb6cMQk6Xi41Tl1tp6+Fq1mjmej7C/tQVoHbz3oZFYWPhqjBVqA==
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/camera-controls/-/camera-controls-3.1.0.tgz"
+  integrity sha512-w5oULNpijgTRH0ARFJJ0R5ct1nUM3R3WP7/b8A6j9uTGpRfnsypc/RBMPQV8JQDPayUe37p/TZZY1PcUr4czOQ==
 
 caniuse-lite@^1.0.30001751:
   version "1.0.30001754"
@@ -1412,6 +1417,11 @@ lightningcss-linux-x64-gnu@1.30.2:
   version "1.30.2"
   resolved "https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.30.2.tgz"
   integrity sha512-Cfd46gdmj1vQ+lR6VRTTadNHu6ALuw2pKR9lYq4FnhvgBc4zWY1EtZcAc6EffShbb1MFrIPfLDXD6Xprbnni4w==
+
+lightningcss-linux-x64-musl@1.30.2:
+  version "1.30.2"
+  resolved "https://registry.npmjs.org/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.30.2.tgz"
+  integrity sha512-XJaLUUFXb6/QG2lGIW6aIk6jKdtjtcffUT0NKvIqhSBY3hh9Ch+1LCeH80dR9q9LBjG3ewbDjnumefsLsP6aiA==
 
 lightningcss@^1.30.1:
   version "1.30.2"

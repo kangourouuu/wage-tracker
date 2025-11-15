@@ -3,6 +3,7 @@ import type { WorkEntry } from '../types/work-entry';
 import styles from './WorkEntryList.module.css';
 import { useTranslation } from 'react-i18next';
 import { useResponsive } from '../contexts/ResponsiveContext';
+import { EmptyState } from '../shared/components/feedback';
 
 interface WorkEntryListProps {
   workEntries: WorkEntry[];
@@ -25,7 +26,16 @@ const WorkEntryList: React.FC<WorkEntryListProps> = ({
   };
 
   if (!workEntries || workEntries.length === 0) {
-    return <p>{t('noEntriesFound')}</p>;
+    return (
+      <div className={styles.workEntryList}>
+        <h2>{t('yourWorkEntries')}</h2>
+        <EmptyState
+          icon="📝"
+          title={t('noEntriesFound')}
+          description="Start tracking your work by adding your first entry!"
+        />
+      </div>
+    );
   }
 
   if (isMobile) {

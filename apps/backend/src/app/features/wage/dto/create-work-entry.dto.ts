@@ -10,8 +10,9 @@ export class CreateWorkEntryDto {
   @IsDateString()
   startTime: string;
 
+  @IsOptional()
   @IsDateString()
-  endTime: string;
+  endTime?: string;
 
   @IsUUID()
   jobId: string;

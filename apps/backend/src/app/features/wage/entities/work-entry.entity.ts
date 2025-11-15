@@ -17,7 +17,7 @@ export class WorkEntry {
   @Column()
   startTime: Date;
 
-  @Column()
+  @Column({ nullable: true })
   endTime: Date;
 
   @Column({ type: "int", default: 0 })

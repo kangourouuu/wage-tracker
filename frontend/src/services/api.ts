@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api', // Use environment variable for API URL
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
 });
 
 api.interceptors.request.use(
@@ -18,7 +18,16 @@ api.interceptors.request.use(
   }
 );
 
-// You can add response interceptors here to handle token refresh logic
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      useAuthStore.getState().logout();
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const deleteWorkEntry = (id: string) => {
   return api.delete(`/work-entries/${id}`);
