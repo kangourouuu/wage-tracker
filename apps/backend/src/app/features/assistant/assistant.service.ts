@@ -22,10 +22,7 @@ export class AssistantService {
     this.groqModel = this.configService.get<string>("app.groqModel");
 
     console.log("🔧 Assistant Service Initialization:");
-    console.log(
-      "  - GROQ_API_KEY present:",
-      groqApiKey ? "Yes" : "No",
-    );
+    console.log("  - GROQ_API_KEY present:", groqApiKey ? "Yes" : "No");
     console.log("  - GROQ_MODEL:", this.groqModel);
 
     if (!groqApiKey) {
@@ -44,7 +41,10 @@ export class AssistantService {
     }
   }
 
-  async generateContent(createChatDto: CreateChatDto, userId?: string): Promise<string> {
+  async generateContent(
+    createChatDto: CreateChatDto,
+    userId?: string,
+  ): Promise<string> {
     const { message } = createChatDto;
 
     // Check if API key is configured
@@ -77,7 +77,12 @@ export class AssistantService {
             contextInfo += "\n**Recent Work Entries:**\n";
             recentEntries.forEach((entry, idx) => {
               const date = new Date(entry.startTime).toLocaleDateString();
-              const hours = ((new Date(entry.endTime).getTime() - new Date(entry.startTime).getTime() - entry.breakDuration * 60 * 1000) / (1000 * 60 * 60)).toFixed(2);
+              const hours = (
+                (new Date(entry.endTime).getTime() -
+                  new Date(entry.startTime).getTime() -
+                  entry.breakDuration * 60 * 1000) /
+                (1000 * 60 * 60)
+              ).toFixed(2);
               contextInfo += `${idx + 1}. ${entry.job.name} on ${date} - ${hours} hours\n`;
             });
           }
@@ -285,7 +290,10 @@ Always structure your responses in a clear, easy-to-read format.`;
   ): Promise<any> {
     // Prepare the prompt for AI analysis
     const jobsList = userJobs
-      .map((j) => `- ${j.name} (ID: ${j.id}, Rate: ${j.wagePerHour.toLocaleString()} VND/hour)`)
+      .map(
+        (j) =>
+          `- ${j.name} (ID: ${j.id}, Rate: ${j.wagePerHour.toLocaleString()} VND/hour)`,
+      )
       .join("\n");
 
     const prompt = `You are analyzing work schedule data to extract work entries.

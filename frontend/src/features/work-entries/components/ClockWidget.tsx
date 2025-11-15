@@ -35,7 +35,7 @@ export const ClockWidget = () => {
         if (data) {
           setOngoingEntry(data);
         }
-      } catch (error) {
+      } catch (_error) {
         return;
       }
     };

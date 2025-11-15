@@ -111,7 +111,11 @@ export class WageService {
     }
   }
 
-  async clockIn(userId: string, jobId: string, startTime: string): Promise<WorkEntry> {
+  async clockIn(
+    userId: string,
+    jobId: string,
+    startTime: string,
+  ): Promise<WorkEntry> {
     const user = await this.userService.findById(userId);
     if (!user) {
       throw new NotFoundException("User not found");
@@ -128,7 +132,9 @@ export class WageService {
     });
 
     if (ongoingEntry) {
-      throw new Error("You already have an ongoing work entry. Please clock out first.");
+      throw new Error(
+        "You already have an ongoing work entry. Please clock out first.",
+      );
     }
 
     const workEntry = this.workEntryRepository.create({
@@ -149,7 +155,7 @@ export class WageService {
     breakDuration: number,
   ): Promise<WorkEntry> {
     const workEntry = await this.findOne(id, userId);
-    
+
     if (workEntry.endTime) {
       throw new Error("This work entry has already been clocked out.");
     }

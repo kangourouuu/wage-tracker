@@ -65,7 +65,12 @@ export class WageController {
     @GetCurrentUserId() userId: string,
     @Body() body: { endTime: string; breakDuration: number },
   ) {
-    return this.wageService.clockOut(id, userId, body.endTime, body.breakDuration);
+    return this.wageService.clockOut(
+      id,
+      userId,
+      body.endTime,
+      body.breakDuration,
+    );
   }
 
   @Get("ongoing/current")

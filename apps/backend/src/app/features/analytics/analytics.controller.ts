@@ -29,11 +29,7 @@ export class AnalyticsController {
     @Query("startDate") startDate?: string,
     @Query("endDate") endDate?: string,
   ) {
-    return this.analyticsService.getJobDistribution(
-      userId,
-      startDate,
-      endDate,
-    );
+    return this.analyticsService.getJobDistribution(userId, startDate, endDate);
   }
 
   @Get("weekly-pattern")

@@ -4,7 +4,8 @@ A modern, full-stack application designed to help users track their work hours a
 
 ## Live Demo
 
-[Link to your deployed application] <!-- TODO: Replace with your actual deployment link -->
+**Frontend:** [https://wage-tracker-delta.vercel.app](https://wage-tracker-delta.vercel.app)  
+**Backend API:** [https://wage-tracker-backend.onrender.com](https://wage-tracker-backend.onrender.com)
 
 ## Overview
 

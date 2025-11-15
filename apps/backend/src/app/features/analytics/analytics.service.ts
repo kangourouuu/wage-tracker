@@ -42,9 +42,7 @@ export class AnalyticsService {
     const entries = await this.workEntryRepository.find({
       where: {
         user: { id: userId },
-        ...(startDate && endDate
-          ? { startTime: Between(start, end) }
-          : {}),
+        ...(startDate && endDate ? { startTime: Between(start, end) } : {}),
       },
       relations: ["job"],
     });
@@ -84,11 +82,7 @@ export class AnalyticsService {
     return Array.from(jobStats.values());
   }
 
-  async getWeeklyPattern(
-    userId: string,
-    startDate?: string,
-    endDate?: string,
-  ) {
+  async getWeeklyPattern(userId: string, startDate?: string, endDate?: string) {
     const { start, end } = this.getDateRange("week", startDate, endDate);
 
     const entries = await this.workEntryRepository.find({
@@ -101,11 +95,21 @@ export class AnalyticsService {
     });
 
     // Group by day of week
-    const weekPattern = Array(7).fill(0).map((_, i) => ({
-      day: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][i],
-      hours: 0,
-      earnings: 0,
-    }));
+    const weekPattern = Array(7)
+      .fill(0)
+      .map((_, i) => ({
+        day: [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ][i],
+        hours: 0,
+        earnings: 0,
+      }));
 
     entries.forEach((entry) => {
       const dayOfWeek = new Date(entry.startTime).getDay();
@@ -121,7 +125,8 @@ export class AnalyticsService {
 
   async getSummary(userId: string, period: string = "week") {
     const { start, end } = this.getDateRange(period);
-    const { start: prevStart, end: prevEnd } = this.getPreviousPeriodRange(period);
+    const { start: prevStart, end: prevEnd } =
+      this.getPreviousPeriodRange(period);
 
     const currentEntries = await this.workEntryRepository.find({
       where: {
@@ -146,9 +151,18 @@ export class AnalyticsService {
       current: currentStats,
       previous: previousStats,
       trend: {
-        hours: this.calculateTrend(currentStats.totalHours, previousStats.totalHours),
-        earnings: this.calculateTrend(currentStats.totalEarnings, previousStats.totalEarnings),
-        entries: this.calculateTrend(currentStats.totalEntries, previousStats.totalEntries),
+        hours: this.calculateTrend(
+          currentStats.totalHours,
+          previousStats.totalHours,
+        ),
+        earnings: this.calculateTrend(
+          currentStats.totalEarnings,
+          previousStats.totalEarnings,
+        ),
+        entries: this.calculateTrend(
+          currentStats.totalEntries,
+          previousStats.totalEntries,
+        ),
       },
     };
   }
@@ -205,12 +219,14 @@ export class AnalyticsService {
       totalHours: parseFloat(totalHours.toFixed(2)),
       totalEarnings: parseFloat(totalEarnings.toFixed(2)),
       totalEntries: entries.length,
-      averageHoursPerEntry: entries.length > 0 
-        ? parseFloat((totalHours / entries.length).toFixed(2)) 
-        : 0,
-      averageEarningsPerEntry: entries.length > 0 
-        ? parseFloat((totalEarnings / entries.length).toFixed(2)) 
-        : 0,
+      averageHoursPerEntry:
+        entries.length > 0
+          ? parseFloat((totalHours / entries.length).toFixed(2))
+          : 0,
+      averageEarningsPerEntry:
+        entries.length > 0
+          ? parseFloat((totalEarnings / entries.length).toFixed(2))
+          : 0,
     };
   }
 
@@ -288,7 +304,10 @@ export class AnalyticsService {
   }
 
   private groupByDate(entries: WorkEntry[], period: string) {
-    const grouped = new Map<string, { date: string; hours: number; earnings: number; entries: number }>();
+    const grouped = new Map<
+      string,
+      { date: string; hours: number; earnings: number; entries: number }
+    >();
 
     entries.forEach((entry) => {
       const date = new Date(entry.startTime);
@@ -317,6 +336,8 @@ export class AnalyticsService {
       stats.entries += 1;
     });
 
-    return Array.from(grouped.values()).sort((a, b) => a.date.localeCompare(b.date));
+    return Array.from(grouped.values()).sort((a, b) =>
+      a.date.localeCompare(b.date),
+    );
   }
 }

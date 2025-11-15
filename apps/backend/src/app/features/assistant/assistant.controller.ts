@@ -23,7 +23,10 @@ export class AssistantController {
     @Body() createChatDto: CreateChatDto,
     @GetCurrentUserId() userId: string,
   ) {
-    const response = await this.assistantService.generateContent(createChatDto, userId);
+    const response = await this.assistantService.generateContent(
+      createChatDto,
+      userId,
+    );
     return { message: response };
   }
 
