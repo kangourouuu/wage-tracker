@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthForm } from './components/AuthForm';
 import { Dashboard } from './pages/Dashboard';
+import { Analytics } from './features/analytics/pages/Analytics';
 import { ResponsiveProvider } from './contexts/ResponsiveProvider';
 import { ProtectedRoute } from './components/ProtectedRoute'; // Import ProtectedRoute
 import { Canvas } from '@react-three/fiber';
@@ -27,6 +28,10 @@ function App() {
           <Route
             path="/dashboard"
             element={<ProtectedRoute><Dashboard /></ProtectedRoute>} // Re-enabled ProtectedRoute
+          />
+          <Route
+            path="/analytics"
+            element={<ProtectedRoute><Analytics /></ProtectedRoute>}
           />
         </Routes>
       </div>

@@ -1,5 +1,6 @@
 import { useAuthStore } from "../store/authStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import api, { deleteWorkEntry, deleteJob } from "../services/api";
 import type { WorkEntry, Job } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
@@ -58,6 +59,7 @@ const calculateSummary = (entries: WorkEntry[]) => {
 export const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -151,6 +153,13 @@ export const Dashboard = () => {
             </h1>
           </div>
           <div className={styles.headerActions}>
+            <button 
+              onClick={() => navigate('/analytics')} 
+              className={styles.analyticsButton}
+              title={t('analytics', 'Analytics')}
+            >
+              📊 {t('analytics', 'Analytics')}
+            </button>
             <button 
               onClick={() => setIsJobModalOpen(true)} 
               className={styles.addJobButton}
