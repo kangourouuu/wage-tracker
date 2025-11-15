@@ -1,0 +1,231 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalContent {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid rgba(79, 195, 247, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 2px solid rgba(79, 195, 247, 0.3);
+  background: linear-gradient(135deg, rgba(79, 195, 247, 0.3), rgba(129, 212, 250, 0.25));
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0d47a1;
+  font-weight: 700;
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #666;
+  font-size: 1.8rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(244, 67, 54, 0.15);
+  color: #d32f2f;
+  border-color: rgba(244, 67, 54, 0.3);
+  transform: scale(1.05);
+}
+
+.form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.error {
+  padding: 0.75rem;
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 8px;
+  color: #d32f2f;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0d47a1;
+}
+
+.input {
+  padding: 0.75rem;
+  border: 2px solid rgba(79, 195, 247, 0.4);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a1a;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 1);
+  border-color: #0288d1;
+  box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.3);
+}
+
+.inputWithUnit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inputWithUnit .input {
+  flex: 1;
+}
+
+.unit {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0d47a1;
+  padding: 0.75rem;
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 8px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.cancelButton,
+.submitButton {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+}
+
+.cancelButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: #666;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.submitButton {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-color-light));
+  color: white;
+  box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 195, 247, 0.4);
+}
+
+.cancelButton:disabled,
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .modalContent {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .modalHeader {
+    padding: 1rem;
+  }
+
+  .modalHeader h2 {
+    font-size: 1.25rem;
+  }
+
+  .form {
+    padding: 1rem;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .submitButton {
+    width: 100%;
+  }
+}
