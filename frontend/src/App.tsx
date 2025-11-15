@@ -4,6 +4,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Analytics } from './features/analytics/pages/Analytics';
 import { ResponsiveProvider } from './contexts/ResponsiveProvider';
 import { ProtectedRoute } from './components/ProtectedRoute'; // Import ProtectedRoute
+import { PWAInstallPrompt } from './shared/components/ui/PWAInstallPrompt';
 import { Canvas } from '@react-three/fiber';
 import ThreeScene from './pages/ThreeScene';
 import { Toaster } from 'react-hot-toast';
@@ -17,6 +18,7 @@ function App() {
   return (
     <ResponsiveProvider>
       <Toaster position="bottom-right" />
+      <PWAInstallPrompt />
       <Canvas className="threeCanvas" gl={{ alpha: true }}>
         <ThreeScene />
       </Canvas>
