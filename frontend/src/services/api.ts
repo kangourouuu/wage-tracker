@@ -18,7 +18,18 @@ api.interceptors.request.use(
   }
 );
 
-// You can add response interceptors here to handle token refresh logic
+// Response interceptor for handling token refresh and errors
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      // Token expired - logout user
+      useAuthStore.getState().logout();
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const deleteWorkEntry = (id: string) => {
   return api.delete(`/work-entries/${id}`);

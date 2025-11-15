@@ -78,10 +78,16 @@
   align-items: flex-start; /* Align items to the start vertically */
 }
 
-.calendarWrapper {
-  flex: 1 1 400px; /* Allow calendar to grow/shrink, with a base of 400px */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex: 1 1 400px;
   min-width: 300px;
   max-width: 450px;
+}
+
+.calendarWrapper {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   border: 1px solid var(--glass-border);
