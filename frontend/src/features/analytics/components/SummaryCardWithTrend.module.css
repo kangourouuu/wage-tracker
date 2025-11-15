@@ -1,17 +1,37 @@
 .card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .header {
@@ -23,23 +43,25 @@
 
 .title {
   font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-light-color);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .icon {
-  font-size: 1.5rem;
-  opacity: 0.7;
+  font-size: 1.75rem;
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .value {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  color: var(--text-color);
+  color: #ffffff;
   margin-bottom: 0.75rem;
   line-height: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .trend {
@@ -48,18 +70,26 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  width: fit-content;
 }
 
 .trend.positive {
-  color: var(--success-color);
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.15);
 }
 
 .trend.negative {
-  color: var(--error-color);
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.15);
 }
 
 .arrow {
   font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .percentage {
@@ -68,6 +98,6 @@
 
 .label {
   font-size: 0.75rem;
-  opacity: 0.7;
-  font-weight: 400;
+  opacity: 0.85;
+  font-weight: 500;
 }
