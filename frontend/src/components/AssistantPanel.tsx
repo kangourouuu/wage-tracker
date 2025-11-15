@@ -231,7 +231,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
       }
 
       // Format bold text (**text**)
-      let formattedLine = line;
+      const formattedLine = line;
       const boldRegex = /\*\*([^*]+)\*\*/g;
       const parts: (string | React.ReactElement)[] = [];
       let lastIndex = 0;
@@ -253,7 +253,7 @@ export const AssistantPanel: React.FC<AssistantPanelProps> = ({
       }
 
       // Check if it's a bullet point
-      if (line.trim().match(/^[•\-\*]\s/)) {
+      if (line.trim().match(/^[•\-*]\s/)) {
         formatted.push(
           <div key={`bullet-${key++}`} style={{ paddingLeft: '1rem', marginBottom: '0.5rem' }}>
             {parts.length > 0 ? parts : formattedLine}
