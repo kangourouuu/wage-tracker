@@ -10,7 +10,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
-import AddJobModal from "../components/AddJobModal";
 import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
 import WorkEntryList from "../components/WorkEntryList";
@@ -62,7 +61,6 @@ export const Dashboard = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const queryClient = useQueryClient();
   const { toggle: toggleAssistant } = useAiAssistantStore();
@@ -118,15 +116,6 @@ export const Dashboard = () => {
     },
   });
 
-  const { mutate: addJobMutation, isPending: isAddingJob } = useMutation({
-    mutationFn: (data: { name: string; wagePerHour: number }) =>
-      api.post("/jobs", data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      setIsJobModalOpen(false);
-    },
-  });
-
   const summary = workEntries
     ? calculateSummary(workEntries)
     : { totalHours: "0.00", totalEarnings: "0.00" };
@@ -168,13 +157,6 @@ export const Dashboard = () => {
               title={t('analytics', 'Analytics')}
             >
               📊 {t('analytics', 'Analytics')}
-            </button>
-            <button 
-              onClick={() => setIsJobModalOpen(true)} 
-              className={styles.addJobButton}
-              title={t('addJob')}
-            >
-              + {t('addJob')}
             </button>
             <DarkModeToggle />
             <select
@@ -266,12 +248,6 @@ export const Dashboard = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         selectedDate={selectedDate}
-      />
-      <AddJobModal
-        isOpen={isJobModalOpen}
-        onClose={() => setIsJobModalOpen(false)}
-        onSubmit={addJobMutation}
-        isLoading={isAddingJob}
       />
     </>
   );
