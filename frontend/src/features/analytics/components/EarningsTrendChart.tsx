@@ -37,7 +37,7 @@ export const EarningsTrendChart = ({ data }: EarningsTrendChartProps) => {
             dataKey="earnings"
             stroke="#8b5cf6"
             strokeWidth={2}
-            name="Earnings ($)"
+            name="Earnings"
           />
           <Line
             yAxisId="right"

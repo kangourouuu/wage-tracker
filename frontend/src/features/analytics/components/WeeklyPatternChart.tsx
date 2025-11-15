@@ -30,7 +30,7 @@ export const WeeklyPatternChart = ({ data }: WeeklyPatternChartProps) => {
           <YAxis yAxisId="right" orientation="right" />
           <Tooltip />
           <Legend />
-          <Bar yAxisId="left" dataKey="earnings" fill="#8b5cf6" name="Earnings ($)" />
+          <Bar yAxisId="left" dataKey="earnings" fill="#8b5cf6" name="Earnings" />
           <Bar yAxisId="right" dataKey="hours" fill="#10b981" name="Hours" />
         </BarChart>
       </ResponsiveContainer>

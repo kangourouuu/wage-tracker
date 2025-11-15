@@ -101,7 +101,7 @@ export const Analytics = () => {
                 />
                 <SummaryCardWithTrend
                   title={t("analytics.totalEarnings", "Total Earnings")}
-                  value={`$${summary.current.totalEarnings.toFixed(2)}`}
+                  value={summary.current.totalEarnings.toFixed(2)}
                   trend={{
                     value: summary.trend.earnings,
                     isPositive: summary.trend.earnings >= 0,
@@ -119,7 +119,7 @@ export const Analytics = () => {
                 />
                 <SummaryCardWithTrend
                   title={t("analytics.avgEarningsPerEntry", "Avg. Earnings/Entry")}
-                  value={`$${summary.current.averageEarningsPerEntry.toFixed(2)}`}
+                  value={summary.current.averageEarningsPerEntry.toFixed(2)}
                   icon="📊"
                 />
               </>

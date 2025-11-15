@@ -123,7 +123,7 @@ const AddWorkEntry: React.FC<AddWorkEntryProps> = ({ selectedDate, onClose }) =>
                     }
                   }}
                 />
-                {job.name} (${job.wagePerHour}/hr)
+                {job.name} ({job.wagePerHour}/hr)
               </label>
             </div>
           ))}
