@@ -19,7 +19,6 @@ import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantS
 import { AssistantPanel } from "../components/AssistantPanel";
 import { DarkModeToggle } from "../shared/components/ui";
 import { useKeyboardShortcut } from "../shared/hooks";
-import { ClockWidget } from "../features/work-entries/components/ClockWidget";
 import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCardWithTrend";
 import type { SummaryData } from "../features/analytics/types/analytics.types";
 
@@ -241,7 +240,6 @@ export const Dashboard = () => {
                 locale={i18n.language === "vn" ? "vi" : "en-US"}
               />
             </div>
-            <ClockWidget />
           </div>
 
           <div className={styles.listsContainer}>
