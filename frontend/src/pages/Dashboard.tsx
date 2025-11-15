@@ -1,7 +1,7 @@
 import { useAuthStore } from "../store/authStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import api, { deleteWorkEntry, deleteJob } from "../services/api";
+import api, { deleteWorkEntry, deleteJob, analyticsApi } from "../services/api";
 import type { WorkEntry, Job } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
@@ -20,6 +20,8 @@ import { AssistantPanel } from "../components/AssistantPanel";
 import { DarkModeToggle } from "../shared/components/ui";
 import { useKeyboardShortcut } from "../shared/hooks";
 import { ClockWidget } from "../features/work-entries/components/ClockWidget";
+import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCardWithTrend";
+import type { SummaryData } from "../features/analytics/types/analytics.types";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -74,6 +76,14 @@ export const Dashboard = () => {
   const { data: jobs } = useQuery<Job[]>({
     queryKey: ["jobs"],
     queryFn: fetchJobs,
+  });
+
+  const { data: analyticsSummary } = useQuery<SummaryData>({
+    queryKey: ["dashboardSummary"],
+    queryFn: async () => {
+      const { data } = await analyticsApi.getSummary("week");
+      return data;
+    },
   });
 
   useKeyboardShortcut('n', () => setIsModalOpen(true));
@@ -183,11 +193,36 @@ export const Dashboard = () => {
         </header>
 
         <div className={styles.summaryCardsContainer}>
-          <SummaryCard title={t("totalHours")} value={summary.totalHours} />
-          <SummaryCard
-            title={t("estimatedEarnings")}
-            value={summary.totalEarnings}
-          />
+          {analyticsSummary ? (
+            <>
+              <SummaryCardWithTrend
+                title={t("totalHours")}
+                value={analyticsSummary.current.totalHours.toFixed(2)}
+                trend={{
+                  value: analyticsSummary.trend.hours,
+                  isPositive: analyticsSummary.trend.hours >= 0,
+                }}
+                icon="⏱️"
+              />
+              <SummaryCardWithTrend
+                title={t("estimatedEarnings")}
+                value={`$${analyticsSummary.current.totalEarnings.toFixed(2)}`}
+                trend={{
+                  value: analyticsSummary.trend.earnings,
+                  isPositive: analyticsSummary.trend.earnings >= 0,
+                }}
+                icon="💰"
+              />
+            </>
+          ) : (
+            <>
+              <SummaryCard title={t("totalHours")} value={summary.totalHours} />
+              <SummaryCard
+                title={t("estimatedEarnings")}
+                value={summary.totalEarnings}
+              />
+            </>
+          )}
         </div>
 
         <div className={styles.mainContent}>
