@@ -3,6 +3,7 @@ import type { Job } from "../types/work-entry";
 import styles from "./JobList.module.css";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "../contexts/ResponsiveContext"; // Import useResponsive
+import { EmptyState } from "../shared/components/feedback";
 
 interface JobListProps {
   jobs: Job[];
@@ -57,7 +58,11 @@ const JobList: React.FC<JobListProps> = ({
     return (
       <div className={styles.jobList}>
         <h2>{t("yourJobs")}</h2>
-        <p className={styles.emptyState}>{t("noJobsFound")}</p>
+        <EmptyState
+          icon="💼"
+          title={t("noJobsFound")}
+          description="Add your first job to start tracking your earnings!"
+        />
       </div>
     );
   }

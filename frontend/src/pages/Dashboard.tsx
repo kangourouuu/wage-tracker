@@ -15,6 +15,8 @@ import WorkEntryList from "../components/WorkEntryList";
 import JobList from "../components/JobList";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
+import { DarkModeToggle } from "../shared/components/ui";
+import { useKeyboardShortcut } from "../shared/hooks";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -68,6 +70,10 @@ export const Dashboard = () => {
     queryKey: ["jobs"],
     queryFn: fetchJobs,
   });
+
+  // Keyboard shortcuts
+  useKeyboardShortcut('n', () => setIsModalOpen(true));
+  useKeyboardShortcut('/', () => toggleAssistant());
 
   const { mutate: deleteWorkEntryMutation, isPending: isDeletingWorkEntry } =
     useMutation({
@@ -134,6 +140,7 @@ export const Dashboard = () => {
             </h1>
           </div>
           <div className={styles.headerActions}>
+            <DarkModeToggle />
             <select
               onChange={(e) => changeLanguage(e.target.value)}
               value={i18n.language}

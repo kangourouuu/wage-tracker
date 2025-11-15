@@ -1,0 +1,29 @@
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+}
+
+.toggle:hover {
+  background: var(--glass-bg-contrast);
+  transform: scale(1.05);
+}
+
+.toggle:active {
+  transform: scale(0.95);
+}
+
+.toggle svg {
+  width: 20px;
+  height: 20px;
+}

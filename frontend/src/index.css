@@ -53,6 +53,26 @@
   --border-radius-md: 2.5rem;
 }
 
+/* Dark Mode */
+.dark {
+  /* Base Colors - Dark Theme */
+  --background-color: #0f1419;
+  --surface-color: #1a1f26;
+  --text-color: #e0e0e0;
+  --text-light-color: #9ca3af;
+  --border-color: rgba(255, 255, 255, 0.1);
+  
+  /* Glassmorphism - Dark */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-contrast: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  
+  /* Shadows - Dark */
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
