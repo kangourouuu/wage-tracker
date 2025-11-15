@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import type { Job } from "../types/work-entry";
 import styles from "./JobList.module.css";
 import { useTranslation } from "react-i18next";
@@ -25,6 +25,8 @@ const JobList: React.FC<JobListProps> = ({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [editWage, setEditWage] = useState("");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const longPressTimer = useRef<number | null>(null);
 
   const handleDelete = (id: string) => {
     if (window.confirm(t("confirmDelete"))) {
@@ -53,6 +55,23 @@ const JobList: React.FC<JobListProps> = ({
     setEditName("");
     setEditWage("");
   };
+
+  const handleLongPressStart = useCallback((id: string) => {
+    longPressTimer.current = window.setTimeout(() => {
+      setSelectedId(id);
+    }, 500); // 500ms long press
+  }, []);
+
+  const handleLongPressEnd = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }, []);
+
+  const handleClickOutside = useCallback(() => {
+    setSelectedId(null);
+  }, []);
 
   if (!jobs || jobs.length === 0) {
     return (
@@ -164,7 +183,7 @@ const JobList: React.FC<JobListProps> = ({
   }
 
   return (
-    <div className={styles.jobList}>
+    <div className={styles.jobList} onClick={handleClickOutside}>
       <div className={styles.header}>
         <h2>{t("yourJobs")}</h2>
         <span className={styles.jobCount}>
@@ -177,12 +196,19 @@ const JobList: React.FC<JobListProps> = ({
             <tr>
               <th>{t("jobName")}</th>
               <th>{t("wagePerHour")}</th>
-              <th className={styles.actionsColumn}>{t("actions")}</th>
             </tr>
           </thead>
           <tbody>
             {jobs.map((job) => (
-              <tr key={job.id}>
+              <tr 
+                key={job.id}
+                onMouseDown={() => handleLongPressStart(job.id)}
+                onMouseUp={handleLongPressEnd}
+                onMouseLeave={handleLongPressEnd}
+                onTouchStart={() => handleLongPressStart(job.id)}
+                onTouchEnd={handleLongPressEnd}
+                className={selectedId === job.id ? styles.selectedRow : ''}
+              >
                 {editingId === job.id ? (
                   <>
                     <td>
@@ -207,24 +233,6 @@ const JobList: React.FC<JobListProps> = ({
                         <span className={styles.unit}>{t("currency")}</span>
                       </div>
                     </td>
-                    <td>
-                      <div className={styles.actionButtons}>
-                        <button
-                          onClick={() => handleSave(job.id)}
-                          className={styles.saveButton}
-                          disabled={isUpdating}
-                        >
-                          {isUpdating ? t("submitting") : t("save")}
-                        </button>
-                        <button
-                          onClick={handleCancel}
-                          className={styles.cancelButton}
-                          disabled={isUpdating}
-                        >
-                          {t("cancel")}
-                        </button>
-                      </div>
-                    </td>
                   </>
                 ) : (
                   <>
@@ -237,30 +245,61 @@ const JobList: React.FC<JobListProps> = ({
                         {t("perHour")}
                       </span>
                     </td>
-                    <td>
-                      <div className={styles.actionButtons}>
-                        <button
-                          onClick={() => handleEdit(job)}
-                          className={styles.editButton}
-                          disabled={isDeleting || isUpdating}
-                        >
-                          ✏️ {t("edit")}
-                        </button>
-                        <button
-                          onClick={() => handleDelete(job.id)}
-                          className={styles.deleteButton}
-                          disabled={isDeleting || isUpdating}
-                        >
-                          🗑️ {t("delete")}
-                        </button>
-                      </div>
-                    </td>
                   </>
                 )}
               </tr>
             ))}
           </tbody>
         </table>
+        
+        {/* Action buttons shown on long press */}
+        {selectedId && !editingId && (
+          <div className={styles.actionPopup}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                const job = jobs.find(j => j.id === selectedId);
+                if (job) handleEdit(job);
+                setSelectedId(null);
+              }}
+              className={styles.editButton}
+              disabled={isDeleting || isUpdating}
+            >
+              ✏️ {t("edit")}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(selectedId);
+                setSelectedId(null);
+              }}
+              className={styles.deleteButton}
+              disabled={isDeleting || isUpdating}
+            >
+              🗑️ {t("delete")}
+            </button>
+          </div>
+        )}
+        
+        {/* Edit mode action buttons */}
+        {editingId && (
+          <div className={styles.editActions}>
+            <button
+              onClick={() => handleSave(editingId)}
+              className={styles.saveButton}
+              disabled={isUpdating}
+            >
+              {isUpdating ? t("submitting") : t("save")}
+            </button>
+            <button
+              onClick={handleCancel}
+              className={styles.cancelButton}
+              disabled={isUpdating}
+            >
+              {t("cancel")}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

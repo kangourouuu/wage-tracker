@@ -131,116 +131,138 @@ export const Dashboard = () => {
 
   return (
     <>
-      <div className={styles.dashboardContainer}>
-        <header className={styles.header}>
-          <div className={styles.welcomeSection}>
-            <div className={styles.assistantToggleContainer}>
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleAssistant();
-                }}
-                style={{ cursor: "pointer", display: "inline-flex" }}
-              >
-                <TimeOfDayIcon />
-              </div>
-              <AssistantPanel isDropdown={true} />
-            </div>
-            <h1 className={styles.welcomeTitle}>
-              {t("welcome", { name: user?.name })}
-            </h1>
-          </div>
-          <div className={styles.headerActions}>
+      <div className={styles.pageWrapper}>
+        {/* Sidebar */}
+        <div className={styles.sidebar}>
+          <nav className={styles.sidebarNav}>
             <button 
-              onClick={() => navigate('/analytics')} 
-              className={styles.analyticsButton}
-              title={t('analytics', 'Analytics')}
+              className={`${styles.sidebarTab} ${styles.active}`}
+              onClick={() => navigate('/dashboard')}
             >
-              📊 {t('analytics', 'Analytics')}
+              <span className={styles.sidebarIcon}>📊</span>
+              <span className={styles.sidebarLabel}>{t("dashboard", "Dashboard")}</span>
             </button>
-            <DarkModeToggle />
-            <select
-              onChange={(e) => changeLanguage(e.target.value)}
-              value={i18n.language}
-              className={styles.languageSwitcher}
+            <button 
+              className={styles.sidebarTab}
+              onClick={() => navigate('/analytics')}
             >
-              <option value="en">English</option>
-              <option value="vn">Tiếng Việt</option>
-            </select>
-            <button onClick={logout} className={styles.logoutButton}>
-              {t("logout")}
+              <span className={styles.sidebarIcon}>📈</span>
+              <span className={styles.sidebarLabel}>{t("analytics", "Analytics")}</span>
             </button>
-          </div>
-        </header>
-
-        <div className={styles.summaryCardsContainer}>
-          {analyticsSummary ? (
-            <>
-              <SummaryCardWithTrend
-                title={t("totalHours")}
-                value={analyticsSummary.current.totalHours.toFixed(2)}
-                trend={{
-                  value: analyticsSummary.trend.hours,
-                  isPositive: analyticsSummary.trend.hours >= 0,
-                }}
-                icon="⏱️"
-              />
-              <SummaryCardWithTrend
-                title={t("estimatedEarnings")}
-                value={analyticsSummary.current.totalEarnings.toFixed(2)}
-                trend={{
-                  value: analyticsSummary.trend.earnings,
-                  isPositive: analyticsSummary.trend.earnings >= 0,
-                }}
-                icon="💰"
-              />
-            </>
-          ) : (
-            <>
-              <SummaryCard title={t("totalHours")} value={summary.totalHours} />
-              <SummaryCard
-                title={t("estimatedEarnings")}
-                value={summary.totalEarnings}
-              />
-            </>
-          )}
+          </nav>
         </div>
 
-        <div className={styles.mainContent}>
-          <div className={styles.leftColumn}>
-            <div className={styles.calendarWrapper}>
-              <Calendar
-                onChange={(value) => {
-                  if (Array.isArray(value)) {
-                    handleDateClick(value[0] as Date);
-                  } else {
-                    handleDateClick(value as Date);
-                  }
-                }}
-                value={selectedDate}
-                onClickDay={handleDateClick}
-                locale={i18n.language === "vn" ? "vi" : "en-US"}
-              />
-            </div>
-          </div>
+        {/* Main Content */}
+        <div className={styles.contentWrapper}>
+          <div className={styles.dashboardContainer}>
+            <header className={styles.header}>
+              <div className={styles.welcomeSection}>
+                <div className={styles.assistantToggleContainer}>
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleAssistant();
+                    }}
+                    style={{ cursor: "pointer", display: "inline-flex" }}
+                  >
+                    <TimeOfDayIcon />
+                  </div>
+                  <AssistantPanel isDropdown={true} />
+                </div>
+                <h1 className={styles.welcomeTitle}>
+                  {t("welcome", { name: user?.name })}
+                </h1>
+              </div>
+              <div className={styles.headerActions}>
+                <DarkModeToggle />
+                <select
+                  onChange={(e) => changeLanguage(e.target.value)}
+                  value={i18n.language}
+                  className={styles.languageSwitcher}
+                >
+                  <option value="en">English</option>
+                  <option value="vn">Tiếng Việt</option>
+                </select>
+                <button onClick={logout} className={styles.logoutButton}>
+                  {t("logout")}
+                </button>
+              </div>
+            </header>
 
-          <div className={styles.listsContainer}>
-            {jobs && (
-              <JobList
-                jobs={jobs}
-                onDelete={deleteJobMutation}
-                onUpdate={(id, data) => updateJobMutation({ id, data })}
-                isDeleting={isDeletingJob}
-                isUpdating={isUpdatingJob}
-              />
-            )}
-            {workEntries && (
-              <WorkEntryList
-                workEntries={workEntries}
-                onDelete={deleteWorkEntryMutation}
-                isDeleting={isDeletingWorkEntry}
-              />
-            )}
+            <div className={styles.mainContent}>
+              <div className={styles.centerColumn}>
+                <div className={styles.calendarWrapper}>
+                  <Calendar
+                    onChange={(value) => {
+                      if (Array.isArray(value)) {
+                        handleDateClick(value[0] as Date);
+                      } else {
+                        handleDateClick(value as Date);
+                      }
+                    }}
+                    value={selectedDate}
+                    onClickDay={handleDateClick}
+                    locale={i18n.language === "vn" ? "vi" : "en-US"}
+                  />
+                </div>
+                
+                <div className={styles.summaryCardsContainer}>
+                  {analyticsSummary ? (
+                    <>
+                      <SummaryCardWithTrend
+                        title={t("totalHours")}
+                        value={analyticsSummary.current.totalHours.toFixed(2)}
+                        trend={{
+                          value: analyticsSummary.trend.hours,
+                          isPositive: analyticsSummary.trend.hours >= 0,
+                        }}
+                        icon="⏱️"
+                      />
+                      <SummaryCardWithTrend
+                        title={t("estimatedEarnings")}
+                        value={analyticsSummary.current.totalEarnings.toFixed(2)}
+                        trend={{
+                          value: analyticsSummary.trend.earnings,
+                          isPositive: analyticsSummary.trend.earnings >= 0,
+                        }}
+                        icon="💰"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <SummaryCard title={t("totalHours")} value={summary.totalHours} />
+                      <SummaryCard
+                        title={t("estimatedEarnings")}
+                        value={summary.totalEarnings}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.listsContainer}>
+              <div className={styles.listWrapper}>
+                {jobs && (
+                  <JobList
+                    jobs={jobs}
+                    onDelete={deleteJobMutation}
+                    onUpdate={(id, data) => updateJobMutation({ id, data })}
+                    isDeleting={isDeletingJob}
+                    isUpdating={isUpdatingJob}
+                  />
+                )}
+              </div>
+              <div className={styles.listWrapper}>
+                {workEntries && (
+                  <WorkEntryList
+                    workEntries={workEntries}
+                    onDelete={deleteWorkEntryMutation}
+                    isDeleting={isDeletingWorkEntry}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

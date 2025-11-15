@@ -56,21 +56,21 @@
 /* Dark Mode */
 .dark {
   /* Base Colors - Dark Theme */
-  --background-color: #0f1419;
-  --surface-color: #1a1f26;
+  --background-color: #0a0e14;
+  --surface-color: #151a21;
   --text-color: #e0e0e0;
   --text-light-color: #9ca3af;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.15);
   
   /* Glassmorphism - Dark */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-bg-contrast: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(20, 25, 35, 0.4);
+  --glass-bg-contrast: rgba(20, 25, 35, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.15);
   
   /* Shadows - Dark */
-  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.8);
 }
 
 * {
