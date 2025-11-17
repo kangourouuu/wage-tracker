@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './AddEntryModal.module.css';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import api from '../services/api';
-import type { CreateWorkEntryDto, Job, WorkEntry } from '../types/work-entry.ts';
+import type { CreateWorkEntryDto, Job, WorkEntry, UpdateWorkEntryDto } from '../types/work-entry.ts';
 import { useTranslation } from 'react-i18next';
 
 interface AddEntryModalProps {
@@ -19,6 +19,11 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
   const [jobHours, setJobHours] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
+  const [editFormData, setEditFormData] = useState<{
+    jobId: string;
+    hours: string;
+  } | null>(null);
 
   const { data: jobs, isLoading: isLoadingJobs, isError: isErrorJobs } = useQuery<Job[]>({
     queryKey: ['jobs'],
@@ -76,6 +81,19 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t('failedToDeleteWorkEntry'));
+    },
+  });
+
+  const updateWorkEntryMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateWorkEntryDto }) => 
+      api.patch(`/work-entries/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workEntries'] });
+      setEditingEntryId(null);
+      setEditFormData(null);
+    },
+    onError: (err: any) => {
+      setError(err.response?.data?.message || t('failedToUpdateWorkEntry'));
     },
   });
 
@@ -149,6 +167,55 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
     }
   };
 
+  const handleEdit = (entry: WorkEntry) => {
+    const start = new Date(entry.startTime);
+    const end = new Date(entry.endTime);
+    const durationMs = end.getTime() - start.getTime();
+    const breakMs = entry.breakDuration * 60 * 1000;
+    const hours = (durationMs - breakMs) / (1000 * 60 * 60);
+
+    setEditingEntryId(entry.id);
+    setEditFormData({
+      jobId: entry.job.id,
+      hours: hours.toFixed(2),
+    });
+    setError(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingEntryId(null);
+    setEditFormData(null);
+    setError(null);
+  };
+
+  const handleUpdateEntry = async (entryId: string) => {
+    if (!editFormData) return;
+
+    const entry = entriesForSelectedDate.find(e => e.id === entryId);
+    if (!entry) return;
+
+    const hours = Number(editFormData.hours);
+    if (hours <= 0) {
+      setError(t('startTimeAndHoursRequired'));
+      return;
+    }
+
+    const startDateTime = new Date(entry.startTime);
+    const endDateTime = new Date(startDateTime.getTime() + hours * 60 * 60 * 1000);
+
+    const updateData: UpdateWorkEntryDto = {
+      jobId: editFormData.jobId,
+      startTime: startDateTime.toISOString(),
+      endTime: endDateTime.toISOString(),
+    };
+
+    try {
+      await updateWorkEntryMutation.mutateAsync({ id: entryId, data: updateData });
+    } catch (err: any) {
+      setError(err.response?.data?.message || t('failedToUpdateWorkEntry'));
+    }
+  };
+
   const { totalHours, totalEarnings } = selectedJobIds.reduce(
     (acc, jobId) => {
       const job = jobs?.find((j) => j.id === jobId);
@@ -185,23 +252,88 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
               const breakMs = entry.breakDuration * 60 * 1000;
               const hours = (durationMs - breakMs) / (1000 * 60 * 60);
               
+              const isEditing = editingEntryId === entry.id;
+
               return (
                 <div key={entry.id} className={styles.entryCard}>
-                  <div className={styles.entryInfo}>
-                    <div className={styles.entryJobName}>{entry.job.name}</div>
-                    <div className={styles.entryDetails}>
-                      <span>{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                      <span>{hours.toFixed(2)} {t('hours', 'hours')}</span>
-                      <span>${(hours * entry.job.wagePerHour).toFixed(2)}</span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => handleDelete(entry.id)}
-                    className={styles.deleteButton}
-                    disabled={deleteWorkEntryMutation.isPending}
-                  >
-                    🗑️
-                  </button>
+                  {isEditing ? (
+                    // Edit mode
+                    <>
+                      <div className={styles.entryInfo}>
+                        <div className={styles.formGroup}>
+                          <label>{t('existedJobs')}:</label>
+                          <select
+                            value={editFormData?.jobId || entry.job.id}
+                            onChange={(e) => setEditFormData(prev => prev ? { ...prev, jobId: e.target.value } : null)}
+                            className={styles.hourInput}
+                            style={{ width: '200px' }}
+                          >
+                            {jobs?.map((job) => (
+                              <option key={job.id} value={job.id}>
+                                {job.name} ({job.wagePerHour}/hr)
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className={styles.formGroup} style={{ marginTop: '0.5rem' }}>
+                          <label>{t('hoursWorked')}:</label>
+                          <input
+                            type="number"
+                            value={editFormData?.hours || ''}
+                            onChange={(e) => setEditFormData(prev => prev ? { ...prev, hours: e.target.value } : null)}
+                            min="0.1"
+                            step="0.1"
+                            className={styles.hourInput}
+                            style={{ width: '100px' }}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.entryActions}>
+                        <button
+                          onClick={() => handleUpdateEntry(entry.id)}
+                          className={styles.editButton}
+                          disabled={updateWorkEntryMutation.isPending}
+                        >
+                          {updateWorkEntryMutation.isPending ? '⏳' : '✓'}
+                        </button>
+                        <button
+                          onClick={handleCancelEdit}
+                          className={styles.deleteButton}
+                          disabled={updateWorkEntryMutation.isPending}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    // View mode
+                    <>
+                      <div className={styles.entryInfo}>
+                        <div className={styles.entryJobName}>{entry.job.name}</div>
+                        <div className={styles.entryDetails}>
+                          <span>{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                          <span>{hours.toFixed(2)} {t('hours', 'hours')}</span>
+                          <span>${(hours * entry.job.wagePerHour).toFixed(2)}</span>
+                        </div>
+                      </div>
+                      <div className={styles.entryActions}>
+                        <button
+                          onClick={() => handleEdit(entry)}
+                          className={styles.editButton}
+                          disabled={deleteWorkEntryMutation.isPending || editingEntryId !== null}
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDelete(entry.id)}
+                          className={styles.deleteButton}
+                          disabled={deleteWorkEntryMutation.isPending || editingEntryId !== null}
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               );
             })}

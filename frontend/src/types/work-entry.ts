@@ -23,3 +23,10 @@ export interface CreateWorkEntryDto {
   jobId: string; // Link to Job
   breakDuration?: number; // in minutes
 }
+
+export interface UpdateWorkEntryDto {
+  startTime?: string;
+  endTime?: string;
+  jobId?: string;
+  breakDuration?: number;
+}

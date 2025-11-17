@@ -68,8 +68,12 @@
 .existingEntries {
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--border-radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .existingEntries h3 {
@@ -84,16 +88,20 @@
   align-items: center;
   padding: 1rem;
   margin-bottom: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .entryCard:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .entryInfo {
@@ -154,6 +162,62 @@
 .deleteButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.editButton {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+  margin-right: 0.5rem;
+}
+
+.editButton:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: scale(1.1);
+}
+
+.editButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.entryActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.entryInfo .formGroup {
+  margin-bottom: 0;
+}
+
+.entryInfo .formGroup label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  color: var(--text-light-color);
+}
+
+.entryInfo .formGroup select,
+.entryInfo .formGroup input {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--text-color);
+  padding: 0.4rem;
+  border-radius: var(--border-radius-sm);
+}
+
+.entryInfo .formGroup select:focus,
+.entryInfo .formGroup input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .form {
