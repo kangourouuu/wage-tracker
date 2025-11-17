@@ -7,6 +7,28 @@
   z-index: 2;
 }
 
+/* Desktop: Horizontal spread */
+@media (min-width: 769px) {
+  .react-calendar {
+    min-width: 450px;
+  }
+  
+  /* Improve spacing for horizontal spread */
+  .react-calendar__month-view__days {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    justify-items: center;
+  }
+  
+  .react-calendar__month-view__weekdays {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    justify-items: center;
+  }
+}
+
 .react-calendar__viewContainer,
 .react-calendar__navigation,
 .react-calendar__month-view,
@@ -17,7 +39,7 @@
 }
 
 .react-calendar__navigation button {
-  color: #333; /* Darker color */
+  color: #1a1a1a; /* Much darker color for better visibility */
   font-weight: bold;
   transition: background-color 0.2s ease-in-out;
 }
@@ -29,14 +51,15 @@
 }
 
 .react-calendar__month-view__weekdays__weekday {
-  color: #555; /* Darker color */
+  color: #2a2a2a; /* Much darker color for better visibility */
   font-size: 0.8rem;
+  font-weight: 600; /* Bolder font weight */
   text-transform: uppercase; /* Added for style */
 }
 
 .react-calendar__tile {
-  color: #333; /* Darker color */
-  border-radius: 50%;
+  color: #1a1a1a; /* Much darker color for better visibility */
+  border-radius: 50%; /* Keep circular shape */
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
@@ -45,6 +68,16 @@
   height: 40px;
   padding: 0;
   position: relative;
+  font-weight: 500; /* Slightly bolder font */
+}
+
+/* Desktop: Larger tiles for horizontal spread */
+@media (min-width: 769px) {
+  .react-calendar__tile {
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
+  }
 }
 
 .react-calendar__tile:enabled:hover,
@@ -54,14 +87,18 @@
 }
 
 .react-calendar__tile--now {
-  background: rgba(var(--primary-color-light), 0.2);
-  color: var(--primary-color);
+  background: rgba(79, 195, 247, 0.35); /* More opaque background for better visibility */
+  color: #0277BD; /* Darker blue for better contrast */
+  font-weight: 700; /* Bold text */
+  border: 2px solid #03A9F4; /* Add border for extra emphasis */
+  box-shadow: 0 0 8px rgba(79, 195, 247, 0.5); /* Subtle glow effect */
 }
 
 .react-calendar__tile--active {
   background: var(--primary-color);
-  color: white;
+  color: white !important; /* Ensure white text on selected day */
   box-shadow: var(--shadow-md);
+  border-radius: 50%; /* Maintain circular shape for selected day */
 }
 
 .react-calendar__tile--active:enabled:hover,
