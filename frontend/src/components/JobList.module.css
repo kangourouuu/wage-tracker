@@ -1,11 +1,17 @@
 .jobList {
-  background: var(--glass-bg); /* Apply glass background */
-  backdrop-filter: var(--glass-backdrop-filter); /* Apply backdrop filter */
-  border: 1px solid var(--glass-border); /* Apply glass border */
-  box-shadow: var(--shadow-md); /* Apply subtle shadow */
-  border-radius: var(--border-radius-sm); /* Apply border radius */
-  padding: 1.5rem; /* Adjust padding */
-  margin-top: 2rem; /* Ensure consistent margin-top with WorkEntryList */
+  background: rgba(255, 255, 255, 0.12); /* Enhanced glass background */
+  backdrop-filter: blur(20px) saturate(180%); /* Stronger blur for liquid-glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* More visible border */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+  border-radius: var(--border-radius-sm);
+  padding: 1.5rem;
+  margin-top: 2rem;
+  transition: all 0.3s ease;
+}
+
+.jobList:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .jobList h2 {
@@ -236,20 +242,22 @@
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.15); /* Slightly more opaque glass background */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Stronger border */
+  background: rgba(255, 255, 255, 0.18); /* Enhanced glass background */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Stronger border */
   border-radius: var(--border-radius-sm);
-  padding: 1.2rem; /* Increased padding */
-  box-shadow: var(--shadow-md); /* More pronounced shadow */
+  padding: 1.2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12); /* Enhanced shadow */
+  backdrop-filter: blur(15px) saturate(160%); /* Added liquid-glass effect */
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* Increased gap */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .cardHeader {
@@ -354,14 +362,14 @@
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2); /* Enhanced transparency */
+  backdrop-filter: blur(25px) saturate(200%); /* Stronger liquid-glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--border-radius-sm);
   padding: 1rem;
   display: flex;
   gap: 1rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25); /* Enhanced shadow */
   z-index: 1000;
   animation: slideUp 0.3s ease-out;
 }

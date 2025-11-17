@@ -2,7 +2,7 @@ import { useRef, useEffect, Suspense } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResponsive
-import RadialGradientShader from '../shaders/RadialGradientShader'; // Import the shader
+import LiquidGlassShader from '../shaders/LiquidGlassShader'; // Import the new liquid-glass shader
 import { Model } from '../components/Model';
 import { useDarkMode } from '../shared/hooks';
 
@@ -104,41 +104,11 @@ function ThreeScene() {
   // Ref for the shader material to update uniforms
   const shaderMaterialRef = useRef<THREE.ShaderMaterial>(null!);
 
-  useFrame(() => { // Removed 'state' as it's not used in this minimal version
-    // if (!prefersReducedMotion) {
-    //   // Orbiting Circle 1
-    //   if (orbitingCircleRef1.current) {
-    //     orbitingCircleRef1.current.position.x = Math.sin(state.clock.elapsedTime * 0.3) * 15; // Wider orbit
-    //     orbitingCircleRef1.current.position.y = Math.cos(state.clock.elapsedTime * 0.3) * 10; // Wider orbit
-    //     orbitingCircleRef1.current.position.z = Math.sin(state.clock.elapsedTime * 0.2) * 3 - 20; // Further back
-    //     orbitingCircleRef1.current.rotation.y += 0.005;
-    //     orbitingCircleRef1.current.rotation.x += 0.002;
-    //   }
-
-    //   // Orbiting Circle 2
-    //   if (orbitingCircleRef2.current) {
-    //     orbitingCircleRef2.current.position.x = Math.cos(state.clock.elapsedTime * 0.25) * 18; // Wider orbit
-    //     orbitingCircleRef2.current.position.y = Math.sin(state.clock.elapsedTime * 0.25) * 12; // Wider orbit
-    //     orbitingCircleRef2.current.position.z = Math.cos(state.clock.elapsedTime * 0.15) * 4 - 25; // Further back
-    //     orbitingCircleRef2.current.rotation.y -= 0.003;
-    //     orbitingCircleRef2.current.rotation.z += 0.004;
-    //   }
-
-    //   // Orbiting Circle 3
-    //   if (orbitingCircleRef3.current) {
-    //     orbitingCircleRef3.current.position.x = Math.sin(state.clock.elapsedTime * 0.35) * 12; // Wider orbit
-    //     orbitingCircleRef3.current.position.y = Math.cos(state.clock.elapsedTime * 0.35) * 8; // Wider orbit
-    //     orbitingCircleRef3.current.position.z = Math.sin(state.clock.elapsedTime * 0.25) * 2 - 18; // Further back
-    //     orbitingCircleRef3.current.rotation.x -= 0.006;
-    //     orbitingCircleRef3.current.rotation.y += 0.001;
-    //   }
-    // }
-
-    // Update shader resolution uniform
-    // if (shaderMaterialRef.current) {
-    //   shaderMaterialRef.current.uniforms.u_resolution.value.x = viewport.width;
-    //   shaderMaterialRef.current.uniforms.u_resolution.value.y = viewport.height;
-    // }
+  useFrame((state) => {
+    // Update shader time uniform for animation
+    if (shaderMaterialRef.current) {
+      shaderMaterialRef.current.uniforms.u_time.value = state.clock.elapsedTime;
+    }
   });
 
   useEffect(() => {
@@ -170,15 +140,15 @@ function ThreeScene() {
     // Update shader colors based on dark mode
     if (shaderMaterialRef.current) {
       if (isDark) {
-        // Dark mode: use dark theme color (#0685bc)
+        // Dark mode: use darker blue tones
         shaderMaterialRef.current.uniforms.u_color1.value = new THREE.Color(0x0685bc);
-        shaderMaterialRef.current.uniforms.u_color2.value = new THREE.Color(0x0685bc);
-        shaderMaterialRef.current.uniforms.u_color3.value = new THREE.Color(0x0685bc);
+        shaderMaterialRef.current.uniforms.u_color2.value = new THREE.Color(0x0a9bd4);
+        shaderMaterialRef.current.uniforms.u_color3.value = new THREE.Color(0x2bb0e8);
       } else {
-        // Light mode: use original colors
-        shaderMaterialRef.current.uniforms.u_color1.value = new THREE.Color(0xbbf9ff);
-        shaderMaterialRef.current.uniforms.u_color2.value = new THREE.Color(0xc9faff);
-        shaderMaterialRef.current.uniforms.u_color3.value = new THREE.Color(0xFFFFFF);
+        // Light mode: use lighter, more vibrant colors
+        shaderMaterialRef.current.uniforms.u_color1.value = new THREE.Color(0x4FC3F7);
+        shaderMaterialRef.current.uniforms.u_color2.value = new THREE.Color(0x81D4FA);
+        shaderMaterialRef.current.uniforms.u_color3.value = new THREE.Color(0xB3E5FC);
       }
     }
 
@@ -189,14 +159,14 @@ function ThreeScene() {
 
   return (
     <>
-      {/* Radial Gradient Background Sphere */}
+      {/* Liquid-Glass Background Sphere */}
       <mesh position={[0, 0, -100]} scale={[200, 200, 200]}>
         <sphereGeometry args={[1, 64, 64]} />
         <shaderMaterial
           ref={shaderMaterialRef}
-          args={[RadialGradientShader]}
-          uniforms-u_radius-value={0.5}
+          args={[LiquidGlassShader]}
           side={THREE.BackSide}
+          transparent={true}
         />
       </mesh>
 
