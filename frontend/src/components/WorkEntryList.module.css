@@ -2,12 +2,29 @@
   margin-top: 2rem;
   width: 100%;
   overflow: hidden;
-  background: var(--glass-bg); /* Re-introduce subtle glass background */
-  backdrop-filter: var(--glass-backdrop-filter); /* Apply backdrop filter */
-  border: 1px solid var(--glass-border); /* Re-introduce subtle border */
-  box-shadow: var(--shadow-md); /* Add a subtle shadow */
-  border-radius: var(--border-radius-sm); /* Apply border radius */
+  background: rgba(255, 255, 255, 0.15); /* Enhanced liquid-glass background */
+  backdrop-filter: blur(20px) saturate(180%); /* Enhanced backdrop filter */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Stronger border */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  border-radius: var(--border-radius-md); /* Larger border radius */
   padding: 1.5rem; /* Add some padding inside the container */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.workEntryList::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(79, 195, 247, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.5;
 }
 
 .workEntryList h2 {
@@ -15,6 +32,8 @@
   color: #333;
   font-size: 1.8rem;
   text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.8); /* More prominent text shadow */
+  position: relative;
+  z-index: 1;
 }
 
 .tableContainer {
@@ -66,17 +85,42 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.15); /* Slightly more opaque glass background */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Stronger border */
-  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.2); /* Enhanced liquid-glass background */
+  backdrop-filter: blur(15px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Stronger border */
+  border-radius: var(--border-radius-md);
   padding: 1.2rem; /* Increased padding */
-  box-shadow: var(--shadow-md); /* More pronounced shadow */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
   display: flex;
   flex-direction: column;
   gap: 0.75rem; /* Increased gap */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(79, 195, 247, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .cardRow {
