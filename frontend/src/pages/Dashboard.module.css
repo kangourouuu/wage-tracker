@@ -222,14 +222,15 @@
 
 /* Calendar dot indicator for dates with entries */
 .calendarDot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background-color: var(--primary-color);
   border-radius: 50%;
   position: absolute;
-  bottom: 2px;
+  bottom: 4px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10;
 }
 
 /* Dark mode calendar dot */

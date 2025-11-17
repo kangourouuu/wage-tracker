@@ -1,8 +1,12 @@
 # Frontend Deployment Guide
 
+## Vercel Domain
+
+The frontend is deployed at: **wage-tracker-delta.vercel.app**
+
 ## Environment Variables
 
-Before deploying to Vercel, yoto configure the following environment variable:
+Before deploying to Vercel, you need to configure the following environment variable:
 
 ### Required Environment Variable
 
@@ -10,7 +14,7 @@ Before deploying to Vercel, yoto configure the following environment variable:
 
 ## Vercel Deployment Steps
 
-1. Goour Vercel project dashboard
+1. Go to your Vercel project dashboard
 2. Navigate to **Settings** → **Environment Variables**
 3. Add the following variable:
    - **Name**: `VITE_API_URL`
