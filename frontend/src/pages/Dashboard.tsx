@@ -203,6 +203,20 @@ export const Dashboard = () => {
                     value={selectedDate}
                     onClickDay={handleDateClick}
                     locale={i18n.language === "vn" ? "vi" : "en-US"}
+                    tileContent={({ date, view }) => {
+                      if (view === 'month' && workEntries) {
+                        const hasEntry = workEntries.some((entry) => {
+                          const entryDate = new Date(entry.startTime);
+                          return (
+                            entryDate.getFullYear() === date.getFullYear() &&
+                            entryDate.getMonth() === date.getMonth() &&
+                            entryDate.getDate() === date.getDate()
+                          );
+                        });
+                        return hasEntry ? <div className={styles.entryDot}></div> : null;
+                      }
+                      return null;
+                    }}
                   />
                 </div>
                 
@@ -250,15 +264,6 @@ export const Dashboard = () => {
                     onUpdate={(id, data) => updateJobMutation({ id, data })}
                     isDeleting={isDeletingJob}
                     isUpdating={isUpdatingJob}
-                  />
-                )}
-              </div>
-              <div className={styles.listWrapper}>
-                {workEntries && (
-                  <WorkEntryList
-                    workEntries={workEntries}
-                    onDelete={deleteWorkEntryMutation}
-                    isDeleting={isDeletingWorkEntry}
                   />
                 )}
               </div>

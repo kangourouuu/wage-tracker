@@ -55,22 +55,22 @@
 
 /* Dark Mode */
 .dark {
-  /* Base Colors - Dark Theme */
-  --background-color: #0a0e14;
-  --surface-color: #151a21;
-  --text-color: #e0e0e0;
-  --text-light-color: #9ca3af;
-  --border-color: rgba(255, 255, 255, 0.15);
+  /* Base Colors - Dark Theme - Keep components light, only change background */
+  --background-color: #0685bc;
+  --surface-color: #ffffff;
+  --text-color: #333333;
+  --text-light-color: #666666;
+  --border-color: rgba(255, 255, 255, 0.3);
   
-  /* Glassmorphism - Dark */
-  --glass-bg: rgba(20, 25, 35, 0.4);
-  --glass-bg-contrast: rgba(20, 25, 35, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.15);
+  /* Glassmorphism - Keep light appearance */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-contrast: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.1);
   
-  /* Shadows - Dark */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
-  --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.7);
-  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.8);
+  /* Shadows - Keep similar to light mode */
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 * {

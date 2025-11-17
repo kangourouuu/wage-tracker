@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { useResponsive } from '../contexts/ResponsiveContext'; // Import useResponsive
 import RadialGradientShader from '../shaders/RadialGradientShader'; // Import the shader
 import { Model } from '../components/Model';
+import { useDarkMode } from '../shared/hooks';
 
 // const PARTICLE_COUNT_PER_COLOR = 1000; // Increased particle count
 // const COLORS = ['#C6F2F7', '#B4EEF5', '#FFFFFF']; // Updated colors to match theme (blue sky)
@@ -94,6 +95,7 @@ import { Model } from '../components/Model';
 function ThreeScene() {
   const { scene, camera, gl } = useThree(); // Destructure viewport
   const { isMobile, isTablet, prefersReducedMotion } = useResponsive();
+  const { isDark } = useDarkMode();
 
   // const orbitingCircleRef1 = useRef<THREE.Mesh>(null!); // Ref for the first circle
   // const orbitingCircleRef2 = useRef<THREE.Mesh>(null!); // Ref for the second circle
@@ -165,10 +167,25 @@ function ThreeScene() {
       scene.fog = null; // new THREE.FogExp2(0x81D4FA, 0.005); // Blue Sky fog
     }
 
+    // Update shader colors based on dark mode
+    if (shaderMaterialRef.current) {
+      if (isDark) {
+        // Dark mode: use dark theme color (#0685bc)
+        shaderMaterialRef.current.uniforms.u_color1.value = new THREE.Color(0x0685bc);
+        shaderMaterialRef.current.uniforms.u_color2.value = new THREE.Color(0x0685bc);
+        shaderMaterialRef.current.uniforms.u_color3.value = new THREE.Color(0x0685bc);
+      } else {
+        // Light mode: use original colors
+        shaderMaterialRef.current.uniforms.u_color1.value = new THREE.Color(0xbbf9ff);
+        shaderMaterialRef.current.uniforms.u_color2.value = new THREE.Color(0xc9faff);
+        shaderMaterialRef.current.uniforms.u_color3.value = new THREE.Color(0xFFFFFF);
+      }
+    }
+
     return () => {
       scene.fog = null; // Clean up on unmount
     };
-  }, [isMobile, isTablet, prefersReducedMotion, camera, scene, gl]);
+  }, [isMobile, isTablet, prefersReducedMotion, camera, scene, gl, isDark]);
 
   return (
     <>
