@@ -86,10 +86,10 @@
 
 .summaryCardsContainer {
   display: flex;
-  flex-direction: column;
   gap: 1rem;
   width: 100%;
-  max-width: 200px;
+  max-width: 100%;
+  justify-content: center;
 }
 
 .mainContent {
@@ -102,9 +102,21 @@
 
 .centerColumn {
   display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  align-items: flex-start;
+  align-items: center;
   flex: 0 1 auto;
+}
+
+.entryDot {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
 }
 
 .calendarWrapper {
@@ -117,6 +129,8 @@
   transition: all 0.3s ease;
   cursor: pointer;
   flex: 0 0 auto;
+  width: 100%;
+  max-width: 350px;
 }
 
 .calendarWrapper:hover {
@@ -131,6 +145,10 @@
   background: transparent !important;
   border: none !important;
   font-family: var(--font-family-body);
+}
+
+.react-calendar__tile {
+  position: relative;
 }
 
 .react-calendar__navigation button {
@@ -177,6 +195,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  justify-content: center;
 }
 
 .listWrapper {
@@ -311,7 +330,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  height: 100vh;
+  height: fit-content;
   width: 80px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px) saturate(180%);

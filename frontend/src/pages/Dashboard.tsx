@@ -1,7 +1,7 @@
 import { useAuthStore } from "../store/authStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import api, { deleteWorkEntry, deleteJob, analyticsApi } from "../services/api";
+import api, { deleteJob, analyticsApi } from "../services/api";
 import type { WorkEntry, Job } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
@@ -12,7 +12,6 @@ import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
 import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
-import WorkEntryList from "../components/WorkEntryList";
 import JobList from "../components/JobList";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
@@ -85,14 +84,6 @@ export const Dashboard = () => {
 
   useKeyboardShortcut('n', () => setIsModalOpen(true));
   useKeyboardShortcut('/', () => toggleAssistant());
-
-  const { mutate: deleteWorkEntryMutation, isPending: isDeletingWorkEntry } =
-    useMutation({
-      mutationFn: deleteWorkEntry,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      },
-    });
 
   const { mutate: deleteJobMutation, isPending: isDeletingJob } = useMutation({
     mutationFn: deleteJob,
@@ -203,6 +194,20 @@ export const Dashboard = () => {
                     value={selectedDate}
                     onClickDay={handleDateClick}
                     locale={i18n.language === "vn" ? "vi" : "en-US"}
+                    tileContent={({ date, view }) => {
+                      if (view === 'month' && workEntries) {
+                        const hasEntry = workEntries.some((entry) => {
+                          const entryDate = new Date(entry.startTime);
+                          return (
+                            entryDate.getFullYear() === date.getFullYear() &&
+                            entryDate.getMonth() === date.getMonth() &&
+                            entryDate.getDate() === date.getDate()
+                          );
+                        });
+                        return hasEntry ? <div className={styles.entryDot}></div> : null;
+                      }
+                      return null;
+                    }}
                   />
                 </div>
                 
@@ -250,15 +255,6 @@ export const Dashboard = () => {
                     onUpdate={(id, data) => updateJobMutation({ id, data })}
                     isDeleting={isDeletingJob}
                     isUpdating={isUpdatingJob}
-                  />
-                )}
-              </div>
-              <div className={styles.listWrapper}>
-                {workEntries && (
-                  <WorkEntryList
-                    workEntries={workEntries}
-                    onDelete={deleteWorkEntryMutation}
-                    isDeleting={isDeletingWorkEntry}
                   />
                 )}
               </div>
