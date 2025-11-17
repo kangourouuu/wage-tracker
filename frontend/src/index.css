@@ -62,10 +62,10 @@
   --text-light-color: #666666;
   --border-color: rgba(255, 255, 255, 0.3);
   
-  /* Glassmorphism - Keep light appearance */
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-bg-contrast: rgba(255, 255, 255, 0.15);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  /* Glassmorphism - Keep light appearance for components */
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-bg-contrast: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.3);
   
   /* Shadows - Keep similar to light mode */
   --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.2);
