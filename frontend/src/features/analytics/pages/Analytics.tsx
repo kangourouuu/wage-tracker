@@ -9,7 +9,6 @@ import { SummaryCardWithTrend } from "../components/SummaryCardWithTrend";
 import { AnalyticsSkeleton } from "../components/AnalyticsSkeleton";
 import type { TrendData, JobDistribution, WeeklyPattern, SummaryData } from "../types/analytics.types";
 import styles from "./Analytics.module.css";
-import dashboardStyles from "../../../pages/Dashboard.module.css";
 import { useTranslation } from "react-i18next";
 
 type Period = "day" | "week" | "month" | "year";
@@ -55,27 +54,7 @@ export const Analytics = () => {
   const isLoadingAny = loadingTrend || loadingDistribution || loadingPattern || loadingSummary;
 
   return (
-    <div className={dashboardStyles.pageWrapper}>
-      {/* Sidebar */}
-      <div className={dashboardStyles.sidebar}>
-        <nav className={dashboardStyles.sidebarNav}>
-          <button 
-            className={dashboardStyles.sidebarTab}
-            onClick={() => navigate('/dashboard')}
-          >
-            <span className={dashboardStyles.sidebarIcon}>📊</span>
-            <span className={dashboardStyles.sidebarLabel}>{t("dashboard", "Dashboard")}</span>
-          </button>
-          <button 
-            className={`${dashboardStyles.sidebarTab} ${dashboardStyles.active}`}
-            onClick={() => navigate('/analytics')}
-          >
-            <span className={dashboardStyles.sidebarIcon}>📈</span>
-            <span className={dashboardStyles.sidebarLabel}>{t("analytics", "Analytics")}</span>
-          </button>
-        </nav>
-      </div>
-
+    <div className={styles.pageWrapper}>
       {/* Analytics Content */}
       <div className={styles.analyticsWrapper}>
         <div className={styles.analyticsContainer}>
