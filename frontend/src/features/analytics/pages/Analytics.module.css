@@ -1,18 +1,16 @@
-.analyticsWrapper {
-  width: calc(100% - 80px);
-  min-height: 100vh;
-  display: flex;
-  margin-left: 80px;
-}
-
 .analyticsContainer {
   padding: 2rem;
-  width: 100%;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 50%, rgba(240, 147, 251, 0.2) 100%);
-  min-height: 100vh;
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  min-height: 80vh;
   position: relative;
   overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .analyticsContainer::before {
@@ -28,6 +26,7 @@
     radial-gradient(circle at 40% 10%, rgba(79, 195, 247, 0.05) 0%, transparent 50%);
   pointer-events: none;
   animation: backgroundPulse 15s ease-in-out infinite;
+  border-radius: var(--border-radius-md);
 }
 
 @keyframes backgroundPulse {
@@ -226,13 +225,9 @@
 }
 
 @media (max-width: 768px) {
-  .analyticsWrapper {
-    width: calc(100% - 60px);
-    margin-left: 60px;
-  }
-
   .analyticsContainer {
     padding: 1rem;
+    width: 95%;
   }
 
   .header {
