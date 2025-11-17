@@ -86,10 +86,11 @@
 
 .summaryCardsContainer {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
   max-width: 100%;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .mainContent {
@@ -332,9 +333,9 @@
   top: 0;
   height: fit-content;
   width: 80px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px) saturate(180%);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
@@ -342,6 +343,7 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 0;
+  border-radius: 0 0 1rem 0;
 }
 
 .sidebar:hover {
