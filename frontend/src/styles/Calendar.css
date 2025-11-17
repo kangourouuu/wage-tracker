@@ -44,6 +44,7 @@
   width: 36px;
   height: 36px;
   padding: 0;
+  position: relative; /* Added for absolute positioning of dots */
 }
 
 .react-calendar__tile:enabled:hover,

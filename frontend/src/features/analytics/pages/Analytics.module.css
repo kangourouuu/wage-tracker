@@ -1,17 +1,24 @@
 .analyticsWrapper {
-  width: 100%;
+  margin-left: 80px;
+  width: calc(100% - 80px);
   min-height: 100vh;
   display: flex;
+  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .analyticsContainer {
   padding: 2rem;
   width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 50%, rgba(240, 147, 251, 0.7) 100%);
   min-height: 100vh;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* Dark mode analytics background with #0685bc */
+.dark .analyticsContainer {
+  background: linear-gradient(135deg, rgba(6, 133, 188, 0.6) 0%, rgba(79, 195, 247, 0.4) 50%, rgba(129, 212, 250, 0.3) 100%);
 }
 
 .analyticsContainer::before {
@@ -225,6 +232,11 @@
 }
 
 @media (max-width: 768px) {
+  .analyticsWrapper {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+
   .analyticsContainer {
     padding: 1rem;
   }

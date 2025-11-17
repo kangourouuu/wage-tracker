@@ -86,10 +86,11 @@
 
 .summaryCardsContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
   width: 100%;
-  max-width: 200px;
+  max-width: 100%;
+  justify-content: center;
 }
 
 .mainContent {
@@ -98,13 +99,17 @@
   flex-grow: 1;
   align-items: flex-start;
   justify-content: center;
+  width: 100%;
 }
 
 .centerColumn {
   display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  align-items: flex-start;
+  align-items: center;
   flex: 0 1 auto;
+  width: 100%;
+  max-width: 600px;
 }
 
 .calendarWrapper {
@@ -215,6 +220,23 @@
   text-shadow: none;
 }
 
+/* Calendar dot indicator for dates with entries */
+.calendarDot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Dark mode calendar dot */
+.dark .calendarDot {
+  background-color: var(--dark-theme-color, #0685bc);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .dashboardContainer {
@@ -240,6 +262,7 @@
 
   .summaryCardsContainer {
     max-width: 100%;
+    flex-direction: column;
   }
 
   .mainContent {
@@ -311,7 +334,8 @@
   position: fixed;
   left: 0;
   top: 0;
-  height: 100vh;
+  height: fit-content;
+  min-height: 100vh;
   width: 80px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px) saturate(180%);

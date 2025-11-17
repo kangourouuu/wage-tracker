@@ -1,7 +1,7 @@
 import { useAuthStore } from "../store/authStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import api, { deleteWorkEntry, deleteJob, analyticsApi } from "../services/api";
+import api, { deleteJob, analyticsApi } from "../services/api";
 import type { WorkEntry, Job } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
@@ -12,7 +12,6 @@ import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
 import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
-import WorkEntryList from "../components/WorkEntryList";
 import JobList from "../components/JobList";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
@@ -86,14 +85,6 @@ export const Dashboard = () => {
   useKeyboardShortcut('n', () => setIsModalOpen(true));
   useKeyboardShortcut('/', () => toggleAssistant());
 
-  const { mutate: deleteWorkEntryMutation, isPending: isDeletingWorkEntry } =
-    useMutation({
-      mutationFn: deleteWorkEntry,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      },
-    });
-
   const { mutate: deleteJobMutation, isPending: isDeletingJob } = useMutation({
     mutationFn: deleteJob,
     onSuccess: () => {
@@ -119,6 +110,30 @@ export const Dashboard = () => {
   const summary = workEntries
     ? calculateSummary(workEntries)
     : { totalHours: "0.00", totalEarnings: "0.00" };
+
+  // Get dates with work entries
+  const getDatesWithEntries = () => {
+    if (!workEntries) return new Set<string>();
+    
+    const dates = new Set<string>();
+    workEntries.forEach((entry) => {
+      const date = new Date(entry.startTime);
+      const dateString = date.toDateString();
+      dates.add(dateString);
+    });
+    return dates;
+  };
+
+  const datesWithEntries = getDatesWithEntries();
+
+  // Function to add dots to calendar tiles
+  const tileContent = ({ date }: { date: Date }) => {
+    const dateString = date.toDateString();
+    if (datesWithEntries.has(dateString)) {
+      return <div className={styles.calendarDot}></div>;
+    }
+    return null;
+  };
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
@@ -202,6 +217,7 @@ export const Dashboard = () => {
                     }}
                     value={selectedDate}
                     onClickDay={handleDateClick}
+                    tileContent={tileContent}
                     locale={i18n.language === "vn" ? "vi" : "en-US"}
                   />
                 </div>
@@ -253,15 +269,7 @@ export const Dashboard = () => {
                   />
                 )}
               </div>
-              <div className={styles.listWrapper}>
-                {workEntries && (
-                  <WorkEntryList
-                    workEntries={workEntries}
-                    onDelete={deleteWorkEntryMutation}
-                    isDeleting={isDeletingWorkEntry}
-                  />
-                )}
-              </div>
+              {/* WorkEntryList removed - entries now shown as dots on calendar */}
             </div>
           </div>
         </div>

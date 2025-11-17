@@ -16,6 +16,8 @@
   --primary-color-rgb: 79, 195, 247;
   --primary-color-light: #81D4FA; /* Lighter Blue */
   --primary-color-dark: #03A9F4;  /* Blue */
+  --dark-theme-color: #0685bc; /* Dark theme primary color */
+  --dark-theme-color-rgb: 6, 133, 188;
 
   /* Accent Palette */
   --accent-color-1: #5a9bd5;   /* Steel Blue */
@@ -55,22 +57,28 @@
 
 /* Dark Mode */
 .dark {
-  /* Base Colors - Dark Theme */
-  --background-color: #0a0e14;
-  --surface-color: #151a21;
+  /* Base Colors - Dark Theme - Keep light theme backgrounds */
+  --background-color: #f4f7f6;
+  --surface-color: #ffffff;
   --text-color: #e0e0e0;
   --text-light-color: #9ca3af;
   --border-color: rgba(255, 255, 255, 0.15);
   
-  /* Glassmorphism - Dark */
-  --glass-bg: rgba(20, 25, 35, 0.4);
-  --glass-bg-contrast: rgba(20, 25, 35, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.15);
+  /* Primary color updated to use dark-theme hex #0685bc */
+  --primary-color: #0685bc;
+  --primary-color-rgb: 6, 133, 188;
+  --primary-color-light: #0a9fd8;
+  --primary-color-dark: #056a98;
   
-  /* Shadows - Dark */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
-  --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.7);
-  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.8);
+  /* Glassmorphism - Keep similar to light theme */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-contrast: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  
+  /* Shadows - Keep similar to light theme */
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 * {
