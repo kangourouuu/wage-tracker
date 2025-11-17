@@ -3,6 +3,7 @@ import { AuthForm } from './components/AuthForm';
 import { Dashboard } from './pages/Dashboard';
 import { Analytics } from './features/analytics/pages/Analytics';
 import { AnalyticsDemo } from './pages/AnalyticsDemo';
+import { DashboardDemo } from './pages/DashboardDemo';
 import { ResponsiveProvider } from './contexts/ResponsiveProvider';
 import { ProtectedRoute } from './components/ProtectedRoute'; // Import ProtectedRoute
 import { PWAInstallPrompt } from './shared/components/ui/PWAInstallPrompt';
@@ -29,6 +30,7 @@ function App() {
           <Route path="/login" element={<AuthForm isLogin />} />
           <Route path="/register" element={<AuthForm isLogin={false} />} />
           <Route path="/analytics-demo" element={<AnalyticsDemo />} />
+          <Route path="/dashboard-demo" element={<DashboardDemo />} />
           <Route
             path="/dashboard"
             element={<ProtectedRoute><Dashboard /></ProtectedRoute>} // Re-enabled ProtectedRoute
