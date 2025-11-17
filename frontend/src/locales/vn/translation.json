@@ -80,5 +80,9 @@
   "analytics.lastYear": "Năm trước",
   "analytics.noData": "Không có dữ liệu cho khoảng thời gian này",
   "analytics.noJobs": "Không có dữ liệu công việc",
-  "analytics.noPattern": "Không có dữ liệu mẫu hàng tuần"
+  "analytics.noPattern": "Không có dữ liệu mẫu hàng tuần",
+  "editEntry": "Chỉnh sửa ca làm",
+  "updateEntry": "Cập nhật ca làm",
+  "updating": "Đang cập nhật...",
+  "failedToUpdateWorkEntry": "Không thể cập nhật ca làm. Vui lòng thử lại."
 }

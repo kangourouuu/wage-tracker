@@ -80,5 +80,9 @@
   "analytics.lastYear": "Last Year",
   "analytics.noData": "No data available for this period",
   "analytics.noJobs": "No job data available",
-  "analytics.noPattern": "No weekly pattern data available"
+  "analytics.noPattern": "No weekly pattern data available",
+  "editEntry": "Edit Entry",
+  "updateEntry": "Update Entry",
+  "updating": "Updating...",
+  "failedToUpdateWorkEntry": "Failed to update work entry. Please try again."
 }
