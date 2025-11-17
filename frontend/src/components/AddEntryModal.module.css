@@ -18,6 +18,8 @@
   border-radius: 25px;
   width: 100%;
   max-width: 600px; /* Increased width */
+  max-height: 90vh;
+  overflow-y: auto;
   color: var(--text-color);
   position: relative;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25);
@@ -38,6 +40,120 @@
   font-size: 1.8rem; /* Increased size */
   font-weight: 700;
   text-shadow: 0 2px 10px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+  transition: all 0.2s;
+}
+
+.closeButton:hover {
+  transform: scale(1.2);
+  color: var(--error-color);
+}
+
+.existingEntries {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-md);
+}
+
+.existingEntries h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.entryCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s;
+}
+
+.entryCard:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.entryInfo {
+  flex: 1;
+}
+
+.entryJobName {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.entryDetails {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-light-color);
+}
+
+.addButton {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--border-radius-sm);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.addButton:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.deleteButton {
+  background: transparent;
+  border: 1px solid var(--error-color);
+  color: var(--error-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+}
+
+.deleteButton:hover {
+  background: var(--error-color);
+  color: white;
+  transform: scale(1.1);
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .form {

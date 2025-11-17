@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './AddEntryModal.module.css';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import api from '../services/api';
-import type { CreateWorkEntryDto, Job } from '../types/work-entry.ts';
+import type { CreateWorkEntryDto, Job, WorkEntry } from '../types/work-entry.ts';
 import { useTranslation } from 'react-i18next';
 
 interface AddEntryModalProps {
@@ -18,11 +18,28 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
   const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
   const [jobHours, setJobHours] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const { data: jobs, isLoading: isLoadingJobs, isError: isErrorJobs } = useQuery<Job[]>({
     queryKey: ['jobs'],
     queryFn: () => api.get('/jobs').then(res => res.data),
   });
+
+  const { data: workEntries } = useQuery<WorkEntry[]>({
+    queryKey: ['workEntries'],
+    queryFn: () => api.get('/work-entries').then(res => res.data),
+  });
+
+  // Filter work entries for the selected date
+  const entriesForSelectedDate = workEntries?.filter(entry => {
+    if (!selectedDate) return false;
+    const entryDate = new Date(entry.startTime);
+    return (
+      entryDate.getFullYear() === selectedDate.getFullYear() &&
+      entryDate.getMonth() === selectedDate.getMonth() &&
+      entryDate.getDate() === selectedDate.getDate()
+    );
+  }) || [];
 
   useEffect(() => {
     if (isOpen && selectedDate) {
@@ -32,11 +49,13 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
       const hours = new Date().getHours().toString().padStart(2, '0');
       const minutes = new Date().getMinutes().toString().padStart(2, '0');
       setStartTime(`${year}-${month}-${day}T${hours}:${minutes}`);
+      setShowAddForm(false);
     } else if (!isOpen) {
       setStartTime('');
       setSelectedJobIds([]);
       setJobHours({});
       setError(null);
+      setShowAddForm(false);
     }
   }, [isOpen, selectedDate]);
 
@@ -47,6 +66,16 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t('failedToAddWorkEntry'));
+    },
+  });
+
+  const deleteWorkEntryMutation = useMutation({
+    mutationFn: (id: string) => api.delete(`/work-entries/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workEntries'] });
+    },
+    onError: (err: any) => {
+      setError(err.response?.data?.message || t('failedToDeleteWorkEntry'));
     },
   });
 
@@ -102,9 +131,21 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
 
     try {
       await Promise.all(entries.map(entry => addWorkEntryMutation.mutateAsync(entry)));
-      onClose();
+      setShowAddForm(false);
+      setSelectedJobIds([]);
+      setJobHours({});
     } catch (err: any) {
       setError(err.response?.data?.message || t('failedToAddWorkEntry'));
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (window.confirm(t('confirmDelete', 'Are you sure you want to delete this entry?'))) {
+      try {
+        await deleteWorkEntryMutation.mutateAsync(id);
+      } catch (err: any) {
+        setError(err.response?.data?.message || t('failedToDeleteWorkEntry'));
+      }
     }
   };
 
@@ -126,9 +167,58 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2 className={styles.modalTitle}>{t('addWorkEntry')}</h2>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {error && <p className={styles.error}>{error}</p>}
+        <div className={styles.modalHeader}>
+          <h2 className={styles.modalTitle}>
+            {selectedDate ? selectedDate.toLocaleDateString() : t('workEntries')}
+          </h2>
+          <button onClick={onClose} className={styles.closeButton}>✕</button>
+        </div>
+        
+        {/* Show existing entries for this date */}
+        {entriesForSelectedDate.length > 0 && (
+          <div className={styles.existingEntries}>
+            <h3>{t('existingEntries', 'Existing Entries')}</h3>
+            {entriesForSelectedDate.map((entry) => {
+              const start = new Date(entry.startTime);
+              const end = new Date(entry.endTime);
+              const durationMs = end.getTime() - start.getTime();
+              const breakMs = entry.breakDuration * 60 * 1000;
+              const hours = (durationMs - breakMs) / (1000 * 60 * 60);
+              
+              return (
+                <div key={entry.id} className={styles.entryCard}>
+                  <div className={styles.entryInfo}>
+                    <div className={styles.entryJobName}>{entry.job.name}</div>
+                    <div className={styles.entryDetails}>
+                      <span>{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span>{hours.toFixed(2)} {t('hours', 'hours')}</span>
+                      <span>${(hours * entry.job.wagePerHour).toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleDelete(entry.id)}
+                    className={styles.deleteButton}
+                    disabled={deleteWorkEntryMutation.isPending}
+                  >
+                    🗑️
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Add Entry Form */}
+        {!showAddForm ? (
+          <button
+            onClick={() => setShowAddForm(true)}
+            className={styles.addButton}
+          >
+            + {t('addNewEntry', 'Add New Entry')}
+          </button>
+        ) : (
+          <form onSubmit={handleSubmit} className={styles.form}>
+            {error && <p className={styles.error}>{error}</p>}
           <div className={styles.formGroup}>
             <label>{t('existedJobs')}:</label>
             {isLoadingJobs && <p>{t('loadingJobs')}</p>}
@@ -191,7 +281,12 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
           )}
 
           <div className={styles.buttonGroup}>
-            <button type="button" className={styles.cancelButton} onClick={onClose} disabled={addWorkEntryMutation.isPending}>
+            <button type="button" className={styles.cancelButton} onClick={() => {
+              setShowAddForm(false);
+              setSelectedJobIds([]);
+              setJobHours({});
+              setError(null);
+            }} disabled={addWorkEntryMutation.isPending}>
               {t('cancelButton')}
             </button>
             <button type="submit" className={styles.submitButton} disabled={addWorkEntryMutation.isPending}>
@@ -199,6 +294,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, selected
             </button>
           </div>
         </form>
+        )}
       </div>
     </div>
   );
