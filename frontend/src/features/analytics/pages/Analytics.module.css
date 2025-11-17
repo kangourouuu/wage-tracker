@@ -1,18 +1,24 @@
 .analyticsWrapper {
-  width: calc(100% - 80px);
+  width: 100%;
   min-height: 100vh;
   display: flex;
-  margin-left: 80px;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 }
 
 .analyticsContainer {
   padding: 2rem;
   width: 100%;
+  max-width: 1400px;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 50%, rgba(240, 147, 251, 0.2) 100%);
-  min-height: 100vh;
+  min-height: 90vh;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
+  border-radius: var(--border-radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 .analyticsContainer::before {
@@ -227,8 +233,8 @@
 
 @media (max-width: 768px) {
   .analyticsWrapper {
-    width: calc(100% - 60px);
-    margin-left: 60px;
+    width: 100%;
+    padding: 1rem;
   }
 
   .analyticsContainer {

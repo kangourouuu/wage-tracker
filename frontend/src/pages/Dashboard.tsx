@@ -123,29 +123,7 @@ export const Dashboard = () => {
   return (
     <>
       <div className={styles.pageWrapper}>
-        {/* Sidebar */}
-        <div className={styles.sidebar}>
-          <nav className={styles.sidebarNav}>
-            <button 
-              className={`${styles.sidebarTab} ${styles.active}`}
-              onClick={() => navigate('/dashboard')}
-            >
-              <span className={styles.sidebarIcon}>📊</span>
-              <span className={styles.sidebarLabel}>{t("dashboard", "Dashboard")}</span>
-            </button>
-            <button 
-              className={styles.sidebarTab}
-              onClick={() => navigate('/analytics')}
-            >
-              <span className={styles.sidebarIcon}>📈</span>
-              <span className={styles.sidebarLabel}>{t("analytics", "Analytics")}</span>
-            </button>
-          </nav>
-        </div>
-
-        {/* Main Content */}
-        <div className={styles.contentWrapper}>
-          <div className={styles.dashboardContainer}>
+        <div className={styles.dashboardContainer}>
             <header className={styles.header}>
               <div className={styles.welcomeSection}>
                 <div className={styles.assistantToggleContainer}>
@@ -182,6 +160,13 @@ export const Dashboard = () => {
 
             <div className={styles.mainContent}>
               <div className={styles.centerColumn}>
+                <button 
+                  className={styles.analyticsButton}
+                  onClick={() => navigate('/analytics')}
+                >
+                  <span className={styles.analyticsIcon}>📈</span>
+                  <span>{t("analytics", "Analytics")}</span>
+                </button>
                 <div className={styles.calendarWrapper}>
                   <Calendar
                     onChange={(value) => {
@@ -261,7 +246,6 @@ export const Dashboard = () => {
             </div>
           </div>
         </div>
-      </div>
       <AddEntryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
