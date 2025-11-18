@@ -19,9 +19,10 @@
 .react-calendar__month-view__days {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr) !important;
-  grid-auto-rows: minmax(44px, auto) !important;
+  grid-template-rows: repeat(6, minmax(50px, 1fr)) !important;
   width: 100% !important;
   gap: 0 !important;
+  min-height: 300px !important;
 }
 
 /* Each weekday cell */
@@ -46,11 +47,7 @@
   position: relative !important;
 }
 
-/* Hide neighboring month dates but keep in layout for alignment */
-.react-calendar__month-view__days__day--neighboringMonth {
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
+/* Neighboring months are hidden via showNeighboringMonth={false} prop */
 
 /* Desktop: Horizontal spread */
 @media (min-width: 769px) {
@@ -60,6 +57,8 @@
 
   .react-calendar__month-view__days {
     gap: 4px !important;
+    grid-template-rows: repeat(6, minmax(55px, 1fr)) !important;
+    min-height: 360px !important;
   }
 
   .react-calendar__month-view__weekdays {
@@ -144,6 +143,11 @@
 }
 
 @media (max-width: 768px) {
+  .react-calendar__month-view__days {
+    grid-template-rows: repeat(6, minmax(45px, 1fr)) !important;
+    min-height: 280px !important;
+  }
+
   .react-calendar__tile abbr {
     width: 44px !important;
     height: 44px !important;
@@ -163,6 +167,11 @@
 }
 
 @media (max-width: 480px) {
+  .react-calendar__month-view__days {
+    grid-template-rows: repeat(6, minmax(40px, 1fr)) !important;
+    min-height: 250px !important;
+  }
+
   .react-calendar__tile abbr {
     width: 40px !important;
     height: 40px !important;
