@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
 import { useTranslation } from 'react-i18next';
+import api, { deleteJob } from '../services/api';
+import type { Job } from '../types/work-entry';
+import JobList from '../components/JobList';
+import AddJobModal from '../components/AddJobModal';
 import styles from './Settings.module.css';
 
 export const Settings = () => {
@@ -10,7 +15,36 @@ export const Settings = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const { isDark, toggleTheme } = useThemeStore();
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'data'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'jobs' | 'data'>('profile');
+  const [isAddJobModalOpen, setIsAddJobModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: jobs } = useQuery<Job[]>({
+    queryKey: ['jobs'],
+    queryFn: () => api.get('/jobs').then(res => res.data),
+  });
+
+  const { mutate: deleteJobMutation, isPending: isDeletingJob } = useMutation({
+    mutationFn: deleteJob,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      queryClient.invalidateQueries({ queryKey: ['workEntries'] });
+    },
+  });
+
+  const { mutate: updateJobMutation, isPending: isUpdatingJob } = useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: { name: string; wagePerHour: number };
+    }) => api.patch(`/jobs/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      queryClient.invalidateQueries({ queryKey: ['workEntries'] });
+    },
+  });
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -38,6 +72,12 @@ export const Settings = () => {
             onClick={() => setActiveTab('preferences')}
           >
             Preferences
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'jobs' ? styles.active : ''}`}
+            onClick={() => setActiveTab('jobs')}
+          >
+            Manage Jobs
           </button>
           <button
             className={`${styles.tab} ${activeTab === 'data' ? styles.active : ''}`}
@@ -83,6 +123,26 @@ export const Settings = () => {
             </div>
           )}
 
+          {activeTab === 'jobs' && (
+            <div className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2>Manage Jobs</h2>
+                <button onClick={() => setIsAddJobModalOpen(true)} className={styles.addButton}>
+                  + Add Job
+                </button>
+              </div>
+              {jobs && (
+                <JobList
+                  jobs={jobs}
+                  onDelete={deleteJobMutation}
+                  onUpdate={updateJobMutation}
+                  isDeleting={isDeletingJob}
+                  isUpdating={isUpdatingJob}
+                />
+              )}
+            </div>
+          )}
+
           {activeTab === 'data' && (
             <div className={styles.section}>
               <h2>Data Management</h2>
@@ -93,6 +153,7 @@ export const Settings = () => {
           )}
         </div>
       </div>
+      <AddJobModal isOpen={isAddJobModalOpen} onClose={() => setIsAddJobModalOpen(false)} />
     </div>
   );
 };

@@ -12,7 +12,7 @@ import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
 import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
-import JobList from "../components/JobList";
+
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
 import { DarkModeToggle } from "../shared/components/ui";
@@ -250,19 +250,6 @@ export const Dashboard = () => {
               </div>
             </div>
 
-            <div className={styles.listsContainer}>
-              <div className={styles.listWrapper}>
-                {jobs && (
-                  <JobList
-                    jobs={jobs}
-                    onDelete={deleteJobMutation}
-                    onUpdate={(id, data) => updateJobMutation({ id, data })}
-                    isDeleting={isDeletingJob}
-                    isUpdating={isUpdatingJob}
-                  />
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </div>
