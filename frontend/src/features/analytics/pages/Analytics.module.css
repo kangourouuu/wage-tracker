@@ -20,7 +20,7 @@
   min-height: 100vh;
   position: relative;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: visible;
 }
 
 .analyticsContainer::before {
@@ -168,12 +168,14 @@
 
 .summarySection {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2.5rem;
   position: relative;
   z-index: 1;
   animation: fadeInUp 0.8s ease-out;
+  width: 100%;
+  overflow: visible;
 }
 
 @keyframes fadeInUp {
@@ -243,11 +245,13 @@
 @media (max-width: 768px) {
   .analyticsWrapper {
     width: 100%;
+    overflow-x: hidden;
   }
 
   .analyticsContainer {
     padding: 1rem;
     min-height: auto;
+    overflow-x: hidden;
   }
 
   .header {
@@ -273,8 +277,9 @@
   }
 
   .summarySection {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    overflow: visible;
   }
 
   .chartCard {
@@ -291,6 +296,7 @@
 @media (max-width: 480px) {
   .analyticsContainer {
     padding: 0.75rem;
+    overflow-x: hidden;
   }
 
   .title {
@@ -301,6 +307,11 @@
   .select {
     padding: 0.4rem 1rem;
     font-size: 0.85rem;
+  }
+
+  .summarySection {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 
   .chartCard {
