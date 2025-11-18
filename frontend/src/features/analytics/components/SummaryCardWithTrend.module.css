@@ -36,9 +36,9 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .title {
@@ -49,11 +49,7 @@
   letter-spacing: 0.08em;
 }
 
-.icon {
-  font-size: 1.25rem;
-  opacity: 0.95;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
+/* Icon removed for cleaner UI */
 
 .value {
   font-size: 2rem;

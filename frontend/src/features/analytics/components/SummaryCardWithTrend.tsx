@@ -10,16 +10,14 @@ interface SummaryCardWithTrendProps {
   icon?: string;
 }
 
-export const SummaryCardWithTrend = ({ 
-  title, 
-  value, 
-  trend, 
-  icon 
+export const SummaryCardWithTrend = ({
+  title,
+  value,
+  trend
 }: SummaryCardWithTrendProps) => (
   <div className={styles.card}>
     <div className={styles.header}>
       <span className={styles.title}>{title}</span>
-      {icon && <span className={styles.icon}>{icon}</span>}
     </div>
     <div className={styles.value}>{value}</div>
     {trend && (

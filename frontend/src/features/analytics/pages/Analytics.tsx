@@ -60,8 +60,8 @@ export const Analytics = () => {
         <div className={styles.analyticsContainer}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <button 
-            onClick={() => navigate('/dashboard')} 
+          <button
+            onClick={() => navigate('/dashboard')}
             className={styles.backButton}
             title={t("backToDashboard", "Back to Dashboard")}
           >
@@ -100,7 +100,6 @@ export const Analytics = () => {
                     value: summary.trend.hours,
                     isPositive: summary.trend.hours >= 0,
                   }}
-                  icon="⏱️"
                 />
                 <SummaryCardWithTrend
                   title={t("analytics.totalEarnings", "Total Earnings")}
@@ -109,7 +108,6 @@ export const Analytics = () => {
                     value: summary.trend.earnings,
                     isPositive: summary.trend.earnings >= 0,
                   }}
-                  icon="💰"
                 />
                 <SummaryCardWithTrend
                   title={t("analytics.totalEntries", "Total Entries")}
@@ -118,12 +116,10 @@ export const Analytics = () => {
                     value: summary.trend.entries,
                     isPositive: summary.trend.entries >= 0,
                   }}
-                  icon="📝"
                 />
                 <SummaryCardWithTrend
                   title={t("analytics.avgEarningsPerEntry", "Avg. Earnings/Entry")}
                   value={summary.current.averageEarningsPerEntry.toFixed(2)}
-                  icon="📊"
                 />
               </>
             ) : null}
