@@ -23,8 +23,8 @@ function Root() {
 }
 
 function AppContent() {
-  const { isMobile, prefersReducedMotion, isOnline } = useResponsive();
-  const shouldRender3D = !isMobile && !prefersReducedMotion;
+  const { prefersReducedMotion, isOnline } = useResponsive();
+  const shouldRender3D = !prefersReducedMotion;
 
   return (
     <>
