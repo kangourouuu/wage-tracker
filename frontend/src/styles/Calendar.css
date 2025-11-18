@@ -46,10 +46,10 @@
   position: relative !important;
 }
 
-/* Hide neighboring month dates completely */
-.react-calendar__month-view__days__day--neighboringMonth,
-.react-calendar__tile--hidden {
-  display: none !important;
+/* Hide neighboring month dates but keep in layout for alignment */
+.react-calendar__month-view__days__day--neighboringMonth {
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* Desktop: Horizontal spread */
