@@ -4,19 +4,25 @@
   left: 0;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: -1; /* Place it behind all other content */
+  z-index: -1;
+  /* Place it behind all other content */
 }
 
 .mainContainer {
   width: 100vw;
-  min-height: 100vh; /* Use min-height instead of height */
-  height: 100%; /* Added to ensure full height */
+  min-height: 100vh;
+  /* Use min-height instead of height */
+  height: 100%;
+  /* Added to ensure full height */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  overflow-y: auto; /* Allow vertical scrolling */
-  position: relative; /* Added for absolute positioning context */
+  overflow-y: auto;
+  /* Allow vertical scrolling */
+  position: relative;
+  /* Added for absolute positioning context */
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 50%, rgba(240, 147, 251, 0.15) 100%);
 }
 
 @media (max-width: 768px) {
