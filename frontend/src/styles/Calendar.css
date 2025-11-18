@@ -61,12 +61,19 @@
   position: relative !important;
 }
 
-/* CRITICAL: Hide ALL neighboring month dates */
+/* CRITICAL: Hide neighboring month dates but keep grid position */
 .react-calendar__month-view__days__day--neighboringMonth,
-.react-calendar__tile--neighboringMonth {
+.react-calendar__tile--neighboringMonth,
+button.react-calendar__tile[class*="neighboringMonth"] {
   visibility: hidden !important;
-  opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* Hide the abbr content inside neighboring tiles */
+.react-calendar__tile--neighboringMonth abbr,
+.react-calendar__month-view__days__day--neighboringMonth abbr {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /* Tile inner circle */

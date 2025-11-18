@@ -47,7 +47,7 @@ const Calendar3DPanel = React.forwardRef<THREE.Mesh, Calendar3DPanelProps>(({ se
         envMapIntensity={1}
       />
       <Html transform rotation={[0, 0, 0]} position={[0, 0, 0.06]} scale={0.01}> {/* Adjust scale to fit */}
-        <div className={styles.calendarWrapper} style={{ width: '350px', height: '350px', overflow: 'hidden' }}>
+        <div className={styles.calendarWrapper} style={{ width: '100%', minWidth: '320px', overflow: 'visible' }}>
           <Calendar
             onChange={onDateChange}
             value={selectedDate}
