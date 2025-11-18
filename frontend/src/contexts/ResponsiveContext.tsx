@@ -5,6 +5,7 @@ interface ResponsiveContextType {
   isTablet: boolean;
   isDesktop: boolean;
   prefersReducedMotion: boolean;
+  isOnline: boolean;
 }
 
 export const ResponsiveContext = createContext<ResponsiveContextType | undefined>(undefined);

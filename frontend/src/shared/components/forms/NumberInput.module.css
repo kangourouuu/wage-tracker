@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  min-height: 48px;
+  width: 100%;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(150, 150, 150, 0.5);
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a1a;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input.error {
+  border-color: var(--error-color);
+}
+
+.input.error:focus {
+  box-shadow: 0 0 0 3px rgba(var(--error-color-rgb), 0.1);
+}
+
+.suffix {
+  position: absolute;
+  right: 1rem;
+  color: var(--text-light-color);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.errorMessage {
+  color: var(--error-color);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Remove spinner arrows */
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 768px) {
+  .input {
+    font-size: 16px;
+    /* Prevents zoom on iOS */
+  }
+}

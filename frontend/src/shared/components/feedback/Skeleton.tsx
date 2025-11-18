@@ -3,36 +3,46 @@ import styles from './Skeleton.module.css';
 interface SkeletonProps {
   width?: string;
   height?: string;
-  variant?: 'text' | 'circular' | 'rectangular';
-  count?: number;
+  borderRadius?: string;
+  className?: string;
 }
 
-export const Skeleton = ({ 
-  width = '100%', 
+export const Skeleton = ({
+  width = '100%',
   height = '20px',
-  variant = 'text',
-  count = 1
+  borderRadius = '4px',
+  className = ''
 }: SkeletonProps) => {
-  const skeletonClass = `${styles.skeleton} ${styles[variant]}`;
-  
-  if (count === 1) {
-    return (
-      <div 
-        className={skeletonClass}
-        style={{ width, height }}
-      />
-    );
-  }
-
   return (
-    <>
-      {Array.from({ length: count }).map((_, index) => (
-        <div 
-          key={index}
-          className={skeletonClass}
-          style={{ width, height, marginBottom: index < count - 1 ? '0.5rem' : 0 }}
-        />
-      ))}
-    </>
+    <div
+      className={`${styles.skeleton} ${className}`}
+      style={{ width, height, borderRadius }}
+      aria-busy="true"
+      aria-live="polite"
+    />
   );
 };
+
+export const SkeletonCard = () => (
+  <div className={styles.card}>
+    <Skeleton height="120px" borderRadius="12px" />
+    <div className={styles.content}>
+      <Skeleton height="24px" width="70%" />
+      <Skeleton height="16px" width="90%" />
+      <Skeleton height="16px" width="60%" />
+    </div>
+  </div>
+);
+
+export const SkeletonTable = ({ rows = 5 }: { rows?: number }) => (
+  <div className={styles.table}>
+    {Array.from({ length: rows }).map((_, i) => (
+      <div key={i} className={styles.row}>
+        <Skeleton height="16px" width="30%" />
+        <Skeleton height="16px" width="20%" />
+        <Skeleton height="16px" width="25%" />
+        <Skeleton height="16px" width="15%" />
+      </div>
+    ))}
+  </div>
+);

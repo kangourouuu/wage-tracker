@@ -68,6 +68,8 @@
 .languageSwitcher,
 .logoutButton {
   padding: 0.6rem 1.2rem;
+  min-height: 44px;
+  min-width: 44px;
   border-radius: var(--border-radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.2);
@@ -307,6 +309,8 @@
     width: 95%;
     padding: 1rem;
     gap: 1rem;
+    margin-bottom: 80px;
+    /* Space for bottom nav */
   }
 
   .header {
@@ -321,7 +325,18 @@
 
   .headerActions {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .headerActions>* {
+    flex: 0 0 auto;
+  }
+
+  /* Hide some actions on mobile - they're in bottom nav */
+  .settingsButton {
+    display: none;
   }
 
   .summaryCardsContainer {
@@ -421,6 +436,8 @@
 .exportButton,
 .settingsButton {
   padding: 0.6rem 1.2rem;
+  min-height: 44px;
+  min-width: 44px;
   border-radius: var(--border-radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.2);

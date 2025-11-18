@@ -27,6 +27,7 @@
 
 .backButton {
   padding: 0.5rem 1.25rem;
+  min-height: 44px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.25);
@@ -60,6 +61,7 @@
 .tab {
   flex: 1;
   padding: 0.75rem 1.5rem;
+  min-height: 48px;
   border: none;
   background: transparent;
   color: #4a5568;
@@ -158,14 +160,23 @@
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
+    padding-bottom: 100px;
+    /* Space for bottom nav */
   }
 
   .tabs {
-    flex-direction: column;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
   }
 
   .tab {
-    text-align: left;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .content {
+    padding: 1.5rem;
   }
 }
 

@@ -1,5 +1,5 @@
 import { useAuthStore } from "../store/authStore";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import api, { analyticsApi } from "../services/api";
 import type { WorkEntry } from "../types/work-entry";
@@ -20,6 +20,7 @@ import { useKeyboardShortcut } from "../shared/hooks";
 import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCardWithTrend";
 import type { SummaryData } from "../features/analytics/types/analytics.types";
 import { exportToCSV } from "../utils/exportUtils";
+import { Skeleton } from "../shared/components/feedback";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -59,7 +60,6 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const queryClient = useQueryClient();
   const { toggle: toggleAssistant } = useAiAssistantStore();
 
   const { data: workEntries } = useQuery<WorkEntry[]>({
@@ -67,7 +67,7 @@ export const Dashboard = () => {
     queryFn: fetchWorkEntries,
   });
 
-  const { data: analyticsSummary } = useQuery<SummaryData>({
+  const { data: analyticsSummary, isLoading: isLoadingSummary } = useQuery<SummaryData>({
     queryKey: ["dashboardSummary"],
     queryFn: async () => {
       const { data } = await analyticsApi.getSummary("week");
@@ -186,7 +186,12 @@ export const Dashboard = () => {
                 </div>
 
                 <div className={styles.summaryCardsContainer}>
-                  {analyticsSummary ? (
+                  {isLoadingSummary ? (
+                    <>
+                      <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
+                      <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
+                    </>
+                  ) : analyticsSummary ? (
                     <>
                       <SummaryCardWithTrend
                         title={t("totalHours")}

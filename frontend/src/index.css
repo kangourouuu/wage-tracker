@@ -164,8 +164,58 @@ p {
   line-height: 1.7;
 }
 
+/* Ensure minimum touch targets */
+button,
+a,
+input[type="checkbox"],
+input[type="radio"],
+select {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="time"],
+input[type="date"],
+textarea,
+select {
+  font-size: 16px;
+  /* Prevents zoom on iOS */
+  padding: 0.75rem 1rem;
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 @media (max-width: 768px) {
   :root {
     --font-size-base: 14px;
+  }
+
+  /* Add padding for mobile bottom nav */
+  body {
+    padding-bottom: 70px;
   }
 }
