@@ -168,6 +168,7 @@ export const Dashboard = () => {
                     value={selectedDate}
                     onClickDay={handleDateClick}
                     locale={i18n.language === "vn" ? "vi" : "en-US"}
+                    showNeighboringMonth={false}
                     tileContent={({ date, view }) => {
                       if (view === 'month' && workEntries) {
                         const hasEntry = workEntries.some((entry) => {
