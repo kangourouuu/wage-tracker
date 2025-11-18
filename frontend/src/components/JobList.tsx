@@ -196,19 +196,12 @@ const JobList: React.FC<JobListProps> = ({
             <tr>
               <th>{t("jobName")}</th>
               <th>{t("wagePerHour")}</th>
+              <th>{t("actions")}</th>
             </tr>
           </thead>
           <tbody>
             {jobs.map((job) => (
-              <tr 
-                key={job.id}
-                onMouseDown={() => handleLongPressStart(job.id)}
-                onMouseUp={handleLongPressEnd}
-                onMouseLeave={handleLongPressEnd}
-                onTouchStart={() => handleLongPressStart(job.id)}
-                onTouchEnd={handleLongPressEnd}
-                className={selectedId === job.id ? styles.selectedRow : ''}
-              >
+              <tr key={job.id}>
                 {editingId === job.id ? (
                   <>
                     <td>
@@ -233,6 +226,24 @@ const JobList: React.FC<JobListProps> = ({
                         <span className={styles.unit}>{t("currency")}</span>
                       </div>
                     </td>
+                    <td>
+                      <div className={styles.actionButtons}>
+                        <button
+                          onClick={() => handleSave(job.id)}
+                          className={styles.saveButton}
+                          disabled={isUpdating}
+                        >
+                          {isUpdating ? t("submitting") : "💾"}
+                        </button>
+                        <button
+                          onClick={handleCancel}
+                          className={styles.cancelButton}
+                          disabled={isUpdating}
+                        >
+                          ❌
+                        </button>
+                      </div>
+                    </td>
                   </>
                 ) : (
                   <>
@@ -245,61 +256,32 @@ const JobList: React.FC<JobListProps> = ({
                         {t("perHour")}
                       </span>
                     </td>
+                    <td>
+                      <div className={styles.actionButtons}>
+                        <button
+                          onClick={() => handleEdit(job)}
+                          className={styles.editButton}
+                          disabled={isDeleting || isUpdating}
+                          title={t("edit")}
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDelete(job.id)}
+                          className={styles.deleteButton}
+                          disabled={isDeleting || isUpdating}
+                          title={t("delete")}
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
                   </>
                 )}
               </tr>
             ))}
           </tbody>
         </table>
-        
-        {/* Action buttons shown on long press */}
-        {selectedId && !editingId && (
-          <div className={styles.actionPopup}>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                const job = jobs.find(j => j.id === selectedId);
-                if (job) handleEdit(job);
-                setSelectedId(null);
-              }}
-              className={styles.editButton}
-              disabled={isDeleting || isUpdating}
-            >
-              ✏️ {t("edit")}
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(selectedId);
-                setSelectedId(null);
-              }}
-              className={styles.deleteButton}
-              disabled={isDeleting || isUpdating}
-            >
-              🗑️ {t("delete")}
-            </button>
-          </div>
-        )}
-        
-        {/* Edit mode action buttons */}
-        {editingId && (
-          <div className={styles.editActions}>
-            <button
-              onClick={() => handleSave(editingId)}
-              className={styles.saveButton}
-              disabled={isUpdating}
-            >
-              {isUpdating ? t("submitting") : t("save")}
-            </button>
-            <button
-              onClick={handleCancel}
-              className={styles.cancelButton}
-              disabled={isUpdating}
-            >
-              {t("cancel")}
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
