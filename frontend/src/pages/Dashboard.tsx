@@ -169,6 +169,15 @@ export const Dashboard = () => {
                     onClickDay={handleDateClick}
                     locale={i18n.language === "vn" ? "vi" : "en-US"}
                     showNeighboringMonth={false}
+                    tileClassName={({ date, view }) => {
+                      if (view === 'month' && selectedDate) {
+                        // Hide tiles from other months
+                        if (date.getMonth() !== selectedDate.getMonth()) {
+                          return 'react-calendar__tile--hidden';
+                        }
+                      }
+                      return null;
+                    }}
                     tileContent={({ date, view }) => {
                       if (view === 'month' && workEntries) {
                         const hasEntry = workEntries.some((entry) => {
