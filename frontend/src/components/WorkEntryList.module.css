@@ -2,10 +2,14 @@
   margin-top: 2rem;
   width: 100%;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.12); /* Enhanced glass background */
-  backdrop-filter: blur(20px) saturate(180%); /* Stronger blur for liquid-glass effect */
-  border: 1px solid rgba(255, 255, 255, 0.25); /* More visible border */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+  background: rgba(255, 255, 255, 0.12);
+  /* Enhanced glass background */
+  backdrop-filter: blur(20px) saturate(180%);
+  /* Stronger blur for liquid-glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  /* More visible border */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  /* Enhanced shadow */
   border-radius: var(--border-radius-sm);
   padding: 1.5rem;
   transition: all 0.3s ease;
@@ -20,7 +24,8 @@
   margin-bottom: 1rem;
   color: #333;
   font-size: 1.8rem;
-  text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.8); /* More prominent text shadow */
+  text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.8);
+  /* More prominent text shadow */
 }
 
 .tableContainer {
@@ -31,7 +36,8 @@
 .workEntryList table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px; /* Prevent table from becoming too cramped */
+  min-width: 600px;
+  /* Prevent table from becoming too cramped */
 }
 
 .workEntryList th,
@@ -39,7 +45,8 @@
   padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid var(--glass-border);
-  color: #444; /* Applied friendlier dark grey */
+  color: #444;
+  /* Applied friendlier dark grey */
   white-space: nowrap;
 }
 
@@ -75,16 +82,19 @@
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.18); /* Enhanced glass background */
-  border: 1px solid rgba(255, 255, 255, 0.25); /* Stronger border */
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--border-radius-sm);
   padding: 1.2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12); /* Enhanced shadow */
-  backdrop-filter: blur(15px) saturate(160%); /* Added liquid-glass effect */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(15px) saturate(160%);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   transition: all 0.3s ease;
+  min-width: 0;
+  /* Fix overflow on mobile */
+  word-wrap: break-word;
 }
 
 .card:hover {
@@ -96,12 +106,15 @@
 .cardRow {
   display: flex;
   justify-content: space-between;
-  font-size: 1rem; /* Slightly larger font size */
-  color: #444; /* Applied friendlier dark grey */
+  font-size: 1rem;
+  /* Slightly larger font size */
+  color: #444;
+  /* Applied friendlier dark grey */
 }
 
 .cardRow strong {
-  color: var(--primary-color-dark); /* Use a primary color for labels for better contrast */
+  color: var(--primary-color-dark);
+  /* Use a primary color for labels for better contrast */
 }
 
 .cardActions {
@@ -121,14 +134,17 @@
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.2); /* Enhanced transparency */
-  backdrop-filter: blur(25px) saturate(200%); /* Stronger liquid-glass effect */
+  background: rgba(255, 255, 255, 0.2);
+  /* Enhanced transparency */
+  backdrop-filter: blur(25px) saturate(200%);
+  /* Stronger liquid-glass effect */
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--border-radius-sm);
   padding: 1rem;
   display: flex;
   gap: 1rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25); /* Enhanced shadow */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  /* Enhanced shadow */
   z-index: 1000;
   animation: slideUp 0.3s ease-out;
 }
@@ -138,6 +154,7 @@
     opacity: 0;
     transform: translateX(-50%) translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
