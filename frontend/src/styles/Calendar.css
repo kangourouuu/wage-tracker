@@ -1,27 +1,49 @@
 /* React Calendar Overrides */
 .react-calendar {
   width: 100%;
+  max-width: 100%;
   background: transparent;
   border: none;
   font-family: var(--font-family);
   z-index: 2;
 }
 
-/* Ensure weekdays and days are always aligned using CSS Grid */
-.react-calendar__month-view__weekdays {
-  display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  gap: 0 !important;
-  justify-items: center !important;
-  align-items: center !important;
+/* Critical: Force table layout for perfect alignment */
+.react-calendar__month-view__weekdays,
+.react-calendar__month-view__days {
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-spacing: 0 !important;
 }
 
+/* Weekday row */
+.react-calendar__month-view__weekdays {
+  display: table-header-group !important;
+}
+
+/* Days rows */
 .react-calendar__month-view__days {
-  display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  gap: 0 !important;
-  justify-items: center !important;
-  align-items: center !important;
+  display: table-row-group !important;
+}
+
+/* Each weekday cell */
+.react-calendar__month-view__weekdays__weekday {
+  display: table-cell !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  padding: 0.5rem 0 !important;
+  width: 14.285714% !important;
+}
+
+/* Each day button wrapper */
+.react-calendar__month-view__days>button,
+.react-calendar__tile {
+  display: table-cell !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  width: 14.285714% !important;
+  padding: 0.25rem !important;
 }
 
 /* Desktop: Horizontal spread */
@@ -61,35 +83,31 @@
   border-radius: var(--border-radius-sm);
 }
 
-.react-calendar__month-view__weekdays__weekday {
-  color: #2a2a2a;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  text-align: center !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0.5rem 0 !important;
-}
-
 .react-calendar__month-view__weekdays__weekday abbr {
   text-decoration: none !important;
+  color: #2a2a2a !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
 }
 
 .react-calendar__tile {
-  color: #1a1a1a;
-  border-radius: 50%;
-  transition: all 0.2s ease-in-out;
-  display: flex !important;
+  border: none !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  position: relative !important;
+}
+
+.react-calendar__tile abbr {
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 40px;
-  height: 40px;
-  padding: 0 !important;
-  margin: 2px auto !important;
-  position: relative;
-  font-weight: 500;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease-in-out !important;
+  color: #1a1a1a !important;
+  font-weight: 500 !important;
 }
 
 /* Hide neighboring month dates - make them invisible */
@@ -98,47 +116,56 @@
   pointer-events: none !important;
 }
 
-/* Desktop: Larger tiles for horizontal spread */
+/* Desktop: Larger tiles */
 @media (min-width: 769px) {
   .react-calendar__tile {
-    width: 50px;
-    height: 50px;
+    max-width: 60px;
+    max-height: 60px;
     font-size: 1rem;
   }
 }
 
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus {
-  background-color: var(--glass-bg);
-  transform: scale(1.05);
+/* Mobile: Ensure consistent sizing */
+@media (max-width: 768px) {
+  .react-calendar__tile {
+    max-width: 44px;
+    max-height: 44px;
+    font-size: 0.95rem;
+  }
 }
 
-.react-calendar__tile--now {
-  background: rgba(79, 195, 247, 0.35);
-  /* More opaque background for better visibility */
-  color: #0277BD;
-  /* Darker blue for better contrast */
-  font-weight: 700;
-  /* Bold text */
-  border: 2px solid #03A9F4;
-  /* Add border for extra emphasis */
-  box-shadow: 0 0 8px rgba(79, 195, 247, 0.5);
-  /* Subtle glow effect */
+@media (max-width: 480px) {
+  .react-calendar__tile {
+    max-width: 40px;
+    max-height: 40px;
+    font-size: 0.9rem;
+  }
 }
 
-.react-calendar__tile--active {
-  background: var(--primary-color);
+.react-calendar__tile:enabled:hover abbr,
+.react-calendar__tile:enabled:focus abbr {
+  background-color: var(--glass-bg) !important;
+  transform: scale(1.05) !important;
+}
+
+.react-calendar__tile--now abbr {
+  background: rgba(79, 195, 247, 0.35) !important;
+  color: #0277BD !important;
+  font-weight: 700 !important;
+  border: 2px solid #03A9F4 !important;
+  box-shadow: 0 0 8px rgba(79, 195, 247, 0.5) !important;
+}
+
+.react-calendar__tile--active abbr {
+  background: var(--primary-color) !important;
   color: white !important;
-  /* Ensure white text on selected day */
-  box-shadow: var(--shadow-md);
-  border-radius: 50%;
-  /* Maintain circular shape for selected day */
+  box-shadow: var(--shadow-md) !important;
 }
 
-.react-calendar__tile--active:enabled:hover,
-.react-calendar__tile--active:enabled:focus {
-  background: var(--primary-color-dark);
-  transform: scale(1.05);
+.react-calendar__tile--active:enabled:hover abbr,
+.react-calendar__tile--active:enabled:focus abbr {
+  background: var(--primary-color-dark) !important;
+  transform: scale(1.05) !important;
 }
 
 @media (max-width: 768px) {

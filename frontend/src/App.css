@@ -3,19 +3,20 @@
   top: 0;
   left: 0;
   width: 100vw !important;
-  height: 100vh !important;
+  height: 100% !important;
+  min-height: 100vh !important;
   z-index: -1;
-  /* Place it behind all other content */
 }
 
 .mainContainer {
   width: 100vw;
   min-height: 100vh;
-  height: 100%;
+  height: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 1rem;
+  padding-top: 2rem;
   overflow-y: auto;
   position: relative;
 }
