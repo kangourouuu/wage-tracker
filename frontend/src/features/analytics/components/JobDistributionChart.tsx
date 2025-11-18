@@ -70,7 +70,7 @@ export const JobDistributionChart = ({ data }: JobDistributionChartProps) => {
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={({ name, percent }: { name: string; percent: number }) => `${name} ${percent ? (percent * 100).toFixed(0) : 0}%`}
+            label={({ name, percent }: { name?: string; percent?: number }) => `${name || ''} ${percent ? (percent * 100).toFixed(0) : 0}%`}
             outerRadius={activeIndex !== undefined ? 90 : 100}
             fill="#8884d8"
             dataKey="value"
