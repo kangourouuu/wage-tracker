@@ -46,6 +46,14 @@ export const Settings = () => {
     },
   });
 
+  const { mutate: addJobMutation, isPending: isAddingJob } = useMutation({
+    mutationFn: (data: { name: string; wagePerHour: number }) => api.post('/jobs', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      setIsAddJobModalOpen(false);
+    },
+  });
+
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
@@ -135,7 +143,7 @@ export const Settings = () => {
                 <JobList
                   jobs={jobs}
                   onDelete={deleteJobMutation}
-                  onUpdate={updateJobMutation}
+                  onUpdate={(id, data) => updateJobMutation({ id, data })}
                   isDeleting={isDeletingJob}
                   isUpdating={isUpdatingJob}
                 />
@@ -153,7 +161,12 @@ export const Settings = () => {
           )}
         </div>
       </div>
-      <AddJobModal isOpen={isAddJobModalOpen} onClose={() => setIsAddJobModalOpen(false)} />
+      <AddJobModal
+        isOpen={isAddJobModalOpen}
+        onClose={() => setIsAddJobModalOpen(false)}
+        onSubmit={(data) => addJobMutation(data)}
+        isLoading={isAddingJob}
+      />
     </div>
   );
 };

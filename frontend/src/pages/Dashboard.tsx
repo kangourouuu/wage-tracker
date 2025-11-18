@@ -1,8 +1,8 @@
 import { useAuthStore } from "../store/authStore";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import api, { deleteJob, analyticsApi } from "../services/api";
-import type { WorkEntry, Job } from "../types/work-entry";
+import api, { analyticsApi } from "../services/api";
+import type { WorkEntry } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
 import styles from "./Dashboard.module.css";
@@ -26,10 +26,7 @@ const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   return data;
 };
 
-const fetchJobs = async (): Promise<Job[]> => {
-  const { data } = await api.get("/jobs");
-  return data;
-};
+
 
 const calculateSummary = (entries: WorkEntry[]) => {
   const totalHours = entries.reduce((acc, entry) => {
@@ -70,11 +67,6 @@ export const Dashboard = () => {
     queryFn: fetchWorkEntries,
   });
 
-  const { data: jobs } = useQuery<Job[]>({
-    queryKey: ["jobs"],
-    queryFn: fetchJobs,
-  });
-
   const { data: analyticsSummary } = useQuery<SummaryData>({
     queryKey: ["dashboardSummary"],
     queryFn: async () => {
@@ -85,28 +77,6 @@ export const Dashboard = () => {
 
   useKeyboardShortcut('n', () => setIsModalOpen(true));
   useKeyboardShortcut('/', () => toggleAssistant());
-
-  const { mutate: deleteJobMutation, isPending: isDeletingJob } = useMutation({
-    mutationFn: deleteJob,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      queryClient.invalidateQueries({ queryKey: ["workEntries"] }); // Invalidate work entries as well
-    },
-  });
-
-  const { mutate: updateJobMutation, isPending: isUpdatingJob } = useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: { name: string; wagePerHour: number };
-    }) => api.patch(`/jobs/${id}`, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-    },
-  });
 
   const summary = workEntries
     ? calculateSummary(workEntries)
