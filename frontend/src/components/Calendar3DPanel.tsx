@@ -53,7 +53,6 @@ const Calendar3DPanel = React.forwardRef<THREE.Mesh, Calendar3DPanelProps>(({ se
             value={selectedDate}
             onClickDay={onClickDay}
             locale={locale}
-            showNeighboringMonth={false}
           />
         </div>
       </Html>

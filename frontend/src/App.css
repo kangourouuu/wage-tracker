@@ -14,9 +14,8 @@
   height: auto;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 1rem;
-  padding-top: 2rem;
   overflow-y: auto;
   position: relative;
 }
