@@ -46,7 +46,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
       return api.post(url, payload);
     },
     onSuccess: ({ data }) => {
-      setTokens(data.accessToken, data.user);
+      setTokens(data.accessToken, data.refreshToken, data.user);
       navigate('/dashboard');
     },
     onError: (err: any) => {

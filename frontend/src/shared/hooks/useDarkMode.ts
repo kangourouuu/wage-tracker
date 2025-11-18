@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
-import { useLocalStorage } from './useLocalStorage';
+import { useThemeStore } from '../../store/themeStore';
 
 export function useDarkMode() {
-  const [isDark, setIsDark] = useLocalStorage('darkMode', false);
+  const { isDark, toggleTheme, setTheme } = useThemeStore();
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark);
-  }, [isDark]);
+    // Initialize theme on mount
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
-  const toggle = () => setIsDark(!isDark);
-
-  return { isDark, setIsDark, toggle };
+  return { isDark, setIsDark: setTheme, toggle: toggleTheme };
 }
