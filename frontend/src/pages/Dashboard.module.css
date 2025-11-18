@@ -1,6 +1,6 @@
 .dashboardContainer {
   position: relative;
-  z-index: 10; /* Ensure it's above the ThreeScene */
+  z-index: 10;
   padding: 2rem;
   border-radius: var(--border-radius-md);
   background: var(--glass-bg);
@@ -9,12 +9,29 @@
   box-shadow: var(--shadow-lg);
   color: var(--text-color);
   width: 90%;
-  max-width: 1400px; /* Increased max-width for better use of space */
-  max-height: 90vh; /* Allow content to dictate height, but limit for small screens */
+  max-width: 1400px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  gap: 2rem; /* Increased gap for better spacing */
-  overflow-y: auto; /* Enable scrolling if content overflows */
+  gap: 2rem;
+  overflow-y: auto;
+}
+
+.dashboardContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dashboardContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboardContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.dashboardContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .header {
@@ -34,7 +51,8 @@
 
 .welcomeTitle {
   font-size: 1.8rem;
-  color: #333; /* Darker color for better visibility */
+  color: #333;
+  /* Darker color for better visibility */
   margin: 0;
   text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
 }
@@ -52,9 +70,11 @@
   padding: 0.6rem 1.2rem;
   border-radius: var(--border-radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.2); /* Increased opacity */
+  background: rgba(255, 255, 255, 0.2);
+  /* Increased opacity */
   backdrop-filter: blur(10px) saturate(150%);
-  color: #333; /* Darker color */
+  color: #333;
+  /* Darker color */
   font-family: var(--font-family);
   font-size: 0.9rem;
   cursor: pointer;
@@ -181,7 +201,8 @@
 }
 
 .react-calendar__navigation button {
-  color: #1a1a1a !important; /* Much darker color for navigation buttons */
+  color: #1a1a1a !important;
+  /* Much darker color for navigation buttons */
   font-weight: bold;
   background: transparent !important;
 }
@@ -193,16 +214,21 @@
 }
 
 .react-calendar__month-view__weekdays__weekday {
-  color: #2a2a2a !important; /* Much darker color for weekdays */
+  color: #2a2a2a !important;
+  /* Much darker color for weekdays */
   font-size: 0.9rem;
-  font-weight: 600; /* Bolder weight */
+  font-weight: 600;
+  /* Bolder weight */
 }
 
 .react-calendar__tile {
-  color: #1a1a1a !important; /* Much darker color for days */
+  color: #1a1a1a !important;
+  /* Much darker color for days */
   background: transparent !important;
-  border-radius: 50%; /* Keep circular shape */
-  font-weight: 500; /* Slightly bolder */
+  border-radius: 50%;
+  /* Keep circular shape */
+  font-weight: 500;
+  /* Slightly bolder */
 }
 
 .react-calendar__tile:enabled:hover,
@@ -211,17 +237,23 @@
 }
 
 .react-calendar__tile--now {
-  background: rgba(79, 195, 247, 0.35) !important; /* More opaque for better visibility */
-  color: #0277BD !important; /* Darker blue for better contrast */
-  font-weight: 700 !important; /* Bold text */
-  border: 2px solid #03A9F4 !important; /* Add border for emphasis */
-  box-shadow: 0 0 8px rgba(79, 195, 247, 0.5) !important; /* Subtle glow */
+  background: rgba(79, 195, 247, 0.35) !important;
+  /* More opaque for better visibility */
+  color: #0277BD !important;
+  /* Darker blue for better contrast */
+  font-weight: 700 !important;
+  /* Bold text */
+  border: 2px solid #03A9F4 !important;
+  /* Add border for emphasis */
+  box-shadow: 0 0 8px rgba(79, 195, 247, 0.5) !important;
+  /* Subtle glow */
 }
 
 .react-calendar__tile--active {
   background: var(--primary-color) !important;
   color: white !important;
-  border-radius: 50% !important; /* Maintain circular shape for selected day */
+  border-radius: 50% !important;
+  /* Maintain circular shape for selected day */
 }
 
 .listsContainer {
@@ -311,11 +343,11 @@
     width: 100%;
     max-width: 100%;
   }
-  
+
   .calendarWrapper {
     padding: 1rem;
   }
-  
+
   .listsContainer {
     flex-direction: column;
   }
@@ -353,9 +385,12 @@
 
 .assistantToggleContainer {
   position: relative;
-  display: flex; /* Added to align TimeOfDayIcon and potentially other elements */
-  align-items: center; /* Added to vertically align items */
-  cursor: pointer; /* Indicate it's clickable */
+  display: flex;
+  /* Added to align TimeOfDayIcon and potentially other elements */
+  align-items: center;
+  /* Added to vertically align items */
+  cursor: pointer;
+  /* Indicate it's clickable */
 }
 
 /* Sidebar Styles - Removed */
