@@ -92,6 +92,12 @@
   font-weight: 500;
 }
 
+/* Hide neighboring month dates - make them invisible */
+.react-calendar__month-view__days__day--neighboringMonth {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* Desktop: Larger tiles for horizontal spread */
 @media (min-width: 769px) {
   .react-calendar__tile {
