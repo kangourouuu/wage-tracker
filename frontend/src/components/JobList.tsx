@@ -21,12 +21,14 @@ const JobList: React.FC<JobListProps> = ({
   isUpdating,
 }) => {
   const { t } = useTranslation();
-  const { isMobile } = useResponsive(); // Use the responsive hook
+  const { isMobile, isTablet } = useResponsive();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [editWage, setEditWage] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const longPressTimer = useRef<number | null>(null);
+
+  const isDesktop = !isMobile && !isTablet;
 
   const handleDelete = (id: string) => {
     if (window.confirm(t("confirmDelete"))) {
@@ -86,9 +88,10 @@ const JobList: React.FC<JobListProps> = ({
     );
   }
 
-  if (isMobile) {
+  // Mobile/Tablet: Card view with long-press
+  if (!isDesktop) {
     return (
-      <div className={styles.jobList}>
+      <div className={styles.jobList} onClick={handleClickOutside}>
         <div className={styles.header}>
           <h2>{t("yourJobs")}</h2>
           <span className={styles.jobCount}>
@@ -97,7 +100,15 @@ const JobList: React.FC<JobListProps> = ({
         </div>
         <div className={styles.cardList}>
           {jobs.map((job) => (
-            <div key={job.id} className={styles.card}>
+            <div
+              key={job.id}
+              className={`${styles.card} ${selectedId === job.id ? styles.selectedCard : ''}`}
+              onTouchStart={() => handleLongPressStart(job.id)}
+              onTouchEnd={handleLongPressEnd}
+              onMouseDown={() => handleLongPressStart(job.id)}
+              onMouseUp={handleLongPressEnd}
+              onMouseLeave={handleLongPressEnd}
+            >
               {editingId === job.id ? (
                 <>
                   <div className={styles.editForm}>
@@ -132,14 +143,14 @@ const JobList: React.FC<JobListProps> = ({
                       className={styles.saveButton}
                       disabled={isUpdating}
                     >
-                      {isUpdating ? t("submitting") : t("save")}
+                      {isUpdating ? t("submitting") : "💾 " + t("save")}
                     </button>
                     <button
                       onClick={handleCancel}
                       className={styles.cancelButton}
                       disabled={isUpdating}
                     >
-                      {t("cancel")}
+                      ❌ {t("cancel")}
                     </button>
                   </div>
                 </>
@@ -152,32 +163,44 @@ const JobList: React.FC<JobListProps> = ({
                         {job.wagePerHour.toLocaleString()}
                       </span>
                       <span className={styles.wageCurrency}>
-                        {t("currency")}
-                        {t("perHour")}
+                        {t("currency")}/{t("perHour")}
                       </span>
                     </div>
-                  </div>
-                  <div className={styles.cardActions}>
-                    <button
-                      onClick={() => handleEdit(job)}
-                      className={styles.editButton}
-                      disabled={isDeleting || isUpdating}
-                    >
-                      ✏️ {t("edit")}
-                    </button>
-                    <button
-                      onClick={() => handleDelete(job.id)}
-                      className={styles.deleteButton}
-                      disabled={isDeleting || isUpdating}
-                    >
-                      🗑️ {t("delete")}
-                    </button>
                   </div>
                 </>
               )}
             </div>
           ))}
         </div>
+
+        {/* Long-press action popup for mobile/tablet */}
+        {selectedId && !editingId && (
+          <div className={styles.actionPopup}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                const job = jobs.find(j => j.id === selectedId);
+                if (job) handleEdit(job);
+                setSelectedId(null);
+              }}
+              className={styles.editButtonGlass}
+              disabled={isDeleting || isUpdating}
+            >
+              ✏️ {t("edit")}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(selectedId);
+                setSelectedId(null);
+              }}
+              className={styles.deleteButtonGlass}
+              disabled={isDeleting || isUpdating}
+            >
+              🗑️ {t("delete")}
+            </button>
+          </div>
+        )}
       </div>
     );
   }
