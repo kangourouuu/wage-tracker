@@ -5,7 +5,6 @@ import { ResponsiveProvider } from './contexts/ResponsiveProvider';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PWAInstallPrompt } from './shared/components/ui/PWAInstallPrompt';
 import { KeyboardShortcutsOverlay } from './components/KeyboardShortcutsOverlay';
-import { MobileBottomNav } from './components/MobileBottomNav';
 import { ErrorBoundary, OfflineBanner, Skeleton } from './shared/components/feedback';
 import { useResponsive } from './contexts/ResponsiveContext';
 import { Canvas } from '@react-three/fiber';
@@ -67,7 +66,7 @@ function AppContent() {
             </Routes>
           </Suspense>
         </ErrorBoundary>
-        {isMobile && <MobileBottomNav />}
+
       </div>
     </>
   );

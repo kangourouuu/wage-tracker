@@ -160,23 +160,14 @@
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
-    padding-bottom: 100px;
-    /* Space for bottom nav */
   }
 
   .tabs {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    -webkit-overflow-scrolling: touch;
+    flex-direction: column;
   }
 
   .tab {
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .content {
-    padding: 1.5rem;
+    text-align: left;
   }
 }
 

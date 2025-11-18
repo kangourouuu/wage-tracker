@@ -309,8 +309,6 @@
     width: 95%;
     padding: 1rem;
     gap: 1rem;
-    margin-bottom: 80px;
-    /* Space for bottom nav */
   }
 
   .header {
@@ -325,18 +323,7 @@
 
   .headerActions {
     width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .headerActions>* {
-    flex: 0 0 auto;
-  }
-
-  /* Hide some actions on mobile - they're in bottom nav */
-  .settingsButton {
-    display: none;
+    justify-content: space-between;
   }
 
   .summaryCardsContainer {

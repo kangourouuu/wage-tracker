@@ -213,9 +213,4 @@ select {
   :root {
     --font-size-base: 14px;
   }
-
-  /* Add padding for mobile bottom nav */
-  body {
-    padding-bottom: 70px;
-  }
 }

@@ -9,7 +9,8 @@ export const exportToCSV = (data: WorkEntry[], filename: string = 'work-entries.
     const durationMs = end.getTime() - start.getTime();
     const breakMs = entry.breakDuration * 60 * 1000;
     const hours = (durationMs - breakMs) / (1000 * 60 * 60);
-    const earnings = hours * entry.job.wagePerHour;
+    const wagePerHour = Number(entry.job.wagePerHour) || 0;
+    const earnings = hours * wagePerHour;
 
     return [
       start.toLocaleDateString(),
@@ -17,7 +18,7 @@ export const exportToCSV = (data: WorkEntry[], filename: string = 'work-entries.
       start.toLocaleTimeString(),
       end.toLocaleTimeString(),
       hours.toFixed(2),
-      entry.job.wagePerHour.toFixed(2),
+      wagePerHour.toFixed(2),
       earnings.toFixed(2)
     ];
   });
