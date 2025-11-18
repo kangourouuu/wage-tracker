@@ -268,18 +268,23 @@
 
 @media (max-width: 768px) {
   .pageWrapper {
-    padding: 1rem 0;
+    position: fixed;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .analyticsWrapper {
     width: 100%;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .analyticsContainer {
     padding: 1rem;
-    min-height: auto;
-    overflow: visible;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   .header {
@@ -326,12 +331,22 @@
 
 @media (max-width: 480px) {
   .pageWrapper {
-    padding: 0.5rem 0;
+    position: fixed;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .analyticsWrapper {
+    height: 100vh;
+    overflow: hidden;
   }
 
   .analyticsContainer {
     padding: 0.75rem;
-    overflow: visible;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   .title {
