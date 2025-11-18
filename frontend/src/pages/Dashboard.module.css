@@ -3,10 +3,12 @@
   z-index: 10;
   padding: 2rem;
   border-radius: var(--border-radius-md);
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   color: var(--text-color);
   width: 90%;
   max-width: 1400px;
@@ -163,10 +165,12 @@
 }
 
 .calendarWrapper {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px) saturate(160%);
+  -webkit-backdrop-filter: blur(15px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   border-radius: var(--border-radius-md);
   padding: 1.5rem;
   transition: all 0.3s ease;
@@ -186,8 +190,10 @@
 
 .calendarWrapper:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   border-color: rgba(79, 195, 247, 0.3);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* React Calendar specific styling for liquid-glass */
@@ -273,10 +279,12 @@
 }
 
 .summaryCard {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-filter);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px) saturate(160%);
+  -webkit-backdrop-filter: blur(15px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   padding: 1rem;
   border-radius: var(--border-radius-md);
   text-align: center;
@@ -286,7 +294,9 @@
 
 .summaryCard:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .summaryCard h3 {
