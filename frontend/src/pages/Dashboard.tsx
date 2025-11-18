@@ -19,6 +19,7 @@ import { DarkModeToggle } from "../shared/components/ui";
 import { useKeyboardShortcut } from "../shared/hooks";
 import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCardWithTrend";
 import type { SummaryData } from "../features/analytics/types/analytics.types";
+import { exportToCSV } from "../utils/exportUtils";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -145,6 +146,20 @@ export const Dashboard = () => {
                 </h1>
               </div>
               <div className={styles.headerActions}>
+                <button
+                  onClick={() => exportToCSV(workEntries || [], 'work-entries.csv')}
+                  className={styles.exportButton}
+                  title="Export to CSV"
+                >
+                  📥
+                </button>
+                <button
+                  onClick={() => navigate('/settings')}
+                  className={styles.settingsButton}
+                  title="Settings"
+                >
+                  ⚙️
+                </button>
                 <DarkModeToggle />
                 <select
                   onChange={(e) => changeLanguage(e.target.value)}
@@ -163,14 +178,14 @@ export const Dashboard = () => {
             <div className={styles.mainContent}>
               <div className={styles.centerColumn}>
                 {/* Analytics Button */}
-                <button 
+                <button
                   className={styles.analyticsButton}
                   onClick={() => navigate('/analytics')}
                 >
                   <span className={styles.analyticsIcon}>📈</span>
                   <span>{t("analytics", "Analytics")}</span>
                 </button>
-                
+
                 <div className={styles.calendarWrapper}>
                   <Calendar
                     onChange={(value) => {
@@ -199,7 +214,7 @@ export const Dashboard = () => {
                     }}
                   />
                 </div>
-                
+
                 <div className={styles.summaryCardsContainer}>
                   {analyticsSummary ? (
                     <>

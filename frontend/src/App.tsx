@@ -3,9 +3,11 @@ import { AuthForm } from './components/AuthForm';
 import { Dashboard } from './pages/Dashboard';
 import { Analytics } from './features/analytics/pages/Analytics';
 import { AnalyticsDemo } from './pages/AnalyticsDemo';
+import { Settings } from './pages/Settings';
 import { ResponsiveProvider } from './contexts/ResponsiveProvider';
-import { ProtectedRoute } from './components/ProtectedRoute'; // Import ProtectedRoute
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { PWAInstallPrompt } from './shared/components/ui/PWAInstallPrompt';
+import { KeyboardShortcutsOverlay } from './components/KeyboardShortcutsOverlay';
 import { Canvas } from '@react-three/fiber';
 import ThreeScene from './pages/ThreeScene';
 import { Toaster } from 'react-hot-toast';
@@ -20,6 +22,7 @@ function App() {
     <ResponsiveProvider>
       <Toaster position="bottom-right" />
       <PWAInstallPrompt />
+      <KeyboardShortcutsOverlay />
       <Canvas className="threeCanvas" gl={{ alpha: true }}>
         <ThreeScene />
       </Canvas>
@@ -31,11 +34,15 @@ function App() {
           <Route path="/analytics-demo" element={<AnalyticsDemo />} />
           <Route
             path="/dashboard"
-            element={<ProtectedRoute><Dashboard /></ProtectedRoute>} // Re-enabled ProtectedRoute
+            element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
           />
           <Route
             path="/analytics"
             element={<ProtectedRoute><Analytics /></ProtectedRoute>}
+          />
+          <Route
+            path="/settings"
+            element={<ProtectedRoute><Settings /></ProtectedRoute>}
           />
         </Routes>
       </div>
