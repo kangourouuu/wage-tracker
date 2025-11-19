@@ -234,7 +234,7 @@
   /* Bolder weight */
 }
 
-.react-calendar__tile {
+.react-calendar__tile:not(.react-calendar__tile--neighboringMonth) {
   color: #1a1a1a !important;
   /* Much darker color for days */
   background: transparent !important;
