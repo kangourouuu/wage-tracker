@@ -1,4 +1,4 @@
-/* React Calendar Overrides - Fixed 7-column Grid Layout */
+/* React Calendar Overrides - Responsive 7-column Grid Layout */
 .react-calendar {
   width: 100%;
   max-width: 100%;
@@ -7,25 +7,28 @@
   font-family: var(--font-family);
   z-index: 2;
   margin: 0 auto !important;
+  box-sizing: border-box !important;
 }
 
 /* Fixed 7-column CSS Grid for weekdays */
 .react-calendar__month-view__weekdays {
   display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
   width: 100% !important;
-  gap: 2px !important;
+  column-gap: 1px !important;
   margin-bottom: 0.5rem !important;
+  box-sizing: border-box !important;
 }
 
 /* Fixed 7-column CSS Grid for days */
 .react-calendar__month-view__days {
   display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  grid-auto-rows: minmax(48px, auto) !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  grid-auto-rows: minmax(44px, auto) !important;
   width: 100% !important;
-  gap: 2px !important;
+  gap: 1px !important;
   align-items: stretch !important;
+  box-sizing: border-box !important;
 }
 
 /* Weekday headers - centered in grid cell */
@@ -63,16 +66,16 @@
   box-sizing: border-box !important;
 }
 
-/* Dim neighboring month dates - barely visible */
+/* Dim neighboring month dates - almost invisible */
 .react-calendar__tile--neighboringMonth {
-  opacity: 0.1 !important;
+  opacity: 0.05 !important;
   pointer-events: none !important;
   cursor: default !important;
 }
 
 .react-calendar__tile--neighboringMonth abbr {
-  color: #ccc !important;
-  font-weight: 300 !important;
+  color: #ddd !important;
+  font-weight: 200 !important;
 }
 
 .react-calendar__tile--neighboringMonth:hover abbr {
@@ -85,13 +88,14 @@
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 38px !important;
+  height: 38px !important;
   border-radius: 50% !important;
   transition: all 0.2s ease-in-out !important;
   color: #1a1a1a !important;
   font-weight: 500 !important;
   text-decoration: none !important;
+  font-size: 0.9rem !important;
 }
 
 /* Hover effects */
@@ -154,26 +158,26 @@
   }
 
   .react-calendar__month-view__weekdays {
-    gap: 3px !important;
+    column-gap: 2px !important;
   }
 
   .react-calendar__month-view__days {
-    grid-auto-rows: minmax(55px, auto) !important;
-    gap: 3px !important;
+    grid-auto-rows: minmax(52px, auto) !important;
+    gap: 2px !important;
   }
 
   .react-calendar__tile {
-    min-height: 55px !important;
+    min-height: 52px !important;
   }
 
   .react-calendar__tile abbr {
-    width: 48px !important;
-    height: 48px !important;
+    width: 46px !important;
+    height: 46px !important;
     font-size: 1rem !important;
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important;
   }
 }
 
@@ -184,36 +188,36 @@
   }
 
   .react-calendar__month-view__weekdays {
-    gap: 2px !important;
+    column-gap: 1px !important;
   }
 
   .react-calendar__month-view__days {
-    grid-auto-rows: minmax(48px, auto) !important;
-    gap: 2px !important;
+    grid-auto-rows: minmax(46px, auto) !important;
+    gap: 1px !important;
   }
 
   .react-calendar__tile {
-    min-height: 48px !important;
+    min-height: 46px !important;
   }
 
   .react-calendar__tile abbr {
-    width: 42px !important;
-    height: 42px !important;
-    font-size: 0.95rem !important;
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 0.9rem !important;
   }
 
   .react-calendar__month-view__weekdays__weekday {
-    height: 38px !important;
+    height: 36px !important;
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
-    font-size: 0.75rem !important;
+    font-size: 0.7rem !important;
   }
 
   .react-calendar__navigation button {
     min-width: 44px !important;
     min-height: 44px !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
   }
 }
 
@@ -224,49 +228,49 @@
   }
 
   .react-calendar__month-view__weekdays {
-    gap: 1px !important;
+    column-gap: 1px !important;
   }
 
   .react-calendar__month-view__days {
-    grid-auto-rows: minmax(42px, auto) !important;
+    grid-auto-rows: minmax(44px, auto) !important;
     gap: 1px !important;
   }
 
   .react-calendar__tile {
-    min-height: 42px !important;
+    min-height: 44px !important;
   }
 
   .react-calendar__tile abbr {
-    width: 34px !important;
-    height: 34px !important;
+    width: 36px !important;
+    height: 36px !important;
     font-size: 0.85rem !important;
   }
 
   .react-calendar__month-view__weekdays__weekday {
-    height: 34px !important;
+    height: 32px !important;
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 
   .react-calendar__navigation button {
     min-width: 40px !important;
     min-height: 40px !important;
-    font-size: 0.85rem !important;
-    padding: 0.4rem !important;
+    font-size: 0.8rem !important;
+    padding: 0.3rem !important;
   }
 }
 
 /* Extra small mobile - Very small screens */
 @media (max-width: 360px) {
   .react-calendar__month-view__weekdays {
-    gap: 1px !important;
+    column-gap: 0px !important;
   }
 
   .react-calendar__month-view__days {
     grid-auto-rows: minmax(40px, auto) !important;
-    gap: 1px !important;
+    gap: 0px !important;
   }
 
   .react-calendar__tile {
@@ -276,14 +280,14 @@
   .react-calendar__tile abbr {
     width: 32px !important;
     height: 32px !important;
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important;
   }
 
   .react-calendar__month-view__weekdays__weekday {
-    height: 32px !important;
+    height: 30px !important;
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
-    font-size: 0.65rem !important;
+    font-size: 0.55rem !important;
   }
 }
