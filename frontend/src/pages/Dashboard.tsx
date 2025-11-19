@@ -169,7 +169,7 @@ export const Dashboard = () => {
                     onClickDay={handleDateClick}
                     locale="en-US"
                     calendarType="gregory"
-                    showNeighboringMonth={false}
+                    showNeighboringMonth={true}
                     formatShortWeekday={(_locale, date) => {
                       const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
                       return weekdays[date.getDay()];
