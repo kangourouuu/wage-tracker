@@ -54,7 +54,7 @@ const Calendar3DPanel = React.forwardRef<THREE.Mesh, Calendar3DPanelProps>(({ se
             onClickDay={onClickDay}
             locale="en-US"
             calendarType="gregory"
-            showNeighboringMonth={true}
+            showNeighboringMonth={false}
             formatShortWeekday={(_locale, date) => {
               const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
               return weekdays[date.getDay()];
