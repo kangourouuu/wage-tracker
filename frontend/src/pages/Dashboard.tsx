@@ -68,7 +68,7 @@ export const Dashboard = () => {
   });
 
   const { data: analyticsSummary, isLoading: isLoadingSummary } = useQuery<SummaryData>({
-    queryKey: ["dashboardSummary"],
+    queryKey: ["analyticsSummary", "week"],
     queryFn: async () => {
       const { data } = await analyticsApi.getSummary("week");
       return data;
@@ -196,6 +196,7 @@ export const Dashboard = () => {
                     <>
                       <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
                       <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
+                      <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
                     </>
                   ) : analyticsSummary ? (
                     <>
@@ -217,6 +218,15 @@ export const Dashboard = () => {
                         }}
                         icon="💰"
                       />
+                      <SummaryCardWithTrend
+                        title={t("analytics.totalEntries", "Total Entries")}
+                        value={analyticsSummary.current.totalEntries.toString()}
+                        trend={{
+                          value: analyticsSummary.trend.entries,
+                          isPositive: analyticsSummary.trend.entries >= 0,
+                        }}
+                        icon="📋"
+                      />
                     </>
                   ) : (
                     <>
@@ -224,6 +234,10 @@ export const Dashboard = () => {
                       <SummaryCard
                         title={t("estimatedEarnings")}
                         value={summary.totalEarnings}
+                      />
+                      <SummaryCard
+                        title={t("analytics.totalEntries", "Total Entries")}
+                        value={workEntries?.length.toString() || "0"}
                       />
                     </>
                   )}
