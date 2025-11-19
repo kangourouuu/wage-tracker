@@ -172,12 +172,12 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   border-radius: var(--border-radius-md);
-  padding: 1.5rem;
+  padding: 1.2rem;
   transition: all 0.3s ease;
   cursor: pointer;
   flex: 0 0 auto;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   overflow: visible;
   margin: 0 auto;
   display: flex;
@@ -188,8 +188,8 @@
 /* Desktop: Wider calendar for horizontal spread */
 @media (min-width: 769px) {
   .calendarWrapper {
-    max-width: 550px;
-    padding: 2rem;
+    max-width: 580px;
+    padding: 1.8rem;
   }
 }
 
