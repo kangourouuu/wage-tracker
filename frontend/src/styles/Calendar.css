@@ -6,6 +6,7 @@
   border: none;
   font-family: var(--font-family);
   z-index: 2;
+  margin: 0 auto !important;
 }
 
 /* Fixed 7-column CSS Grid for weekdays */
@@ -13,7 +14,7 @@
   display: grid !important;
   grid-template-columns: repeat(7, 1fr) !important;
   width: 100% !important;
-  gap: 0 !important;
+  gap: 4px !important;
   margin-bottom: 0.5rem !important;
 }
 
@@ -23,7 +24,7 @@
   grid-template-columns: repeat(7, 1fr) !important;
   grid-auto-rows: minmax(48px, auto) !important;
   width: 100% !important;
-  gap: 0 !important;
+  gap: 4px !important;
   align-items: stretch !important;
 }
 
@@ -32,7 +33,7 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 0.5rem 0 !important;
+  padding: 0 !important;
   text-align: center !important;
   height: 40px !important;
 }
@@ -146,8 +147,13 @@
     max-width: 600px;
   }
 
+  .react-calendar__month-view__weekdays {
+    gap: 6px !important;
+  }
+
   .react-calendar__month-view__days {
     grid-auto-rows: minmax(55px, auto) !important;
+    gap: 6px !important;
   }
 
   .react-calendar__tile {
@@ -171,8 +177,13 @@
     max-width: 500px;
   }
 
+  .react-calendar__month-view__weekdays {
+    gap: 5px !important;
+  }
+
   .react-calendar__month-view__days {
     grid-auto-rows: minmax(48px, auto) !important;
+    gap: 5px !important;
   }
 
   .react-calendar__tile {
@@ -206,8 +217,13 @@
     max-width: 100%;
   }
 
+  .react-calendar__month-view__weekdays {
+    gap: 3px !important;
+  }
+
   .react-calendar__month-view__days {
     grid-auto-rows: minmax(44px, auto) !important;
+    gap: 3px !important;
   }
 
   .react-calendar__tile {
@@ -222,7 +238,6 @@
 
   .react-calendar__month-view__weekdays__weekday {
     height: 36px !important;
-    padding: 0.3rem 0 !important;
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
@@ -239,8 +254,13 @@
 
 /* Extra small mobile - Very small screens */
 @media (max-width: 360px) {
+  .react-calendar__month-view__weekdays {
+    gap: 2px !important;
+  }
+
   .react-calendar__month-view__days {
     grid-auto-rows: minmax(40px, auto) !important;
+    gap: 2px !important;
   }
 
   .react-calendar__tile {

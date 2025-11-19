@@ -179,6 +179,10 @@
   width: 100%;
   max-width: 400px;
   overflow: visible;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Desktop: Wider calendar for horizontal spread */
