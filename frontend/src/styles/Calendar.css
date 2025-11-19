@@ -63,15 +63,21 @@
   box-sizing: border-box !important;
 }
 
-/* CRITICAL: Hide neighboring month dates but keep in grid flow */
+/* Dim neighboring month dates - visible but faded */
 .react-calendar__tile--neighboringMonth {
-  visibility: hidden !important;
+  opacity: 0.25 !important;
   pointer-events: none !important;
+  cursor: default !important;
 }
 
 .react-calendar__tile--neighboringMonth abbr {
-  visibility: hidden !important;
-  opacity: 0 !important;
+  color: #999 !important;
+  font-weight: 400 !important;
+}
+
+.react-calendar__tile--neighboringMonth:hover abbr {
+  background: transparent !important;
+  transform: none !important;
 }
 
 /* Tile inner circle */
