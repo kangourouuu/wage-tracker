@@ -66,16 +66,17 @@
   box-sizing: border-box !important;
 }
 
-/* Dim neighboring month dates - almost invisible */
+/* Dim neighboring month dates - extremely faded */
 .react-calendar__tile--neighboringMonth {
-  opacity: 0.05 !important;
+  opacity: 0.15 !important;
   pointer-events: none !important;
   cursor: default !important;
 }
 
 .react-calendar__tile--neighboringMonth abbr {
-  color: #ddd !important;
+  color: #bbb !important;
   font-weight: 200 !important;
+  opacity: 0.3 !important;
 }
 
 .react-calendar__tile--neighboringMonth:hover abbr {
