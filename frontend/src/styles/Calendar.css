@@ -10,20 +10,16 @@
 
 /* Fixed 7-column grid for weekdays */
 .react-calendar__month-view__weekdays {
-  display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
+  display: flex !important;
   width: 100% !important;
-  gap: 2px !important;
   margin-bottom: 0.5rem !important;
 }
 
 /* Fixed 7x6 grid for days - ALWAYS 6 rows */
 .react-calendar__month-view__days {
-  display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important;
-  grid-template-rows: repeat(6, 48px) !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
   width: 100% !important;
-  gap: 2px !important;
   min-height: 300px !important;
 }
 
@@ -34,7 +30,7 @@
   justify-content: center !important;
   padding: 0.5rem 0 !important;
   text-align: center !important;
-  width: 100% !important;
+  flex: 1 !important;
   height: 40px !important;
 }
 
@@ -53,23 +49,23 @@
   justify-content: center !important;
   text-align: center !important;
   padding: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+  flex: 0 0 calc(100% / 7) !important;
+  max-width: calc(100% / 7) !important;
+  height: 48px !important;
   border: none !important;
   background: transparent !important;
   cursor: pointer !important;
   position: relative !important;
 }
 
-/* CRITICAL: Hide neighboring month dates but keep grid position */
+/* Neighboring month dates - visible but dimmed */
 .react-calendar__tile--neighboringMonth {
-  visibility: hidden !important;
-  pointer-events: none !important;
+  opacity: 0.3 !important;
+  pointer-events: auto !important;
 }
 
 .react-calendar__tile--neighboringMonth abbr {
-  opacity: 0 !important;
-  visibility: hidden !important;
+  color: #999 !important;
 }
 
 /* Tile inner circle */
@@ -145,13 +141,11 @@
   }
 
   .react-calendar__month-view__days {
-    grid-template-rows: repeat(6, 55px) !important;
-    gap: 4px !important;
     min-height: 360px !important;
   }
 
-  .react-calendar__month-view__weekdays {
-    gap: 4px !important;
+  .react-calendar__tile {
+    height: 55px !important;
   }
 
   .react-calendar__tile abbr {
@@ -164,8 +158,11 @@
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .react-calendar__month-view__days {
-    grid-template-rows: repeat(6, 44px) !important;
     min-height: 280px !important;
+  }
+
+  .react-calendar__tile {
+    height: 44px !important;
   }
 
   .react-calendar__tile abbr {
@@ -190,9 +187,11 @@
 /* Small mobile adjustments */
 @media (max-width: 480px) {
   .react-calendar__month-view__days {
-    grid-template-rows: repeat(6, 40px) !important;
-    gap: 1px !important;
     min-height: 250px !important;
+  }
+
+  .react-calendar__tile {
+    height: 40px !important;
   }
 
   .react-calendar__tile abbr {

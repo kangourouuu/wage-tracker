@@ -167,8 +167,13 @@ export const Dashboard = () => {
                     }}
                     value={selectedDate}
                     onClickDay={handleDateClick}
-                    locale={i18n.language === "vn" ? "vi" : "en-US"}
-                    showNeighboringMonth={false}
+                    locale="en-US"
+                    calendarType="gregory"
+                    showNeighboringMonth={true}
+                    formatShortWeekday={(_locale, date) => {
+                      const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+                      return weekdays[date.getDay()];
+                    }}
                     tileContent={({ date, view }) => {
                       if (view === 'month' && workEntries) {
                         const hasEntry = workEntries.some((entry) => {

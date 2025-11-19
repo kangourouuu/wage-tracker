@@ -14,7 +14,7 @@ interface Calendar3DPanelProps {
   position: [number, number, number]; // Changed to tuple
 }
 
-const Calendar3DPanel = React.forwardRef<THREE.Mesh, Calendar3DPanelProps>(({ selectedDate, onDateChange, onClickDay, locale, position }, ref) => {
+const Calendar3DPanel = React.forwardRef<THREE.Mesh, Calendar3DPanelProps>(({ selectedDate, onDateChange, onClickDay, position }, ref) => {
   const [hovered, setHovered] = useState(false);
 
   useFrame((state) => {
@@ -52,7 +52,13 @@ const Calendar3DPanel = React.forwardRef<THREE.Mesh, Calendar3DPanelProps>(({ se
             onChange={onDateChange}
             value={selectedDate}
             onClickDay={onClickDay}
-            locale={locale}
+            locale="en-US"
+            calendarType="gregory"
+            showNeighboringMonth={true}
+            formatShortWeekday={(_locale, date) => {
+              const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+              return weekdays[date.getDay()];
+            }}
           />
         </div>
       </Html>
