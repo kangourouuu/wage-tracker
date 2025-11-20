@@ -47,9 +47,16 @@ const calculateSummary = (entries: WorkEntry[]) => {
     return acc + hours * entry.job.wagePerHour;
   }, 0);
 
+  const totalEntries = entries.length;
+  const averageHoursPerEntry = totalEntries > 0 ? totalHours / totalEntries : 0;
+  const averageEarningsPerEntry = totalEntries > 0 ? totalEarnings / totalEntries : 0;
+
   return {
     totalHours: totalHours.toFixed(2),
     totalEarnings: totalEarnings.toFixed(2),
+    totalEntries,
+    averageHoursPerEntry: averageHoursPerEntry.toFixed(2),
+    averageEarningsPerEntry: averageEarningsPerEntry.toFixed(2),
   };
 };
 

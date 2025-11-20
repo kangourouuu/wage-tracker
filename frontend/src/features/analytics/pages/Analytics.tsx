@@ -44,9 +44,60 @@ export const Analytics = () => {
   const { data: jobDistribution, isLoading: loadingDistribution } = useQuery<
     JobDistribution[]
   >({
-    queryKey: ["jobDistribution"],
+    queryKey: ["jobDistribution", summaryPeriod, selectedDate, selectedMonth],
     queryFn: async () => {
-      const { data } = await analyticsApi.getJobDistribution();
+      let startDate: string | undefined;
+      let endDate: string | undefined;
+
+      if (summaryPeriod === "custom-day") {
+        startDate = new Date(selectedDate).toISOString();
+        endDate = new Date(
+          new Date(selectedDate).setHours(23, 59, 59, 999)
+        ).toISOString();
+      } else if (summaryPeriod === "custom-month") {
+        const [year, month] = selectedMonth.split("-").map(Number);
+        startDate = new Date(year, month - 1, 1).toISOString();
+        endDate = new Date(year, month, 0, 23, 59, 59, 999).toISOString();
+      } else {
+        // For standard periods (day, week, month, year), let backend calculate the range
+        // We won't pass startDate/endDate, but we need to ensure the period is used
+        // For now, pass undefined to get all data for these periods
+        // The backend getJobDistribution doesn't accept a period parameter, only startDate/endDate
+        const now = new Date();
+        switch (summaryPeriod) {
+          case "day":
+            startDate = new Date(
+              now.getFullYear(),
+              now.getMonth(),
+              now.getDate()
+            ).toISOString();
+            endDate = now.toISOString();
+            break;
+          case "week":
+            const weekStart = new Date(now);
+            weekStart.setDate(now.getDate() - 7);
+            startDate = weekStart.toISOString();
+            endDate = now.toISOString();
+            break;
+          case "month":
+            startDate = new Date(
+              now.getFullYear(),
+              now.getMonth(),
+              1
+            ).toISOString();
+            endDate = now.toISOString();
+            break;
+          case "year":
+            startDate = new Date(now.getFullYear(), 0, 1).toISOString();
+            endDate = now.toISOString();
+            break;
+        }
+      }
+
+      const { data } = await analyticsApi.getJobDistribution(
+        startDate,
+        endDate
+      );
       return data;
     },
   });
@@ -54,9 +105,53 @@ export const Analytics = () => {
   const { data: weeklyPattern, isLoading: loadingPattern } = useQuery<
     WeeklyPattern[]
   >({
-    queryKey: ["weeklyPattern"],
+    queryKey: ["weeklyPattern", summaryPeriod, selectedDate, selectedMonth],
     queryFn: async () => {
-      const { data } = await analyticsApi.getWeeklyPattern();
+      let startDate: string | undefined;
+      let endDate: string | undefined;
+
+      if (summaryPeriod === "custom-day") {
+        startDate = new Date(selectedDate).toISOString();
+        endDate = new Date(
+          new Date(selectedDate).setHours(23, 59, 59, 999)
+        ).toISOString();
+      } else if (summaryPeriod === "custom-month") {
+        const [year, month] = selectedMonth.split("-").map(Number);
+        startDate = new Date(year, month - 1, 1).toISOString();
+        endDate = new Date(year, month, 0, 23, 59, 59, 999).toISOString();
+      } else {
+        const now = new Date();
+        switch (summaryPeriod) {
+          case "day":
+            startDate = new Date(
+              now.getFullYear(),
+              now.getMonth(),
+              now.getDate()
+            ).toISOString();
+            endDate = now.toISOString();
+            break;
+          case "week":
+            const weekStart = new Date(now);
+            weekStart.setDate(now.getDate() - 7);
+            startDate = weekStart.toISOString();
+            endDate = now.toISOString();
+            break;
+          case "month":
+            startDate = new Date(
+              now.getFullYear(),
+              now.getMonth(),
+              1
+            ).toISOString();
+            endDate = now.toISOString();
+            break;
+          case "year":
+            startDate = new Date(now.getFullYear(), 0, 1).toISOString();
+            endDate = now.toISOString();
+            break;
+        }
+      }
+
+      const { data } = await analyticsApi.getWeeklyPattern(startDate, endDate);
       return data;
     },
   });
