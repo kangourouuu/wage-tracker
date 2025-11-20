@@ -84,13 +84,12 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
     onSuccess: async () => {
       // Invalidate all related queries
       await queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      await queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
       await queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
       await queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
       await queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
 
-      // Force refetch analytics summary
-      await queryClient.refetchQueries({ queryKey: ["analyticsSummary"] });
+      // Reset analytics summary to clear cache and force fresh fetch
+      await queryClient.resetQueries({ queryKey: ["analyticsSummary"] });
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t("failedToAddWorkEntry"));
@@ -102,13 +101,12 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
     onSuccess: async () => {
       // Invalidate all related queries
       await queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      await queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
       await queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
       await queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
       await queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
 
-      // Force refetch analytics summary
-      await queryClient.refetchQueries({ queryKey: ["analyticsSummary"] });
+      // Reset analytics summary to clear cache and force fresh fetch
+      await queryClient.resetQueries({ queryKey: ["analyticsSummary"] });
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t("failedToDeleteWorkEntry"));
@@ -121,13 +119,12 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
     onSuccess: async () => {
       // Invalidate all related queries
       await queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      await queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
       await queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
       await queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
       await queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
 
-      // Force refetch analytics summary
-      await queryClient.refetchQueries({ queryKey: ["analyticsSummary"] });
+      // Reset analytics summary to clear cache and force fresh fetch
+      await queryClient.resetQueries({ queryKey: ["analyticsSummary"] });
 
       setEditingEntryId(null);
       setEditFormData(null);
