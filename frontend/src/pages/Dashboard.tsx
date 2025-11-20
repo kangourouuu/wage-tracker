@@ -185,6 +185,7 @@ export const Dashboard = () => {
                 <button
                   className={styles.analyticsButton}
                   onClick={() => navigate("/analytics")}
+                  aria-label={t("analytics", "Analytics")}
                 >
                   <span className={styles.analyticsIcon}>📈</span>
                   <span>{t("analytics", "Analytics")}</span>
