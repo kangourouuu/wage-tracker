@@ -12,6 +12,8 @@ import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
 import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
+import EmptyState from "../components/EmptyState";
+import logo from "../assets/logo.png";
 
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
@@ -26,8 +28,6 @@ const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
   return data;
 };
-
-
 
 const calculateSummary = (entries: WorkEntry[]) => {
   const totalHours = entries.reduce((acc, entry) => {
@@ -69,18 +69,19 @@ export const Dashboard = () => {
     refetchOnWindowFocus: true,
   });
 
-  const { data: analyticsSummary, isLoading: isLoadingSummary } = useQuery<SummaryData>({
-    queryKey: ["analyticsSummary", "week"],
-    queryFn: async () => {
-      const { data } = await analyticsApi.getSummary("week");
-      return data;
-    },
-    refetchInterval: 30000, // Poll every 30 seconds
-    refetchOnWindowFocus: true,
-  });
+  const { data: analyticsSummary, isLoading: isLoadingSummary } =
+    useQuery<SummaryData>({
+      queryKey: ["analyticsSummary", "week"],
+      queryFn: async () => {
+        const { data } = await analyticsApi.getSummary("week");
+        return data;
+      },
+      refetchInterval: 30000, // Poll every 30 seconds
+      refetchOnWindowFocus: true,
+    });
 
-  useKeyboardShortcut('n', () => setIsModalOpen(true));
-  useKeyboardShortcut('/', () => toggleAssistant());
+  useKeyboardShortcut("n", () => setIsModalOpen(true));
+  useKeyboardShortcut("/", () => toggleAssistant());
 
   const summary = workEntries
     ? calculateSummary(workEntries)
@@ -115,20 +116,49 @@ export const Dashboard = () => {
                   </div>
                   <AssistantPanel isDropdown={true} />
                 </div>
-                <h1 className={styles.welcomeTitle}>
-                  {t("welcome", { name: user?.name })}
-                </h1>
+                <div
+                  className={styles.logoContainer}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <img
+                    src={logo}
+                    alt="Wage Tracker Logo"
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      objectFit: "contain",
+                    }}
+                  />
+                  <h1 className={styles.welcomeTitle} style={{ margin: 0 }}>
+                    {t("welcome", { name: user?.name })}
+                  </h1>
+                </div>
               </div>
               <div className={styles.headerActions}>
                 <button
-                  onClick={() => exportToCSV(workEntries || [], 'work-entries.csv')}
+                  onClick={() => setIsModalOpen(true)}
+                  className={styles.headerAddButton}
+                  title="Add New Entry (n)"
+                >
+                  <span>+</span>
+                  <span>{t("addEntry", "Add Entry")}</span>
+                </button>
+                <button
+                  onClick={() =>
+                    exportToCSV(workEntries || [], "work-entries.csv")
+                  }
                   className={styles.exportButton}
                   title="Export to CSV"
                 >
                   📥
                 </button>
                 <button
-                  onClick={() => navigate('/settings')}
+                  onClick={() => navigate("/settings")}
                   className={styles.settingsButton}
                   title="Settings"
                 >
@@ -154,101 +184,136 @@ export const Dashboard = () => {
                 {/* Analytics Button */}
                 <button
                   className={styles.analyticsButton}
-                  onClick={() => navigate('/analytics')}
+                  onClick={() => navigate("/analytics")}
                 >
                   <span className={styles.analyticsIcon}>📈</span>
                   <span>{t("analytics", "Analytics")}</span>
                 </button>
 
-                <div className={styles.calendarWrapper}>
-                  <Calendar
-                    onChange={(value) => {
-                      if (Array.isArray(value)) {
-                        handleDateClick(value[0] as Date);
-                      } else {
-                        handleDateClick(value as Date);
-                      }
-                    }}
-                    value={selectedDate}
-                    onClickDay={handleDateClick}
-                    locale="en-US"
-                    calendarType="gregory"
-                    showNeighboringMonth={true}
-                    formatShortWeekday={(_locale, date) => {
-                      const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-                      return weekdays[date.getDay()];
-                    }}
-                    tileContent={({ date, view }) => {
-                      if (view === 'month' && workEntries) {
-                        const hasEntry = workEntries.some((entry) => {
-                          const entryDate = new Date(entry.startTime);
-                          return (
-                            entryDate.getFullYear() === date.getFullYear() &&
-                            entryDate.getMonth() === date.getMonth() &&
-                            entryDate.getDate() === date.getDate()
-                          );
-                        });
-                        return hasEntry ? <div className={styles.entryDot}></div> : null;
-                      }
-                      return null;
-                    }}
-                  />
-                </div>
+                {!workEntries || workEntries.length === 0 ? (
+                  <EmptyState onAction={() => setIsModalOpen(true)} />
+                ) : (
+                  <>
+                    <div className={styles.calendarWrapper}>
+                      <Calendar
+                        onChange={(value) => {
+                          if (Array.isArray(value)) {
+                            handleDateClick(value[0] as Date);
+                          } else {
+                            handleDateClick(value as Date);
+                          }
+                        }}
+                        value={selectedDate}
+                        onClickDay={handleDateClick}
+                        locale="en-US"
+                        calendarType="gregory"
+                        showNeighboringMonth={true}
+                        formatShortWeekday={(_locale, date) => {
+                          const weekdays = [
+                            "SUN",
+                            "MON",
+                            "TUE",
+                            "WED",
+                            "THU",
+                            "FRI",
+                            "SAT",
+                          ];
+                          return weekdays[date.getDay()];
+                        }}
+                        tileContent={({ date, view }) => {
+                          if (view === "month" && workEntries) {
+                            const hasEntry = workEntries.some((entry) => {
+                              const entryDate = new Date(entry.startTime);
+                              return (
+                                entryDate.getFullYear() ===
+                                  date.getFullYear() &&
+                                entryDate.getMonth() === date.getMonth() &&
+                                entryDate.getDate() === date.getDate()
+                              );
+                            });
+                            return hasEntry ? (
+                              <div className={styles.entryDot}></div>
+                            ) : null;
+                          }
+                          return null;
+                        }}
+                      />
+                    </div>
 
-                <div className={styles.summaryCardsContainer}>
-                  {isLoadingSummary ? (
-                    <>
-                      <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
-                      <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
-                      <Skeleton height="120px" width="200px" borderRadius="var(--border-radius-md)" />
-                    </>
-                  ) : analyticsSummary ? (
-                    <>
-                      <SummaryCardWithTrend
-                        title={t("totalHours")}
-                        value={analyticsSummary.current.totalHours.toFixed(2)}
-                        trend={{
-                          value: analyticsSummary.trend.hours,
-                          isPositive: analyticsSummary.trend.hours >= 0,
-                        }}
-                        icon="⏱️"
-                      />
-                      <SummaryCardWithTrend
-                        title={t("estimatedEarnings")}
-                        value={analyticsSummary.current.totalEarnings.toFixed(2)}
-                        trend={{
-                          value: analyticsSummary.trend.earnings,
-                          isPositive: analyticsSummary.trend.earnings >= 0,
-                        }}
-                        icon="💰"
-                      />
-                      <SummaryCardWithTrend
-                        title={t("analytics.totalEntries", "Total Entries")}
-                        value={analyticsSummary.current.totalEntries.toString()}
-                        trend={{
-                          value: analyticsSummary.trend.entries,
-                          isPositive: analyticsSummary.trend.entries >= 0,
-                        }}
-                        icon="📋"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <SummaryCard title={t("totalHours")} value={summary.totalHours} />
-                      <SummaryCard
-                        title={t("estimatedEarnings")}
-                        value={summary.totalEarnings}
-                      />
-                      <SummaryCard
-                        title={t("analytics.totalEntries", "Total Entries")}
-                        value={workEntries?.length.toString() || "0"}
-                      />
-                    </>
-                  )}
-                </div>
+                    <div className={styles.summaryCardsContainer}>
+                      {isLoadingSummary ? (
+                        <>
+                          <Skeleton
+                            height="120px"
+                            width="200px"
+                            borderRadius="var(--border-radius-md)"
+                          />
+                          <Skeleton
+                            height="120px"
+                            width="200px"
+                            borderRadius="var(--border-radius-md)"
+                          />
+                          <Skeleton
+                            height="120px"
+                            width="200px"
+                            borderRadius="var(--border-radius-md)"
+                          />
+                        </>
+                      ) : analyticsSummary ? (
+                        <>
+                          <SummaryCardWithTrend
+                            title={t("totalHours")}
+                            value={analyticsSummary.current.totalHours.toFixed(
+                              2
+                            )}
+                            trend={{
+                              value: analyticsSummary.trend.hours,
+                              isPositive: analyticsSummary.trend.hours >= 0,
+                            }}
+                            icon="⏱️"
+                          />
+                          <SummaryCardWithTrend
+                            title={t("estimatedEarnings")}
+                            value={analyticsSummary.current.totalEarnings.toFixed(
+                              2
+                            )}
+                            trend={{
+                              value: analyticsSummary.trend.earnings,
+                              isPositive: analyticsSummary.trend.earnings >= 0,
+                            }}
+                            icon="💰"
+                          />
+                          <SummaryCardWithTrend
+                            title={t("analytics.totalEntries", "Total Entries")}
+                            value={analyticsSummary.current.totalEntries.toString()}
+                            trend={{
+                              value: analyticsSummary.trend.entries,
+                              isPositive: analyticsSummary.trend.entries >= 0,
+                            }}
+                            icon="📋"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <SummaryCard
+                            title={t("totalHours")}
+                            value={summary.totalHours}
+                          />
+                          <SummaryCard
+                            title={t("estimatedEarnings")}
+                            value={summary.totalEarnings}
+                          />
+                          <SummaryCard
+                            title={t("analytics.totalEntries", "Total Entries")}
+                            value={workEntries?.length.toString() || "0"}
+                          />
+                        </>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-
           </div>
         </div>
       </div>
