@@ -84,6 +84,9 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workEntries"] });
       queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t("failedToAddWorkEntry"));
@@ -95,6 +98,9 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workEntries"] });
       queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t("failedToDeleteWorkEntry"));
@@ -107,6 +113,9 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workEntries"] });
       queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
       setEditingEntryId(null);
       setEditFormData(null);
     },

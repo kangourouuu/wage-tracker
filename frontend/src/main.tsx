@@ -9,7 +9,15 @@ import { ErrorBoundary } from './shared/components/ErrorBoundary'
 import './index.css'
 import App from './App.tsx'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+    },
+  },
+})
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
