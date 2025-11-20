@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 import styles from "./JobDistributionChart.module.css";
 
 interface JobDistributionChartProps {
@@ -12,30 +19,41 @@ interface JobDistributionChartProps {
   }>;
 }
 
-const COLORS = ["#8b5cf6", "#10b981", "#f59e0b", "#ef4444", "#3b82f6", "#ec4899", "#14b8a6", "#f97316"];
+const COLORS = [
+  "#8b5cf6",
+  "#10b981",
+  "#f59e0b",
+  "#ef4444",
+  "#3b82f6",
+  "#ec4899",
+  "#14b8a6",
+  "#f97316",
+];
+
+import tooltipStyles from "./ChartTooltip.module.css";
 
 // Custom tooltip
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div
-        style={{
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          padding: "12px",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-        }}
-      >
-        <p style={{ margin: "0 0 8px 0", fontWeight: "bold", color: "#333", fontSize: "14px" }}>
-          {data.name}
+      <div className={tooltipStyles.tooltipContainer}>
+        <p className={tooltipStyles.label}>{data.name}</p>
+        <p className={tooltipStyles.item}>
+          <span
+            className={tooltipStyles.colorDot}
+            style={{ backgroundColor: "#10b981" }}
+          />
+          <span>Earnings:</span>
+          <span className={tooltipStyles.value}>{data.value.toFixed(2)}</span>
         </p>
-        <p style={{ margin: "4px 0", color: "#666", fontSize: "13px" }}>
-          💰 Earnings: <strong>{data.value.toFixed(2)}</strong>
-        </p>
-        <p style={{ margin: "4px 0", color: "#666", fontSize: "13px" }}>
-          ⏱️ Hours: <strong>{data.hours.toFixed(1)}</strong>
+        <p className={tooltipStyles.item}>
+          <span
+            className={tooltipStyles.colorDot}
+            style={{ backgroundColor: "#8b5cf6" }}
+          />
+          <span>Hours:</span>
+          <span className={tooltipStyles.value}>{data.hours.toFixed(1)}</span>
         </p>
       </div>
     );
@@ -70,7 +88,9 @@ export const JobDistributionChart = ({ data }: JobDistributionChartProps) => {
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={({ name, percent }: { name?: string; percent?: number }) => `${name || ''} ${percent ? (percent * 100).toFixed(0) : 0}%`}
+            label={({ name, percent }: { name?: string; percent?: number }) =>
+              `${name || ""} ${percent ? (percent * 100).toFixed(0) : 0}%`
+            }
             outerRadius={activeIndex !== undefined ? 90 : 100}
             fill="#8884d8"
             dataKey="value"
@@ -84,7 +104,10 @@ export const JobDistributionChart = ({ data }: JobDistributionChartProps) => {
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}
-                style={{ cursor: "pointer", filter: activeIndex === index ? "brightness(1.1)" : "none" }}
+                style={{
+                  cursor: "pointer",
+                  filter: activeIndex === index ? "brightness(1.1)" : "none",
+                }}
               />
             ))}
           </Pie>

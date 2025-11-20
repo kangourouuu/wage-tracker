@@ -19,44 +19,24 @@ interface EarningsTrendChartProps {
   }>;
 }
 
+import tooltipStyles from "./ChartTooltip.module.css";
+
 // Custom tooltip for better visualization
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div
-        style={{
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          padding: "12px",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-        }}
-      >
-        <p style={{ margin: "0 0 8px 0", fontWeight: "bold", color: "#333" }}>
-          {label}
-        </p>
+      <div className={tooltipStyles.tooltipContainer}>
+        <p className={tooltipStyles.label}>{label}</p>
         {payload.map((entry: any, index: number) => (
-          <p
-            key={index}
-            style={{
-              margin: "4px 0",
-              color: entry.color,
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+          <p key={index} className={tooltipStyles.item}>
             <span
-              style={{
-                display: "inline-block",
-                width: "12px",
-                height: "12px",
-                backgroundColor: entry.color,
-                borderRadius: "50%",
-              }}
+              className={tooltipStyles.colorDot}
+              style={{ backgroundColor: entry.color }}
             />
             <span style={{ fontWeight: 600 }}>{entry.name}:</span>
-            <span>{entry.value.toFixed(2)}</span>
+            <span className={tooltipStyles.value}>
+              {entry.value.toFixed(2)}
+            </span>
           </p>
         ))}
       </div>
