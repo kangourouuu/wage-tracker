@@ -90,6 +90,10 @@ export const deleteJob = (id: string) => {
   return api.delete(`/jobs/${id}`);
 };
 
+export const getTotalWorkEntriesCount = () => {
+  return api.get('/work-entries/count/total');
+};
+
 // Analytics API
 export const analyticsApi = {
   getEarningsTrend: (period: string = "month", startDate?: string, endDate?: string) => {

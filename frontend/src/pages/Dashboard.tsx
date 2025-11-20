@@ -65,6 +65,8 @@ export const Dashboard = () => {
   const { data: workEntries } = useQuery<WorkEntry[]>({
     queryKey: ["workEntries"],
     queryFn: fetchWorkEntries,
+    refetchInterval: 30000, // Poll every 30 seconds
+    refetchOnWindowFocus: true,
   });
 
   const { data: analyticsSummary, isLoading: isLoadingSummary } = useQuery<SummaryData>({
@@ -73,6 +75,8 @@ export const Dashboard = () => {
       const { data } = await analyticsApi.getSummary("week");
       return data;
     },
+    refetchInterval: 30000, // Poll every 30 seconds
+    refetchOnWindowFocus: true,
   });
 
   useKeyboardShortcut('n', () => setIsModalOpen(true));

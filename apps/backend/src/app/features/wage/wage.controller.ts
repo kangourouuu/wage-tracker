@@ -77,4 +77,10 @@ export class WageController {
   getOngoingEntry(@GetCurrentUserId() userId: string) {
     return this.wageService.getOngoingEntry(userId);
   }
+
+  @Get("count/total")
+  async countTotalWorkEntries(@GetCurrentUserId() userId: string) {
+    const count = await this.wageService.countTotalWorkEntries(userId);
+    return { count };
+  }
 }

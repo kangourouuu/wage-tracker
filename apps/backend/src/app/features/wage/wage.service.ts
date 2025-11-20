@@ -172,4 +172,10 @@ export class WageService {
       relations: ["job"],
     });
   }
+
+  async countTotalWorkEntries(userId: string): Promise<number> {
+    return this.workEntryRepository.count({
+      where: { user: { id: userId } },
+    });
+  }
 }
