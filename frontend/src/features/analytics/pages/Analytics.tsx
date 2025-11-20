@@ -22,7 +22,7 @@ export const Analytics = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [period, setPeriod] = useState<Period>("month");
-  const [summaryPeriod, setSummaryPeriod] = useState<Period>("week");
+  const [summaryPeriod, setSummaryPeriod] = useState<Period>("month");
 
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString().split("T")[0]
