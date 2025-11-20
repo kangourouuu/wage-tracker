@@ -123,8 +123,8 @@ export class AnalyticsService {
     return weekPattern;
   }
 
-  async getSummary(userId: string, period: string = "week") {
-    const { start, end } = this.getDateRange(period);
+  async getSummary(userId: string, period: string = "week", startDate?: string, endDate?: string) {
+    const { start, end } = this.getDateRange(period, startDate, endDate);
     const { start: prevStart, end: prevEnd } =
       this.getPreviousPeriodRange(period);
 

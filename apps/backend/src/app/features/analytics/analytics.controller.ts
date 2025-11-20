@@ -45,8 +45,10 @@ export class AnalyticsController {
   getSummary(
     @GetCurrentUserId() userId: string,
     @Query("period") period: string = "week",
+    @Query("startDate") startDate?: string,
+    @Query("endDate") endDate?: string,
   ) {
-    return this.analyticsService.getSummary(userId, period);
+    return this.analyticsService.getSummary(userId, period, startDate, endDate);
   }
 
   @Get("comparison")
