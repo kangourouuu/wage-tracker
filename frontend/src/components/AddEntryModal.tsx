@@ -81,12 +81,16 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
   const addWorkEntryMutation = useMutation({
     mutationFn: (newEntry: CreateWorkEntryDto) =>
       api.post("/work-entries", newEntry),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
-      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
-      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
-      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
+    onSuccess: async () => {
+      // Invalidate all related queries
+      await queryClient.invalidateQueries({ queryKey: ["workEntries"] });
+      await queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      await queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      await queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      await queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
+
+      // Force refetch analytics summary
+      await queryClient.refetchQueries({ queryKey: ["analyticsSummary"] });
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t("failedToAddWorkEntry"));
@@ -95,12 +99,16 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
 
   const deleteWorkEntryMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/work-entries/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
-      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
-      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
-      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
+    onSuccess: async () => {
+      // Invalidate all related queries
+      await queryClient.invalidateQueries({ queryKey: ["workEntries"] });
+      await queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      await queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      await queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      await queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
+
+      // Force refetch analytics summary
+      await queryClient.refetchQueries({ queryKey: ["analyticsSummary"] });
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t("failedToDeleteWorkEntry"));
@@ -110,12 +118,17 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
   const updateWorkEntryMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateWorkEntryDto }) =>
       api.patch(`/work-entries/${id}`, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workEntries"] });
-      queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
-      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
-      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
-      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
+    onSuccess: async () => {
+      // Invalidate all related queries
+      await queryClient.invalidateQueries({ queryKey: ["workEntries"] });
+      await queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      await queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      await queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      await queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
+
+      // Force refetch analytics summary
+      await queryClient.refetchQueries({ queryKey: ["analyticsSummary"] });
+
       setEditingEntryId(null);
       setEditFormData(null);
     },
