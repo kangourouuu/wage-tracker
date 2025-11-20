@@ -13,7 +13,6 @@ import AddEntryModal from "../components/AddEntryModal";
 import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
 import EmptyState from "../components/EmptyState";
-import logo from "../assets/logo.png";
 
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
@@ -116,38 +115,12 @@ export const Dashboard = () => {
                   </div>
                   <AssistantPanel isDropdown={true} />
                 </div>
-                <div
-                  className={styles.logoContainer}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <img
-                    src={logo}
-                    alt="Wage Tracker Logo"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      objectFit: "contain",
-                    }}
-                  />
-                  <h1 className={styles.welcomeTitle} style={{ margin: 0 }}>
-                    {t("welcome", { name: user?.name })}
-                  </h1>
-                </div>
+
+                <h1 className={styles.welcomeTitle} style={{ margin: 0 }}>
+                  {t("welcome", { name: user?.name })}
+                </h1>
               </div>
               <div className={styles.headerActions}>
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className={styles.headerAddButton}
-                  title="Add New Entry (n)"
-                >
-                  <span>+</span>
-                  <span>{t("addEntry", "Add Entry")}</span>
-                </button>
                 <button
                   onClick={() =>
                     exportToCSV(workEntries || [], "work-entries.csv")
@@ -284,15 +257,6 @@ export const Dashboard = () => {
                             }}
                             icon="💰"
                           />
-                          <SummaryCardWithTrend
-                            title={t("analytics.totalEntries", "Total Entries")}
-                            value={analyticsSummary.current.totalEntries.toString()}
-                            trend={{
-                              value: analyticsSummary.trend.entries,
-                              isPositive: analyticsSummary.trend.entries >= 0,
-                            }}
-                            icon="📋"
-                          />
                         </>
                       ) : (
                         <>
@@ -303,10 +267,6 @@ export const Dashboard = () => {
                           <SummaryCard
                             title={t("estimatedEarnings")}
                             value={summary.totalEarnings}
-                          />
-                          <SummaryCard
-                            title={t("analytics.totalEntries", "Total Entries")}
-                            value={workEntries?.length.toString() || "0"}
                           />
                         </>
                       )}

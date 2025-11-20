@@ -109,9 +109,9 @@
 /* Today styling */
 .react-calendar__tile--now abbr {
   background: rgba(79, 195, 247, 0.35) !important;
-  color: #0277BD !important;
+  color: #0277bd !important;
   font-weight: 700 !important;
-  border: 2px solid #03A9F4 !important;
+  border: 2px solid #03a9f4 !important;
   box-shadow: 0 0 8px rgba(79, 195, 247, 0.5) !important;
 }
 
@@ -119,7 +119,6 @@
 .react-calendar__tile--active abbr {
   background: var(--primary-color) !important;
   color: white !important;
-  box-shadow: var(--shadow-md) !important;
 }
 
 .react-calendar__tile--active:enabled:hover abbr,

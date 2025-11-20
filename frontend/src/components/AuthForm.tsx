@@ -170,6 +170,19 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
                   type="number"
                   value={job.wagePerHour}
                   onChange={(e) =>
+                    handleJobChange(index, "wagePerHour", e.target.value)
+                  }
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveJob(index)}
+                  className={styles.removeJobButton}
+                >
+                  x
+                </button>
+              </div>
+            ))}
             <button
               type="button"
               onClick={handleAddJob}

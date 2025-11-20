@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import styles from "./DateRangePicker.module.css";
-import { format } from "date-fns"; // Assuming date-fns might be available or I'll use native Intl
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
