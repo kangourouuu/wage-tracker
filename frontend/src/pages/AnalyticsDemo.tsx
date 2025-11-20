@@ -4,9 +4,10 @@ import { EarningsTrendChart } from "../features/analytics/components/EarningsTre
 import { JobDistributionChart } from "../features/analytics/components/JobDistributionChart";
 import { WeeklyPatternChart } from "../features/analytics/components/WeeklyPatternChart";
 import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCardWithTrend";
+import { DateRangePicker } from "../components/DateRangePicker";
 import styles from "../features/analytics/pages/Analytics.module.css";
 
-type Period = "day" | "week" | "month" | "year";
+type Period = "day" | "week" | "month" | "year" | "custom";
 
 // Mock data for demonstration
 const mockEarningsTrend = [
@@ -20,7 +21,13 @@ const mockEarningsTrend = [
 ];
 
 const mockJobDistribution = [
-  { jobId: "1", jobName: "Software Development", hours: 35, earnings: 1750, entries: 5 },
+  {
+    jobId: "1",
+    jobName: "Software Development",
+    hours: 35,
+    earnings: 1750,
+    entries: 5,
+  },
   { jobId: "2", jobName: "Consulting", hours: 8, earnings: 600, entries: 2 },
   { jobId: "3", jobName: "Code Review", hours: 5, earnings: 250, entries: 1 },
 ];
@@ -53,13 +60,17 @@ export const AnalyticsDemo = () => {
   const navigate = useNavigate();
   const [period, setPeriod] = useState<Period>("month");
   const [summaryPeriod, setSummaryPeriod] = useState<Period>("week");
+  const [customDateRange, setCustomDateRange] = useState<{
+    start: Date;
+    end: Date;
+  } | null>(null);
 
   return (
     <div className={styles.analyticsContainer}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <button 
-            onClick={() => navigate('/login')} 
+          <button
+            onClick={() => navigate("/login")}
             className={styles.backButton}
             title="Back to Login"
           >
@@ -124,16 +135,30 @@ export const AnalyticsDemo = () => {
         <div className={styles.chartsSection}>
           <div className={styles.chartCard}>
             <div className={styles.chartHeader}>
-              <select
-                value={period}
-                onChange={(e) => setPeriod(e.target.value as Period)}
-                className={styles.select}
+              <div
+                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
               >
-                <option value="day">Last Day</option>
-                <option value="week">Last Week</option>
-                <option value="month">Last Month</option>
-                <option value="year">Last Year</option>
-              </select>
+                <select
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value as Period)}
+                  className={styles.select}
+                >
+                  <option value="day">Last Day</option>
+                  <option value="week">Last Week</option>
+                  <option value="month">Last Month</option>
+                  <option value="year">Last Year</option>
+                  <option value="custom">Custom Range</option>
+                </select>
+                {period === "custom" && (
+                  <DateRangePicker
+                    onChange={(start, end) =>
+                      setCustomDateRange({ start, end })
+                    }
+                    startDate={customDateRange?.start}
+                    endDate={customDateRange?.end}
+                  />
+                )}
+              </div>
             </div>
             <EarningsTrendChart data={mockEarningsTrend} />
           </div>
