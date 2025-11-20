@@ -173,11 +173,17 @@ export const Analytics = () => {
         endDate = new Date(year, month, 0, 23, 59, 59, 999).toISOString();
       }
 
+      console.log("📊 Fetching summary with:", {
+        summaryPeriod,
+        startDate,
+        endDate,
+      });
       const { data } = await analyticsApi.getSummary(
         summaryPeriod,
         startDate,
         endDate
       );
+      console.log("📊 Summary data received:", data);
       return data;
     },
   });

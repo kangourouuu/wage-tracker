@@ -82,6 +82,7 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
     mutationFn: (newEntry: CreateWorkEntryDto) =>
       api.post("/work-entries", newEntry),
     onSuccess: async () => {
+      console.log("✅ Work entry added successfully, invalidating queries...");
       // Invalidate all related queries
       await queryClient.invalidateQueries({ queryKey: ["workEntries"] });
       await queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
@@ -89,7 +90,9 @@ const AddEntryModal: React.FC<AddEntryModalProps> = ({
       await queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
 
       // Reset analytics summary to clear cache and force fresh fetch
+      console.log("🔄 Resetting analyticsSummary query...");
       await queryClient.resetQueries({ queryKey: ["analyticsSummary"] });
+      console.log("✅ Queries reset complete");
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || t("failedToAddWorkEntry"));
