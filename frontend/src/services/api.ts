@@ -117,8 +117,11 @@ export const analyticsApi = {
     return api.get(`/analytics/weekly-pattern?${params}`);
   },
 
-  getSummary: (period: string = "week") => {
-    return api.get(`/analytics/summary?period=${period}`);
+  getSummary: (period: string = "week", startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams({ period });
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+    return api.get(`/analytics/summary?${params}`);
   },
 
   getComparison: (
