@@ -9,7 +9,6 @@ import type { Job } from "../types/work-entry";
 import JobList from "../components/JobList";
 import AddJobModal from "../components/AddJobModal";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
-import { GlassCard } from "../shared/components/ui/GlassCard";
 
 export const Settings = () => {
   const { t, i18n } = useTranslation();
