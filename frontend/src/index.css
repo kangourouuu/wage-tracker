@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
 
 :root {
   /* Base Colors */
-  --background-color: #f4f7f6;
-  /* Lighter, softer background */
+  --background-color: #89caf5;
+  /* Light blue background for light mode */
   --surface-color: #ffffff;
   /* White for cards/forms */
   --text-color: #e0e0e0;
@@ -19,12 +19,12 @@
   /* Material Design green for success */
 
   /* Primary Palette - Professional and modern (Blue Sky) */
-  --primary-color: #4FC3F7;
+  --primary-color: #4fc3f7;
   /* Light Blue */
   --primary-color-rgb: 79, 195, 247;
-  --primary-color-light: #81D4FA;
+  --primary-color-light: #81d4fa;
   /* Lighter Blue */
-  --primary-color-dark: #03A9F4;
+  --primary-color-dark: #03a9f4;
   /* Blue */
 
   /* Accent Palette */
@@ -32,19 +32,27 @@
   /* Steel Blue */
   --accent-color-1-light: #7baeda;
   --accent-color-1-dark: #4a8ac8;
-  --gold-accent: #FFD700;
+  --gold-accent: #ffd700;
   /* Gold accent for CTAs */
-  --pastel-orange: #FAC1B0;
+  --pastel-orange: #fac1b0;
   /* Updated pastel orange */
   --pastel-orange-rgb: 250, 161, 176;
-  --pastel-orange-dark: #E0A7B5;
+  --pastel-orange-dark: #e0a7b5;
   /* Darker pastel orange for hover states */
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color));
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--primary-color-dark),
+    var(--primary-color)
+  );
   /* Adjusted gradient direction */
-  --gradient-accent-1: linear-gradient(to right, var(--accent-color-1-dark), var(--accent-color-1));
-  --gradient-gold: linear-gradient(to right, #FFD700, #FFA500);
+  --gradient-accent-1: linear-gradient(
+    to right,
+    var(--accent-color-1-dark),
+    var(--accent-color-1)
+  );
+  --gradient-gold: linear-gradient(to right, #ffd700, #ffa500);
   /* Gold gradient */
 
   /* Glassmorphism */
@@ -60,8 +68,8 @@
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
 
   /* Typography */
-  --font-family-body: 'Be Vietnam Pro', sans-serif;
-  --font-family-heading: 'Be Vietnam Pro', sans-serif;
+  --font-family-body: "Be Vietnam Pro", sans-serif;
+  --font-family-heading: "Be Vietnam Pro", sans-serif;
   --font-size-base: 16px;
   /* Explicitly set base font size */
   --line-height-base: 1.6;
@@ -74,7 +82,7 @@
 /* Dark Mode */
 .dark {
   /* Base Colors - Dark Theme */
-  --background-color: #0a1929;
+  --background-color: #07a6d6;
   --surface-color: #ffffff;
   --text-color: #333333;
   --text-light-color: #666666;

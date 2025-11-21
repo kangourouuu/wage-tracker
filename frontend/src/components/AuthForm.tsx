@@ -128,16 +128,6 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {isLogin && (
-            <a
-              href="#"
-              className={styles.forgotPassword}
-              onClick={(e) => e.preventDefault()}
-            >
-              {t("forgotPassword", "Forgot Password?")}
-            </a>
-          )}
-
           {!isLogin && (
             <div className={styles.jobsSection}>
               <h3>{t("yourJobs")}</h3>

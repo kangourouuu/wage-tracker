@@ -24,6 +24,7 @@ import { exportToCSV } from "../utils/exportUtils";
 import { Skeleton } from "../shared/components/feedback";
 import { RecentEntries } from "../components/RecentEntries";
 import toast from "react-hot-toast";
+import { Sidebar } from "../components/Sidebar";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -71,6 +72,7 @@ export const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { toggle: toggleAssistant } = useAiAssistantStore();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { data: workEntries, isLoading: isLoadingEntries } = useQuery<
     WorkEntry[]
@@ -179,12 +181,24 @@ export const Dashboard = () => {
 
   return (
     <>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className={styles.pageWrapper}>
         {/* Main Content */}
-        <div className={styles.contentWrapper}>
+        <div
+          className={`${styles.contentWrapper} ${
+            sidebarOpen ? styles.contentShifted : ""
+          }`}
+        >
           <div className={styles.dashboardContainer}>
             <header className={styles.header}>
               <div className={styles.welcomeSection}>
+                <button
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                  className={styles.menuButton}
+                  aria-label="Toggle menu"
+                >
+                  ☰
+                </button>
                 <div className={styles.assistantToggleContainer}>
                   <div
                     onClick={(e) => {
@@ -212,13 +226,6 @@ export const Dashboard = () => {
                 >
                   📥
                 </button>
-                <button
-                  onClick={() => navigate("/settings")}
-                  className={styles.settingsButton}
-                  title="Settings"
-                >
-                  ⚙️
-                </button>
                 <DarkModeToggle />
                 <select
                   onChange={(e) => changeLanguage(e.target.value)}
@@ -235,18 +242,6 @@ export const Dashboard = () => {
             </header>
 
             <div className={styles.mainContent}>
-              {/* Analytics Button - Mobile Only or Top Bar */}
-              <div className={styles.topBar}>
-                <button
-                  className={styles.analyticsButton}
-                  onClick={() => navigate("/analytics")}
-                  aria-label={t("analytics", "Analytics")}
-                >
-                  <span className={styles.analyticsIcon}>📈</span>
-                  <span>{t("analytics", "Analytics")}</span>
-                </button>
-              </div>
-
               {!workEntries || workEntries.length === 0 ? (
                 <EmptyState onAction={() => setIsModalOpen(true)} />
               ) : (

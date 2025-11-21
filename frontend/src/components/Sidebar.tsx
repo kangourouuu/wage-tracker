@@ -16,9 +16,9 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { toggle: toggleAssistant } = useAiAssistantStore();
 
   const navItems = [
-    { path: "/dashboard", icon: "🏠", label: t("dashboard", "Dashboard") },
-    { path: "/analytics", icon: "📊", label: t("analytics", "Analytics") },
-    { path: "/settings", icon: "⚙️", label: t("settings", "Settings") },
+    { path: "/dashboard", label: t("dashboard", "Dashboard") },
+    { path: "/analytics", label: t("analytics", "Analytics") },
+    { path: "/settings", label: t("settings", "Settings") },
   ];
 
   const handleLogout = () => {
@@ -71,8 +71,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 `${styles.navItem} ${isActive ? styles.active : ""}`
               }
             >
-              <span className={styles.icon}>{item.icon}</span>
-              <span className={styles.label}>{item.label}</span>
+              {item.label}
             </NavLink>
           ))}
 
@@ -83,15 +82,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             }}
             className={styles.navItem}
           >
-            <span className={styles.icon}>💬</span>
-            <span className={styles.label}>{t("assistant", "Assistant")}</span>
+            {t("assistant", "Assistant")}
           </button>
         </nav>
 
         <div className={styles.footer}>
           <button onClick={handleLogout} className={styles.logoutButton}>
-            <span className={styles.icon}>🚪</span>
-            <span className={styles.label}>{t("logout", "Logout")}</span>
+            {t("logout", "Logout")}
           </button>
         </div>
       </aside>

@@ -40,6 +40,36 @@
   z-index: 10;
 }
 
+/* Scrollable wrapper for register form */
+.registerForm .formContent {
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+}
+
+.registerForm .formContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.registerForm .formContent::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.registerForm .formContent::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.registerForm .formContent::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.formContent {
+  width: 100%;
+}
+
 .form {
   width: 100%;
   max-width: 420px;
@@ -112,21 +142,6 @@
 .switchButton:hover {
   color: white;
   text-decoration: underline;
-}
-
-.forgotPassword {
-  display: block;
-  text-align: right;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.85rem;
-  margin-top: -1rem;
-  margin-bottom: 1.5rem;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.forgotPassword:hover {
-  color: white;
 }
 
 .error {
@@ -234,5 +249,10 @@
 
   .title {
     font-size: 2rem;
+  }
+
+  /* Enhanced scrolling for mobile register form */
+  .registerForm .formContent {
+    max-height: calc(100vh - 2rem);
   }
 }
