@@ -1,64 +1,39 @@
 @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
 
 :root {
-  /* Base Colors */
-  --background-color: #89caf5;
-  /* Light blue background for light mode */
+  /* Modern Blue Color Scheme */
+  --background-color: #667eea;
   --surface-color: #ffffff;
-  /* White for cards/forms */
-  --text-color: #e0e0e0;
-  /* Light text for dark backgrounds */
-  --text-light-color: #a0a0a0;
-  /* Lighter text for secondary info */
-  --border-color: rgba(255, 255, 255, 0.1);
-  /* Lighter border */
-  --error-color: #e53935;
-  /* Material Design red for errors */
-  --error-color-rgb: 229, 57, 53;
-  --success-color: #43a047;
-  /* Material Design green for success */
+  --text-color: #2d3748;
+  --text-light-color: #718096;
+  --border-color: rgba(102, 126, 234, 0.2);
+  --error-color: #f56565;
+  --error-color-rgb: 245, 101, 101;
+  --success-color: #48bb78;
 
-  /* Primary Palette - Professional and modern (Blue Sky) */
-  --primary-color: #4fc3f7;
-  /* Light Blue */
-  --primary-color-rgb: 79, 195, 247;
-  --primary-color-light: #81d4fa;
-  /* Lighter Blue */
-  --primary-color-dark: #03a9f4;
-  /* Blue */
+  /* Primary Colors - Modern Blue */
+  --primary-color: #667eea;
+  --primary-color-rgb: 102, 126, 234;
+  --primary-color-light: #7f9cf5;
+  --primary-color-dark: #5a67d8;
 
   /* Accent Palette */
   --accent-color-1: #5a9bd5;
-  /* Steel Blue */
   --accent-color-1-light: #7baeda;
   --accent-color-1-dark: #4a8ac8;
   --gold-accent: #ffd700;
-  /* Gold accent for CTAs */
   --pastel-orange: #fac1b0;
-  /* Updated pastel orange */
-  --pastel-orange-rgb: 250, 161, 176;
+  --pastel-orange-rgb: 250, 193, 176;
   --pastel-orange-dark: #e0a7b5;
-  /* Darker pastel orange for hover states */
 
   /* Gradients */
-  --gradient-primary: linear-gradient(
-    135deg,
-    var(--primary-color-dark),
-    var(--primary-color)
-  );
-  /* Adjusted gradient direction */
-  --gradient-accent-1: linear-gradient(
-    to right,
-    var(--accent-color-1-dark),
-    var(--accent-color-1)
-  );
+  --gradient-primary: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color));
+  --gradient-accent-1: linear-gradient(to right, var(--accent-color-1-dark), var(--accent-color-1));
   --gradient-gold: linear-gradient(to right, #ffd700, #ffa500);
-  /* Gold gradient */
 
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-bg-contrast: rgba(255, 255, 255, 0.15);
-  /* Added for more contrast */
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-backdrop-filter: blur(15px) saturate(180%);
 
@@ -71,7 +46,6 @@
   --font-family-body: "Be Vietnam Pro", sans-serif;
   --font-family-heading: "Be Vietnam Pro", sans-serif;
   --font-size-base: 16px;
-  /* Explicitly set base font size */
   --line-height-base: 1.6;
 
   /* Border Radius */
@@ -81,25 +55,24 @@
 
 /* Dark Mode */
 .dark {
-  /* Base Colors - Dark Theme */
-  --background-color: #07a6d6;
-  --surface-color: #ffffff;
-  --text-color: #333333;
-  --text-light-color: #666666;
-  --border-color: rgba(255, 255, 255, 0.3);
+  --background-color: #1a202c;
+  --surface-color: #2d3748;
+  --text-color: #e2e8f0;
+  --text-light-color: #a0aec0;
+  --border-color: rgba(226, 232, 240, 0.1);
 
-  /* Primary Palette - Darker blue tones */
-  --primary-color: #1e88e5;
-  --primary-color-rgb: 30, 136, 229;
-  --primary-color-light: #42a5f5;
-  --primary-color-dark: #1565c0;
+  /* Primary Colors for Dark Mode */
+  --primary-color: #7f9cf5;
+  --primary-color-rgb: 127, 156, 245;
+  --primary-color-light: #a4cafe;
+  --primary-color-dark: #667eea;
 
-  /* Glassmorphism - Cleaner appearance without smoke */
-  --glass-bg: rgba(255, 255, 255, 0.12);
-  --glass-bg-contrast: rgba(255, 255, 255, 0.18);
-  --glass-border: rgba(255, 255, 255, 0.25);
+  /* Glassmorphism - Dark Mode */
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-contrast: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.15);
 
-  /* Shadows - Darker shadows for dark mode */
+  /* Shadows - Dark Mode */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.6);
@@ -191,7 +164,6 @@ input[type="date"],
 textarea,
 select {
   font-size: 16px;
-  /* Prevents zoom on iOS */
   padding: 0.75rem 1rem;
 }
 

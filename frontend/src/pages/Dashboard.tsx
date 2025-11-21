@@ -70,7 +70,9 @@ export const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { toggle: toggleAssistant } = useAiAssistantStore();
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Open by default on desktop
+  const [sidebarOpen, setSidebarOpen] = useState(
+    typeof window !== "undefined" && window.innerWidth >= 1024
+  ); // Open on desktop, closed on mobile
 
   const { data: workEntries, isLoading: isLoadingEntries } = useQuery<
     WorkEntry[]
