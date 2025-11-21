@@ -1,7 +1,9 @@
 .layout {
   display: flex;
   min-height: 100vh;
+  height: 100%;
   background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 50%, #bcccdc 100%);
+  background-attachment: fixed;
   position: relative;
 }
 
