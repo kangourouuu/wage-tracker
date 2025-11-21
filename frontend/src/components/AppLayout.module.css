@@ -3,7 +3,11 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   position: relative;
-  overflow: hidden;
+}
+
+/* Light mode - complementary warm gradient */
+.layout:not(.dark) {
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 50%, #bcccdc 100%);
 }
 
 .main {

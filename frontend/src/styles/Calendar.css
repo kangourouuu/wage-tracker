@@ -49,6 +49,11 @@
   text-transform: uppercase !important;
 }
 
+/* Dark mode weekday headers */
+.dark .react-calendar__month-view__weekdays__weekday abbr {
+  color: #e2e8f0 !important;
+}
+
 /* Day tiles - fill grid cell completely */
 .react-calendar__tile {
   display: flex !important;
@@ -99,6 +104,15 @@
   font-size: 0.9rem !important;
 }
 
+/* Dark mode calendar dates */
+.dark .react-calendar__tile abbr {
+  color: #f1f5f9 !important;
+}
+
+.dark .react-calendar__tile--neighboringMonth abbr {
+  color: #64748b !important;
+}
+
 /* Hover effects */
 .react-calendar__tile:enabled:hover abbr,
 .react-calendar__tile:enabled:focus abbr {
@@ -142,6 +156,11 @@
   font-weight: bold;
   transition: background-color 0.2s ease-in-out;
   min-height: 44px;
+}
+
+/* Dark mode navigation */
+.dark .react-calendar__navigation button {
+  color: #f1f5f9;
 }
 
 .react-calendar__navigation button:enabled:hover,
