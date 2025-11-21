@@ -109,7 +109,6 @@ body,
   height: 100%;
   background-color: transparent;
   scroll-behavior: smooth;
-  overflow: hidden;
 }
 
 body {
