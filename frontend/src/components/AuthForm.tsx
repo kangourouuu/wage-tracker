@@ -84,113 +84,121 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
   }
 
   return (
-    <div className={styles.formContainer}>
+    <div
+      className={`${styles.formContainer} ${
+        !isLogin ? styles.registerForm : ""
+      }`}
+    >
       <div className={styles.languageSwitcherContainer}>
         <LanguageSwitcher />
       </div>
 
-      <div className={styles.form}>
-        <h2 className={styles.title}>{isLogin ? t("login") : t("register")}</h2>
-        <p className={styles.description}>{t("authDescription")}</p>
+      <div className={!isLogin ? styles.formContent : ""}>
+        <div className={styles.form}>
+          <h2 className={styles.title}>
+            {isLogin ? t("login") : t("register")}
+          </h2>
+          <p className={styles.description}>{t("authDescription")}</p>
 
-        <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <>
-              <Input
-                id="register-name"
-                label={t("name")}
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              {/* Inline validation example (can be expanded with real logic) */}
-              {name.length > 0 && name.length < 2 && (
-                <p className={styles.inlineError}>
-                  {t("nameTooShort", "Name must be at least 2 characters")}
-                </p>
-              )}
-            </>
-          )}
-          <Input
-            id={isLogin ? "login-email" : "register-email"}
-            label={t("email")}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Input
-            id={isLogin ? "login-password" : "register-password"}
-            label={t("password")}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {!isLogin && (
-            <div className={styles.jobsSection}>
-              <h3>{t("yourJobs")}</h3>
-              {jobs.map((job, index) => (
-                <div key={index} className={styles.jobEntry}>
-                  <Input
-                    id={`register-jobName-${index}`}
-                    label={t("jobName")}
-                    type="text"
-                    value={job.name}
-                    onChange={(e) =>
-                      handleJobChange(index, "name", e.target.value)
-                    }
-                    required
-                  />
-                  <Input
-                    id={`register-wagePerHour-${index}`}
-                    label={t("wagePerHour")}
-                    type="number"
-                    value={job.wagePerHour}
-                    onChange={(e) =>
-                      handleJobChange(index, "wagePerHour", e.target.value)
-                    }
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveJob(index)}
-                    className={styles.removeJobButton}
-                  >
-                    x
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={handleAddJob}
-                className={styles.addJobButton}
-              >
-                {t("addJob")}
-              </button>
-            </div>
-          )}
+          <form onSubmit={handleSubmit}>
+            {!isLogin && (
+              <>
+                <Input
+                  id="register-name"
+                  label={t("name")}
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+                {/* Inline validation example (can be expanded with real logic) */}
+                {name.length > 0 && name.length < 2 && (
+                  <p className={styles.inlineError}>
+                    {t("nameTooShort", "Name must be at least 2 characters")}
+                  </p>
+                )}
+              </>
+            )}
+            <Input
+              id={isLogin ? "login-email" : "register-email"}
+              label={t("email")}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <Input
+              id={isLogin ? "login-password" : "register-password"}
+              label={t("password")}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {!isLogin && (
+              <div className={styles.jobsSection}>
+                <h3>{t("yourJobs")}</h3>
+                {jobs.map((job, index) => (
+                  <div key={index} className={styles.jobEntry}>
+                    <Input
+                      id={`register-jobName-${index}`}
+                      label={t("jobName")}
+                      type="text"
+                      value={job.name}
+                      onChange={(e) =>
+                        handleJobChange(index, "name", e.target.value)
+                      }
+                      required
+                    />
+                    <Input
+                      id={`register-wagePerHour-${index}`}
+                      label={t("wagePerHour")}
+                      type="number"
+                      value={job.wagePerHour}
+                      onChange={(e) =>
+                        handleJobChange(index, "wagePerHour", e.target.value)
+                      }
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveJob(index)}
+                      className={styles.removeJobButton}
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={handleAddJob}
+                  className={styles.addJobButton}
+                >
+                  {t("addJob")}
+                </button>
+              </div>
+            )}
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending
+                ? t("submitting")
+                : isLogin
+                ? t("loginButton")
+                : t("registerButton")}
+            </button>
+            {error && <p className={styles.error}>{error}</p>}
+          </form>
+
           <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={mutation.isPending}
+            onClick={() => navigate(isLogin ? "/register" : "/login")}
+            className={styles.switchButton}
           >
-            {mutation.isPending
-              ? t("submitting")
-              : isLogin
-              ? t("loginButton")
-              : t("registerButton")}
+            {isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
           </button>
-          {error && <p className={styles.error}>{error}</p>}
-        </form>
-
-        <button
-          onClick={() => navigate(isLogin ? "/register" : "/login")}
-          className={styles.switchButton}
-        >
-          {isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
-        </button>
+        </div>
       </div>
     </div>
   );

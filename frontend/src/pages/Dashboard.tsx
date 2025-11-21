@@ -70,7 +70,7 @@ export const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { toggle: toggleAssistant } = useAiAssistantStore();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true); // Open by default on desktop
 
   const { data: workEntries, isLoading: isLoadingEntries } = useQuery<
     WorkEntry[]
@@ -190,13 +190,6 @@ export const Dashboard = () => {
           <div className={styles.dashboardContainer}>
             <header className={styles.header}>
               <div className={styles.welcomeSection}>
-                <button
-                  onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className={styles.menuButton}
-                  aria-label="Toggle menu"
-                >
-                  ☰
-                </button>
                 <div className={styles.assistantToggleContainer}>
                   <div
                     onClick={(e) => {
