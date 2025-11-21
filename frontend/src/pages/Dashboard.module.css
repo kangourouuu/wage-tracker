@@ -17,13 +17,11 @@
   margin: 2rem auto;
 }
 
-/* Dark mode dashboard container - increased contrast */
+/* Dark mode dashboard container */
 .dark .dashboardContainer {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
 }
 
 
@@ -125,14 +123,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/* Dark mode calendar - increased contrast */
-.dark .calendarWrapper {
-  background: rgba(51, 65, 85, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
 /* Desktop: Wider calendar for horizontal spread */

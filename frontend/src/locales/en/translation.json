@@ -84,15 +84,5 @@
   "editEntry": "Edit Entry",
   "updateEntry": "Update Entry",
   "updating": "Updating...",
-  "failedToUpdateWorkEntry": "Failed to update work entry. Please try again.",
-  "settings": "Settings",
-  "recentActivity": "Recent Activity",
-  "noWorkEntriesYet": "No work entries yet",
-  "trackFirstWorkDay": "Track your first work day to start seeing analytics and earnings.",
-  "addFirstEntry": "Add First Entry",
-  "exportToCSV": "Export to CSV",
-  "openMenu": "Open menu",
-  "closeMenu": "Close menu",
-  "darkMode": "Dark Mode",
-  "lightMode": "Light Mode"
+  "failedToUpdateWorkEntry": "Failed to update work entry. Please try again."
 }

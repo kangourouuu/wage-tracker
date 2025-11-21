@@ -84,15 +84,5 @@
   "editEntry": "Chỉnh sửa ca làm",
   "updateEntry": "Cập nhật ca làm",
   "updating": "Đang cập nhật...",
-  "failedToUpdateWorkEntry": "Không thể cập nhật ca làm. Vui lòng thử lại.",
-  "settings": "Cài đặt",
-  "recentActivity": "Hoạt động gần đây",
-  "noWorkEntriesYet": "Chưa có ca làm nào",
-  "trackFirstWorkDay": "Theo dõi ngày làm việc đầu tiên để bắt đầu xem phân tích và thu nhập.",
-  "addFirstEntry": "Thêm ca làm đầu tiên",
-  "exportToCSV": "Xuất ra CSV",
-  "openMenu": "Mở menu",
-  "closeMenu": "Đóng menu",
-  "darkMode": "Chế độ tối",
-  "lightMode": "Chế độ sáng"
+  "failedToUpdateWorkEntry": "Không thể cập nhật ca làm. Vui lòng thử lại."
 }
