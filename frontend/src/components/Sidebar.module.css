@@ -78,36 +78,37 @@
 .navItem {
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  color: #64748b;
+  color: #475569;
   text-decoration: none;
   background: transparent;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
+  font-weight: 500;
 }
 
 .dark .navItem {
-  color: #cbd5e1;
+  color: #e2e8f0;
 }
 
 .navItem:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #1a1a1a;
+  background: rgba(102, 126, 234, 0.1);
+  color: #1e293b;
 }
 
 .dark .navItem:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #f1f5f9;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .active {
-  background: rgba(102, 126, 234, 0.15);
-  color: var(--primary-color);
+  background: rgba(102, 126, 234, 0.2);
+  color: #5a67d8;
   font-weight: 600;
 }
 
 .dark .active {
-  background: rgba(102, 126, 234, 0.25);
-  color: #60a5fa;
+  background: rgba(102, 126, 234, 0.3);
+  color: #a4cafe;
 }
 
 /* Footer (logout) */

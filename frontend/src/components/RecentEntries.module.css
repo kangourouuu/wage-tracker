@@ -1,22 +1,33 @@
 .container {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(15px) saturate(160%);
   -webkit-backdrop-filter: blur(15px) saturate(160%);
   border-radius: 24px;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
+.dark .container {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
 .title {
   font-size: 1.2rem;
-  color: var(--text-color);
+  color: #1a202c;
   margin-bottom: 1rem;
   font-weight: 600;
+}
+
+.dark .title {
+  color: #f7fafc;
 }
 
 .list {
@@ -32,15 +43,24 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: var(--border-radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
+.dark .entryItem {
+  background: rgba(51, 65, 85, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .entryItem:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   transform: translateX(2px);
+}
+
+.dark .entryItem:hover {
+  background: rgba(51, 65, 85, 0.8);
 }
 
 .entryInfo {
@@ -51,13 +71,21 @@
 
 .jobName {
   font-weight: 600;
-  color: var(--primary-color);
+  color: #5a67d8;
   font-size: 0.95rem;
+}
+
+.dark .jobName {
+  color: #a4cafe;
 }
 
 .entryDate {
   font-size: 0.85rem;
-  color: var(--text-light-color);
+  color: #4a5568;
+}
+
+.dark .entryDate {
+  color: #cbd5e0;
 }
 
 .actions {
@@ -92,5 +120,9 @@
 .loading {
   text-align: center;
   padding: 2rem;
-  color: var(--text-light-color);
+  color: #718096;
+}
+
+.dark .loading {
+  color: #a0aec0;
 }
