@@ -37,21 +37,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         aria-hidden="true"
       />
       <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-        {/* Hamburger menu for collapse */}
-        <button
-          className={styles.hamburger}
-          onClick={onClose}
-          aria-label="Toggle sidebar"
-        >
-          ☰
-        </button>
         <div className={styles.logoContainer}>
           <button
             onClick={onClose}
             className={styles.closeButton}
             aria-label="Close menu"
           >
-            ✕
+            ☰
           </button>
         </div>
 
@@ -59,7 +51,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <div className={styles.avatar}>{user?.name?.charAt(0) || "U"}</div>
           <div className={styles.userDetails}>
             <span className={styles.userName}>{user?.name || "User"}</span>
-            <span className={styles.userEmail}>{user?.email}</span>
           </div>
         </div>
 
