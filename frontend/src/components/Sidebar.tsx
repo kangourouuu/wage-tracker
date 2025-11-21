@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   HomeIcon,
   ChartBarIcon,
-  CalendarIcon,
-  BriefcaseIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
@@ -15,8 +13,6 @@ export const Sidebar = () => {
   const navItems = [
     { path: "/dashboard", icon: HomeIcon, label: t("nav.home") },
     { path: "/analytics", icon: ChartBarIcon, label: t("nav.analytics") },
-    { path: "/calendar", icon: CalendarIcon, label: t("nav.calendar") },
-    { path: "/jobs", icon: BriefcaseIcon, label: t("nav.jobs") },
     { path: "/settings", icon: Cog6ToothIcon, label: t("nav.settings") },
   ];
 

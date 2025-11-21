@@ -274,7 +274,8 @@ export const Dashboard = () => {
               </div>
             </GlassPanel>
 
-            <GlassPanel className="p-6 min-h-[350px] flex flex-col">
+            {/* Recent Activity - No background */}
+            <div className="p-6 min-h-[350px] flex flex-col">
               <h3 className="text-lg font-semibold mb-4">
                 {t("dashboard.recentActivity")}
               </h3>
@@ -287,7 +288,7 @@ export const Dashboard = () => {
                   isLoading={isLoadingEntries}
                 />
               </div>
-            </GlassPanel>
+            </div>
           </div>
         </div>
       </div>
