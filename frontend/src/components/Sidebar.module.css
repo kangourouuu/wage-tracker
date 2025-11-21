@@ -23,61 +23,7 @@
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Logo container with close button */
-.logoContainer {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
 
-.closeButton {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #1a1a1a;
-  padding: 0.5rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-}
-
-.dark .closeButton {
-  color: #f1f5f9;
-}
-
-.closeButton:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--text-primary);
-}
-
-.dark .closeButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-/* Hamburger menu (visible on all screen sizes) */
-.hamburger {
-  display: none;
-  /* will be shown via media query */
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  background: transparent;
-  border: none;
-  padding: 0.5rem;
-}
-
-@media (max-width: 1024px) {
-  .hamburger {
-    display: block;
-  }
-}
 
 /* Avatar */
 .avatar {
@@ -99,6 +45,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 2rem;
+  margin-top: 1rem;
 }
 
 .userName {

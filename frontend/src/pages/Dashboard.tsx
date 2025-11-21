@@ -1,21 +1,18 @@
-import { useAuthStore } from "../store/authStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api, { analyticsApi } from "../services/api";
 import type { WorkEntry, CreateWorkEntryDto } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
 import styles from "./Dashboard.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
-import TimeOfDayIcon from "../components/TimeOfDayIcon";
 import SummaryCard from "../components/SummaryCard";
 import EmptyState from "../components/EmptyState";
 
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
-import { DarkModeToggle } from "../shared/components/ui";
 import { useKeyboardShortcut } from "../shared/hooks";
 import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCardWithTrend";
 import type { SummaryData } from "../features/analytics/types/analytics.types";
@@ -23,7 +20,7 @@ import { exportToCSV } from "../utils/exportUtils";
 import { Skeleton } from "../shared/components/feedback";
 import { RecentEntries } from "../components/RecentEntries";
 import toast from "react-hot-toast";
-import { Sidebar } from "../components/Sidebar";
+import { useHeaderActions } from "../components/AppLayout";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -64,13 +61,12 @@ const calculateSummary = (entries: WorkEntry[]) => {
 };
 
 export const Dashboard = () => {
-  const { t, i18n } = useTranslation();
-  const { user, logout } = useAuthStore();
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { toggle: toggleAssistant } = useAiAssistantStore();
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Default closed
+  const { setHeaderActions } = useHeaderActions();
 
   const { data: workEntries, isLoading: isLoadingEntries } = useQuery<
     WorkEntry[]
@@ -119,6 +115,19 @@ export const Dashboard = () => {
 
   useKeyboardShortcut("n", () => setIsModalOpen(true));
   useKeyboardShortcut("/", () => toggleAssistant());
+
+  // Set header actions for export button
+  useEffect(() => {
+    setHeaderActions([
+      {
+        icon: "📥",
+        onClick: () => exportToCSV(workEntries || [], "work-entries.csv"),
+        title: "Export to CSV",
+      },
+    ]);
+
+    return () => setHeaderActions([]);
+  }, [workEntries, setHeaderActions]);
 
   const summary = workEntries
     ? calculateSummary(workEntries)
@@ -173,71 +182,12 @@ export const Dashboard = () => {
     duplicateEntryMutation.mutate(newEntry);
   };
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
+
 
   return (
     <>
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className={styles.pageWrapper}>
-        {/* Main Content */}
-        <div
-          className={`${styles.contentWrapper} ${
-            sidebarOpen ? styles.contentShifted : ""
-          }`}
-        >
-          <div className={styles.dashboardContainer}>
-            <header className={styles.header}>
-              <div className={styles.welcomeSection}>
-                <button
-                  onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className={styles.menuButton}
-                  aria-label="Toggle menu"
-                >
-                  ☰
-                </button>
-                <div className={styles.assistantToggleContainer}>
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleAssistant();
-                    }}
-                    style={{ cursor: "pointer", display: "inline-flex" }}
-                  >
-                    <TimeOfDayIcon />
-                  </div>
-                  <AssistantPanel isDropdown={true} />
-                </div>
-
-                <h1 className={styles.welcomeTitle} style={{ margin: 0 }}>
-                  {t("welcome", { name: user?.name })}
-                </h1>
-              </div>
-              <div className={styles.headerActions}>
-                <button
-                  onClick={() =>
-                    exportToCSV(workEntries || [], "work-entries.csv")
-                  }
-                  className={styles.exportButton}
-                  title="Export to CSV"
-                >
-                  📥
-                </button>
-                <DarkModeToggle />
-                <select
-                  onChange={(e) => changeLanguage(e.target.value)}
-                  value={i18n.language}
-                  className={styles.languageSwitcher}
-                >
-                  <option value="en">English</option>
-                  <option value="vn">Tiếng Việt</option>
-                </select>
-                <button onClick={logout} className={styles.logoutButton}>
-                  {t("logout")}
-                </button>
-              </div>
-            </header>
+      <AssistantPanel isDropdown={true} />
+      <div className={styles.dashboardContainer}>
 
             <div className={styles.mainContent}>
               {!workEntries || workEntries.length === 0 ? (
@@ -380,8 +330,6 @@ export const Dashboard = () => {
                   </div>
                 </div>
               )}
-            </div>
-          </div>
         </div>
       </div>
       <AddEntryModal

@@ -37,16 +37,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         aria-hidden="true"
       />
       <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-        <div className={styles.logoContainer}>
-          <button
-            onClick={onClose}
-            className={styles.closeButton}
-            aria-label="Close menu"
-          >
-            ☰
-          </button>
-        </div>
-
         <div className={styles.userInfo}>
           <div className={styles.avatar}>{user?.name?.charAt(0) || "U"}</div>
           <div className={styles.userDetails}>

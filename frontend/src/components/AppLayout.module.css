@@ -1,66 +1,200 @@
 .layout {
   display: flex;
   min-height: 100vh;
-  background-color: var(--background-color);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  position: relative;
+  overflow: hidden;
 }
 
 .main {
   flex: 1;
-  margin-left: 280px; /* Width of sidebar */
+  margin-left: 0;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Prevent flex item overflow */
+  min-width: 0;
   transition: margin-left 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
-.mobileHeader {
-  display: none;
+.header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: white;
-  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 0;
   z-index: 90;
+  gap: 1rem;
+}
+
+.dark .header {
+  background: rgba(30, 41, 59, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
 }
 
 .menuButton {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text-color);
-  padding: 0.5rem;
-  margin-right: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: #f1f5f9;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
-.mobileTitle {
+.dark .menuButton {
+  background: rgba(51, 65, 85, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+}
+
+.menuButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.assistantToggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.welcomeTitle {
+  font-size: 1.5rem;
+  color: #f1f5f9;
+  margin: 0;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dark .welcomeTitle {
+  color: #f1f5f9;
+}
+
+.languageSwitcher,
+.logoutButton {
+  padding: 0.6rem 1.2rem;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: #f1f5f9;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.dark .languageSwitcher,
+.dark .logoutButton {
+  background: rgba(51, 65, 85, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+}
+
+.languageSwitcher:hover,
+.logoutButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: #f1f5f9;
   font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
-.content {
-  flex: 1;
-  padding: 2rem;
-  max-width: 1600px;
-  width: 100%;
-  margin: 0 auto;
+.dark .actionButton {
+  background: rgba(51, 65, 85, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 1024px) {
-  .main {
-    margin-left: 0;
+.actionButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
   }
 
-  .mobileHeader {
-    display: flex;
+  .headerLeft {
+    gap: 0.5rem;
   }
 
-  .content {
-    padding: 1rem;
+  .headerRight {
+    gap: 0.5rem;
+  }
+
+  .welcomeTitle {
+    font-size: 1.2rem;
+  }
+
+  .languageSwitcher,
+  .logoutButton {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    min-height: 36px;
+  }
+
+  .menuButton {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
   }
 }
