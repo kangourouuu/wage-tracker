@@ -126,7 +126,9 @@ export const Analytics = () => {
                 />
                 <SummaryCardWithTrend
                   title={t("avgHourlyRate")}
-                  value={summaryData.current.averageHourlyRate.toFixed(2)}
+                  value={(summaryData.current.averageHourlyRate ?? 0).toFixed(
+                    2
+                  )}
                   trend={{
                     value: summaryData.trend.rate,
                     isPositive: summaryData.trend.rate >= 0,

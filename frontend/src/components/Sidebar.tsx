@@ -42,15 +42,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         <div className={styles.logoContainer}>
           <div className={styles.logo}>WT</div>
           <h1 className={styles.appName}>Wage Tracker</h1>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className={styles.closeButton}
-              aria-label="Close menu"
-            >
-              ✕
-            </button>
-          )}
+          <button
+            onClick={onClose}
+            className={styles.closeButton}
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
         </div>
 
         <div className={styles.userInfo}>
