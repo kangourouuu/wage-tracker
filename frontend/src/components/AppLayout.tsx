@@ -104,7 +104,9 @@ export const AppLayout = () => {
               </button>
             </div>
           </header>
-          <Outlet />
+          <div className={styles.mainContent}>
+            <Outlet />
+          </div>
         </main>
       </div>
     </HeaderContext.Provider>
