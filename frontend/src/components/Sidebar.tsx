@@ -1,7 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../store/authStore";
-import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import styles from "./Sidebar.module.css";
 
 interface SidebarProps {
@@ -13,7 +12,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { logout, user } = useAuthStore();
-  const { toggle: toggleAssistant } = useAiAssistantStore();
 
   const navItems = [
     { path: "/dashboard", label: t("dashboard", "Dashboard") },
@@ -40,8 +38,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       />
       <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
         <div className={styles.logoContainer}>
-          <div className={styles.logo}>WT</div>
-          <h1 className={styles.appName}>Wage Tracker</h1>
           <button
             onClick={onClose}
             className={styles.closeButton}
@@ -72,16 +68,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               {item.label}
             </NavLink>
           ))}
-
-          <button
-            onClick={() => {
-              toggleAssistant();
-              handleNavClick();
-            }}
-            className={styles.navItem}
-          >
-            {t("assistant", "Assistant")}
-          </button>
         </nav>
 
         <div className={styles.footer}>

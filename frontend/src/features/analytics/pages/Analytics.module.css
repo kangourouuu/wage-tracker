@@ -4,14 +4,42 @@
   display: flex;
   justify-content: center;
   padding: 2rem;
+  /* Apply AuthForm-style background */
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Add animated background effects like AuthForm */
+.pageWrapper::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 60%);
+  top: -25%;
+  left: -25%;
+  animation: pulse 15s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.5; }
 }
 
 .container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1600px;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  position: relative;
+  z-index: 1;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .header {
