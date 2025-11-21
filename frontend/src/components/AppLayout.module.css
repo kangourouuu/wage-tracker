@@ -1,37 +1,36 @@
 .layout {
   display: flex;
   min-height: 100vh;
-  height: 100%;
-  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 50%, #bcccdc 100%);
-  background-attachment: fixed;
+  width: 100%;
+  background: url("../assets/dashboard-bg-light.png") no-repeat center center
+    fixed;
+  background-size: cover;
   position: relative;
+  overflow-x: hidden;
 }
 
-/* Light mode pattern overlay */
+/* Light mode pattern overlay - Removed as image has pattern */
 .layout::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 /* Dark mode - AuthForm style background */
 .dark .layout {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background-attachment: fixed;
 }
 
 /* Dark mode animated radial gradient overlay */
 .dark .layout::before {
-  content: '';
-  position: absolute;
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 60%);
+  content: "";
+  position: fixed; /* Fixed to viewport to prevent scrolling issues */
+  width: 150vw;
+  height: 150vh;
+  background: radial-gradient(
+    circle,
+    rgba(79, 70, 229, 0.1) 0%,
+    transparent 60%
+  );
   top: -25%;
   left: -25%;
   animation: pulse 15s infinite ease-in-out;
@@ -41,8 +40,8 @@
 
 /* Dark mode pattern overlay */
 .dark .layout::after {
-  content: '';
-  position: absolute;
+  content: "";
+  position: fixed; /* Fixed to viewport */
   width: 100%;
   height: 100%;
   background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -50,6 +49,7 @@
   left: 0;
   pointer-events: none;
   z-index: 0;
+  display: block;
 }
 
 @keyframes pulse {
