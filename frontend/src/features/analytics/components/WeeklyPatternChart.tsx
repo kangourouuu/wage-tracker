@@ -10,6 +10,8 @@ import {
   Cell,
 } from "recharts";
 import styles from "./WeeklyPatternChart.module.css";
+import tooltipStyles from "./ChartTooltip.module.css";
+import { useChartTheme } from "../hooks/useChartTheme";
 
 interface WeeklyPatternChartProps {
   data: Array<{
@@ -18,8 +20,6 @@ interface WeeklyPatternChartProps {
     earnings: number;
   }>;
 }
-
-import tooltipStyles from "./ChartTooltip.module.css";
 
 // Custom tooltip for better visualization
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -59,8 +59,6 @@ const getHoursColor = (value: number, maxValue: number) => {
   if (ratio > 0.4) return "#34d399"; // Light green for medium
   return "#6ee7b7"; // Very light green for low
 };
-
-import { useChartTheme } from "../hooks/useChartTheme";
 
 export const WeeklyPatternChart = ({ data }: WeeklyPatternChartProps) => {
   const maxEarnings = Math.max(...data.map((d) => d.earnings));

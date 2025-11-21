@@ -3,61 +3,32 @@ import api, { analyticsApi } from "../services/api";
 import type { WorkEntry, CreateWorkEntryDto } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
-import styles from "./Dashboard.module.css";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
-import SummaryCard from "../components/SummaryCard";
-import EmptyState from "../components/EmptyState";
-
+import { SummaryCard } from "../shared/components/ui/SummaryCard";
+import { GlassPanel } from "../shared/components/ui/GlassPanel";
+import { EarningsTrendChart } from "../features/analytics/components/EarningsTrendChart";
+import { JobDistributionChart } from "../features/analytics/components/JobDistributionChart";
+import { WeeklyActivityChart } from "../features/analytics/components/WeeklyActivityChart";
+import { RecentEntries } from "../components/RecentEntries";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
 import { useKeyboardShortcut } from "../shared/hooks";
-import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCardWithTrend";
-import type { SummaryData } from "../features/analytics/types/analytics.types";
 import { exportToCSV } from "../utils/exportUtils";
-import { Skeleton } from "../shared/components/feedback";
-import { RecentEntries } from "../components/RecentEntries";
 import toast from "react-hot-toast";
 import { useHeaderActions } from "../components/AppLayout";
+import {
+  CurrencyDollarIcon,
+  ClockIcon,
+  BriefcaseIcon,
+  ChartBarIcon,
+} from "@heroicons/react/24/solid";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
   return data;
-};
-
-const calculateSummary = (entries: WorkEntry[]) => {
-  const totalHours = entries.reduce((acc, entry) => {
-    const start = new Date(entry.startTime).getTime();
-    const end = new Date(entry.endTime).getTime();
-    const durationMs = end - start;
-    const breakMs = entry.breakDuration * 60 * 1000;
-    const hours = (durationMs - breakMs) / (1000 * 60 * 60);
-    return acc + hours;
-  }, 0);
-
-  const totalEarnings = entries.reduce((acc, entry) => {
-    const start = new Date(entry.startTime).getTime();
-    const end = new Date(entry.endTime).getTime();
-    const durationMs = end - start;
-    const breakMs = entry.breakDuration * 60 * 1000;
-    const hours = (durationMs - breakMs) / (1000 * 60 * 60);
-    return acc + hours * entry.job.wagePerHour;
-  }, 0);
-
-  const totalEntries = entries.length;
-  const averageHoursPerEntry = totalEntries > 0 ? totalHours / totalEntries : 0;
-  const averageEarningsPerEntry =
-    totalEntries > 0 ? totalEarnings / totalEntries : 0;
-
-  return {
-    totalHours: totalHours.toFixed(2),
-    totalEarnings: totalEarnings.toFixed(2),
-    totalEntries,
-    averageHoursPerEntry: averageHoursPerEntry.toFixed(2),
-    averageEarningsPerEntry: averageEarningsPerEntry.toFixed(2),
-  };
 };
 
 export const Dashboard = () => {
@@ -68,36 +39,49 @@ export const Dashboard = () => {
   const { toggle: toggleAssistant } = useAiAssistantStore();
   const { setHeaderActions } = useHeaderActions();
 
+  // Queries
   const { data: workEntries, isLoading: isLoadingEntries } = useQuery<
     WorkEntry[]
   >({
     queryKey: ["workEntries"],
     queryFn: fetchWorkEntries,
-    refetchInterval: 30000, // Poll every 30 seconds
-    refetchOnWindowFocus: true,
+    refetchInterval: 30000,
   });
 
-  const { data: analyticsSummary, isLoading: isLoadingSummary } =
-    useQuery<SummaryData>({
-      queryKey: ["analyticsSummary", "week"],
-      queryFn: async () => {
-        const { data } = await analyticsApi.getSummary("week");
-        return data;
-      },
-      refetchInterval: 30000, // Poll every 30 seconds
-      refetchOnWindowFocus: true,
-    });
+  const { data: summaryData } = useQuery({
+    queryKey: ["analyticsSummary", "week"],
+    queryFn: () => analyticsApi.getSummary("week").then((res) => res.data),
+    refetchInterval: 30000,
+  });
 
+  const { data: earningsTrend, isLoading: isLoadingTrend } = useQuery({
+    queryKey: ["earningsTrend", "month"],
+    queryFn: () =>
+      analyticsApi.getEarningsTrend("month").then((res) => res.data),
+  });
+
+  const { data: jobDistribution, isLoading: isLoadingJobs } = useQuery({
+    queryKey: ["jobDistribution"],
+    queryFn: () => analyticsApi.getJobDistribution().then((res) => res.data),
+  });
+
+  const { data: weeklyPattern, isLoading: isLoadingWeekly } = useQuery({
+    queryKey: ["weeklyPattern"],
+    queryFn: () => analyticsApi.getWeeklyPattern().then((res) => res.data),
+  });
+
+  // Mutations
   const deleteWorkEntryMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/work-entries/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workEntries"] });
       queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
       toast.success(t("entryDeleted", "Entry deleted successfully"));
     },
-    onError: () => {
-      toast.error(t("failedToDeleteWorkEntry"));
-    },
+    onError: () => toast.error(t("failedToDeleteWorkEntry")),
   });
 
   const duplicateEntryMutation = useMutation({
@@ -106,17 +90,20 @@ export const Dashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workEntries"] });
       queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      queryClient.invalidateQueries({ queryKey: ["earningsTrend"] });
+      queryClient.invalidateQueries({ queryKey: ["jobDistribution"] });
+      queryClient.invalidateQueries({ queryKey: ["weeklyPattern"] });
       toast.success(t("entryDuplicated", "Entry duplicated successfully"));
     },
-    onError: () => {
-      toast.error(t("failedToDuplicateEntry", "Failed to duplicate entry"));
-    },
+    onError: () =>
+      toast.error(t("failedToDuplicateEntry", "Failed to duplicate entry")),
   });
 
+  // Shortcuts
   useKeyboardShortcut("n", () => setIsModalOpen(true));
   useKeyboardShortcut("/", () => toggleAssistant());
 
-  // Set header actions for export button
+  // Header Actions
   useEffect(() => {
     setHeaderActions([
       {
@@ -124,15 +111,16 @@ export const Dashboard = () => {
         onClick: () => exportToCSV(workEntries || [], "work-entries.csv"),
         title: "Export to CSV",
       },
+      {
+        icon: "➕",
+        onClick: () => setIsModalOpen(true),
+        title: "Add Entry",
+      },
     ]);
-
     return () => setHeaderActions([]);
   }, [workEntries, setHeaderActions]);
 
-  const summary = workEntries
-    ? calculateSummary(workEntries)
-    : { totalHours: "0.00", totalEarnings: "0.00" };
-
+  // Handlers
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
     setIsModalOpen(true);
@@ -151,11 +139,8 @@ export const Dashboard = () => {
 
   const handleDuplicateEntry = (entry: WorkEntry) => {
     if (!selectedDate) return;
-
     const originalStart = new Date(entry.startTime);
     const originalEnd = new Date(entry.endTime);
-
-    // Create new dates based on selectedDate but keeping the original time
     const newStart = new Date(selectedDate);
     newStart.setHours(
       originalStart.getHours(),
@@ -163,175 +148,150 @@ export const Dashboard = () => {
       0,
       0
     );
-
     const newEnd = new Date(selectedDate);
     newEnd.setHours(originalEnd.getHours(), originalEnd.getMinutes(), 0, 0);
+    if (newEnd < newStart) newEnd.setDate(newEnd.getDate() + 1);
 
-    // Handle overnight shifts if necessary (if end < start, add 1 day)
-    if (newEnd < newStart) {
-      newEnd.setDate(newEnd.getDate() + 1);
-    }
-
-    const newEntry: CreateWorkEntryDto = {
+    duplicateEntryMutation.mutate({
       jobId: entry.job.id,
       startTime: newStart.toISOString(),
       endTime: newEnd.toISOString(),
       breakDuration: entry.breakDuration,
-    };
-
-    duplicateEntryMutation.mutate(newEntry);
+    });
   };
-
-
 
   return (
     <>
       <AssistantPanel isDropdown={true} />
-      <div className={styles.dashboardContainer}>
 
-            <div className={styles.mainContent}>
-              {!workEntries || workEntries.length === 0 ? (
-                <EmptyState onAction={() => setIsModalOpen(true)} />
-              ) : (
-                <div className={styles.dashboardGrid}>
-                  {/* Left Column: Calendar */}
-                  <div className={styles.leftColumn}>
-                    <div className={styles.calendarWrapper}>
-                      <Calendar
-                        onChange={(value) => {
-                          if (Array.isArray(value)) {
-                            handleDateClick(value[0] as Date);
-                          } else {
-                            handleDateClick(value as Date);
-                          }
-                        }}
-                        value={selectedDate}
-                        onClickDay={handleDateClick}
-                        locale="en-US"
-                        calendarType="gregory"
-                        showNeighboringMonth={true}
-                        formatShortWeekday={(_locale, date) => {
-                          const weekdays = [
-                            "SUN",
-                            "MON",
-                            "TUE",
-                            "WED",
-                            "THU",
-                            "FRI",
-                            "SAT",
-                          ];
-                          return weekdays[date.getDay()];
-                        }}
-                        tileContent={({ date, view }) => {
-                          if (view === "month" && workEntries) {
-                            const entriesForDay = workEntries.filter(
-                              (entry) => {
-                                const entryDate = new Date(entry.startTime);
-                                return (
-                                  entryDate.getFullYear() ===
-                                    date.getFullYear() &&
-                                  entryDate.getMonth() === date.getMonth() &&
-                                  entryDate.getDate() === date.getDate()
-                                );
-                              }
-                            );
+      <div className="space-y-6 animate-fade-in">
+        {/* Summary Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <SummaryCard
+            title={t("dashboard.summary.totalEarnings")}
+            value={`$${
+              summaryData?.current.totalEarnings.toFixed(2) || "0.00"
+            }`}
+            icon={<CurrencyDollarIcon className="w-6 h-6" />}
+            trend={{
+              value: summaryData?.trend.earnings || 0,
+              isPositive: (summaryData?.trend.earnings || 0) >= 0,
+              label: t("dashboard.summary.vsLastWeek"),
+            }}
+            color="primary"
+          />
+          <SummaryCard
+            title={t("dashboard.summary.totalHours")}
+            value={`${summaryData?.current.totalHours.toFixed(2) || "0.00"}h`}
+            icon={<ClockIcon className="w-6 h-6" />}
+            trend={{
+              value: summaryData?.trend.hours || 0,
+              isPositive: (summaryData?.trend.hours || 0) >= 0,
+              label: t("dashboard.summary.vsLastWeek"),
+            }}
+            color="success"
+          />
+          <SummaryCard
+            title={t("dashboard.summary.totalEntries")}
+            value={summaryData?.current.totalEntries || 0}
+            icon={<BriefcaseIcon className="w-6 h-6" />}
+            trend={{
+              value: summaryData?.trend.entries || 0,
+              isPositive: (summaryData?.trend.entries || 0) >= 0,
+              label: t("dashboard.summary.vsLastWeek"),
+            }}
+            color="secondary"
+          />
+          <SummaryCard
+            title={t("dashboard.summary.avgRate")}
+            value={`$${
+              summaryData?.current.averageEarningsPerEntry.toFixed(2) || "0.00"
+            }`}
+            icon={<ChartBarIcon className="w-6 h-6" />}
+            color="warning"
+          />
+        </div>
 
-                            if (entriesForDay.length > 0) {
-                              // Check if multiple jobs or high hours
-                              const isHighWorkload =
-                                entriesForDay.length > 1 ||
-                                entriesForDay.some((e) => {
-                                  const duration =
-                                    new Date(e.endTime).getTime() -
-                                    new Date(e.startTime).getTime();
-                                  return duration > 8 * 60 * 60 * 1000;
-                                });
+        {/* Charts Grid */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up"
+          style={{ animationDelay: "100ms", animationFillMode: "backwards" }}
+        >
+          <div className="lg:col-span-2">
+            <EarningsTrendChart
+              data={earningsTrend || []}
+              isLoading={isLoadingTrend}
+            />
+          </div>
+          <div className="lg:col-span-1">
+            <JobDistributionChart
+              data={jobDistribution || []}
+              isLoading={isLoadingJobs}
+            />
+          </div>
+        </div>
 
-                              return (
-                                <div
-                                  className={`${styles.entryDot} ${
-                                    isHighWorkload ? styles.entryDotHigh : ""
-                                  }`}
-                                ></div>
-                              );
-                            }
-                            return null;
-                          }
-                          return null;
-                        }}
-                      />
-                    </div>
-                  </div>
+        <div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up"
+          style={{ animationDelay: "200ms", animationFillMode: "backwards" }}
+        >
+          <div className="lg:col-span-1">
+            <WeeklyActivityChart
+              data={weeklyPattern || []}
+              isLoading={isLoadingWeekly}
+            />
+          </div>
 
-                  {/* Right Column: Summary & Recent Activity */}
-                  <div className={styles.rightColumn}>
-                    <div className={styles.summaryCardsContainer}>
-                      {isLoadingSummary ? (
-                        <>
-                          <Skeleton
-                            height="100px"
-                            width="100%"
-                            borderRadius="var(--border-radius-md)"
-                          />
-                          <Skeleton
-                            height="100px"
-                            width="100%"
-                            borderRadius="var(--border-radius-md)"
-                          />
-                        </>
-                      ) : analyticsSummary ? (
-                        <>
-                          <SummaryCardWithTrend
-                            title={t("totalHours")}
-                            value={analyticsSummary.current.totalHours.toFixed(
-                              2
-                            )}
-                            trend={{
-                              value: analyticsSummary.trend.hours,
-                              isPositive: analyticsSummary.trend.hours >= 0,
-                            }}
-                            icon="⏱️"
-                          />
-                          <SummaryCardWithTrend
-                            title={t("estimatedEarnings")}
-                            value={analyticsSummary.current.totalEarnings.toFixed(
-                              2
-                            )}
-                            trend={{
-                              value: analyticsSummary.trend.earnings,
-                              isPositive: analyticsSummary.trend.earnings >= 0,
-                            }}
-                            icon="💰"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <SummaryCard
-                            title={t("totalHours")}
-                            value={summary.totalHours}
-                          />
-                          <SummaryCard
-                            title={t("estimatedEarnings")}
-                            value={summary.totalEarnings}
-                          />
-                        </>
-                      )}
-                    </div>
+          {/* Calendar & Recent Entries */}
+          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <GlassPanel className="p-6 min-h-[350px]">
+              <h3 className="text-lg font-semibold mb-4">
+                {t("dashboard.calendar")}
+              </h3>
+              <div className="calendar-wrapper-glass">
+                <Calendar
+                  onChange={(value) => handleDateClick(value as Date)}
+                  value={selectedDate}
+                  locale="en-US"
+                  className="w-full bg-transparent border-none text-text-primary"
+                  tileContent={({ date, view }) => {
+                    if (view === "month" && workEntries) {
+                      const hasEntry = workEntries.some((e) => {
+                        const d = new Date(e.startTime);
+                        return (
+                          d.getDate() === date.getDate() &&
+                          d.getMonth() === date.getMonth() &&
+                          d.getFullYear() === date.getFullYear()
+                        );
+                      });
+                      return hasEntry ? (
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full mx-auto mt-1" />
+                      ) : null;
+                    }
+                    return null;
+                  }}
+                />
+              </div>
+            </GlassPanel>
 
-                    <div className={styles.recentActivityWrapper}>
-                      <RecentEntries
-                        entries={workEntries}
-                        onEdit={handleEditEntry}
-                        onDelete={handleDeleteEntry}
-                        onDuplicate={handleDuplicateEntry}
-                        isLoading={isLoadingEntries}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
+            <GlassPanel className="p-6 min-h-[350px] flex flex-col">
+              <h3 className="text-lg font-semibold mb-4">
+                {t("dashboard.recentActivity")}
+              </h3>
+              <div className="flex-1 overflow-y-auto custom-scrollbar">
+                <RecentEntries
+                  entries={workEntries || []}
+                  onEdit={handleEditEntry}
+                  onDelete={handleDeleteEntry}
+                  onDuplicate={handleDuplicateEntry}
+                  isLoading={isLoadingEntries}
+                />
+              </div>
+            </GlassPanel>
+          </div>
         </div>
       </div>
+
       <AddEntryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

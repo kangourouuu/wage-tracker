@@ -1,79 +1,55 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useAuthStore } from "../store/authStore";
-import styles from "./Sidebar.module.css";
+import {
+  HomeIcon,
+  ChartBarIcon,
+  CalendarIcon,
+  BriefcaseIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
+import { GlassPanel } from "../shared/components/ui/GlassPanel";
 
-interface SidebarProps {
-  isOpen?: boolean;
-  onClose?: () => void;
-}
-
-export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
-  const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
-  const { logout, user } = useAuthStore();
+export const Sidebar = () => {
+  const { t } = useTranslation();
 
   const navItems = [
-    { path: "/dashboard", label: t("dashboard", "Dashboard") },
-    { path: "/analytics", label: t("analytics", "Analytics") },
-    { path: "/settings", label: t("settings", "Settings") },
+    { path: "/dashboard", icon: HomeIcon, label: t("nav.home") },
+    { path: "/analytics", icon: ChartBarIcon, label: t("nav.analytics") },
+    { path: "/calendar", icon: CalendarIcon, label: t("nav.calendar") },
+    { path: "/jobs", icon: BriefcaseIcon, label: t("nav.jobs") },
+    { path: "/settings", icon: Cog6ToothIcon, label: t("nav.settings") },
   ];
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-    onClose?.();
-  };
-
-  const handleNavClick = () => {
-    onClose?.();
-  };
-
   return (
-    <>
-      <div
-        className={`${styles.backdrop} ${isOpen ? styles.open : ""}`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-        <div className={styles.userInfo}>
-          <div className={styles.avatar}>{user?.name?.charAt(0) || "U"}</div>
-          <div className={styles.userDetails}>
-            <span className={styles.userName}>{user?.name || "User"}</span>
-          </div>
-        </div>
+    <GlassPanel className="hidden md:flex flex-col w-64 h-[calc(100vh-2rem)] m-4 sticky top-4">
+      <div className="p-6">
+        <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          WageTracker
+        </h1>
+      </div>
 
-        <nav className={styles.nav}>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              onClick={handleNavClick}
-              className={({ isActive }) =>
-                `${styles.navItem} ${isActive ? styles.active : ""}`
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        <div className={styles.footer}>
-          <select
-            onChange={(e) => i18n.changeLanguage(e.target.value)}
-            value={i18n.language}
-            className={styles.languageSwitcher}
-            style={{ marginBottom: "1rem", width: "100%" }}
+      <nav className="flex-1 px-4 space-y-2">
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              `flex items-center px-4 py-3 rounded-xl transition-all duration-300 group ${
+                isActive
+                  ? "bg-primary/20 text-primary shadow-neon border border-primary/20"
+                  : "text-text-secondary hover:bg-white/5 hover:text-text-primary"
+              }`
+            }
           >
-            <option value="en">English</option>
-            <option value="vn">Tiếng Việt</option>
-          </select>
-          <button onClick={handleLogout} className={styles.logoutButton}>
-            {t("logout", "Logout")}
-          </button>
-        </div>
-      </aside>
-    </>
+            <item.icon className="w-6 h-6 mr-3" />
+            <span className="font-medium">{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
+
+      <div className="p-4">
+        {/* User profile summary or logout could go here */}
+      </div>
+    </GlassPanel>
   );
 };

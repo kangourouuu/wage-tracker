@@ -30,7 +30,7 @@ createRoot(document.getElementById("root")!).render(
             <App />
           </I18nextProvider>
         </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </ErrorBoundary>
   </StrictMode>

@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "back": "Back",
+    "confirm": "Confirm"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Welcome back,",
+    "calendar": "Calendar",
+    "recentActivity": "Recent Activity",
+    "summary": {
+      "totalEarnings": "Total Earnings",
+      "totalHours": "Total Hours",
+      "totalEntries": "Total Entries",
+      "avgRate": "Avg. Rate",
+      "vsLastWeek": "vs last week"
+    },
+    "charts": {
+      "earningsTrend": "Earnings Trend",
+      "jobDistribution": "Job Distribution",
+      "weeklyActivity": "Weekly Activity",
+      "earnings": "Earnings",
+      "hours": "Hours"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "analytics": "Analytics",
+    "calendar": "Calendar",
+    "jobs": "Jobs",
+    "settings": "Settings"
+  },
+  "entryDeleted": "Entry deleted successfully",
+  "failedToDeleteWorkEntry": "Failed to delete work entry",
+  "entryDuplicated": "Entry duplicated successfully",
+  "failedToDuplicateEntry": "Failed to duplicate entry",
+  "confirmDelete": "Are you sure you want to delete this entry?"
+}

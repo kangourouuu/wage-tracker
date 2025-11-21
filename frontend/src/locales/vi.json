@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "add": "Thêm",
+    "back": "Quay lại",
+    "confirm": "Xác nhận"
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "greeting": "Chào mừng trở lại,",
+    "calendar": "Lịch",
+    "recentActivity": "Hoạt động gần đây",
+    "summary": {
+      "totalEarnings": "Tổng thu nhập",
+      "totalHours": "Tổng số giờ",
+      "totalEntries": "Tổng số mục",
+      "avgRate": "Lương trung bình",
+      "vsLastWeek": "so với tuần trước"
+    },
+    "charts": {
+      "earningsTrend": "Xu hướng thu nhập",
+      "jobDistribution": "Phân bổ công việc",
+      "weeklyActivity": "Hoạt động hàng tuần",
+      "earnings": "Thu nhập",
+      "hours": "Giờ làm"
+    }
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "analytics": "Thống kê",
+    "calendar": "Lịch",
+    "jobs": "Công việc",
+    "settings": "Cài đặt"
+  },
+  "entryDeleted": "Đã xóa mục thành công",
+  "failedToDeleteWorkEntry": "Xóa mục thất bại",
+  "entryDuplicated": "Đã nhân bản mục thành công",
+  "failedToDuplicateEntry": "Nhân bản mục thất bại",
+  "confirmDelete": "Bạn có chắc chắn muốn xóa mục này không?"
+}
