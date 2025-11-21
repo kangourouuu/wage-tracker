@@ -1,9 +1,13 @@
+/* Sidebar Component Styles */
+
+/* Adaptive page background variables are defined in index.css */
+
 .sidebar {
   width: 280px;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--page-bg-light);
   backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -11,66 +15,32 @@
   left: 0;
   top: 0;
   z-index: 100;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
-.logoContainer {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  position: relative;
+.dark .sidebar {
+  background: var(--page-bg-dark);
 }
 
-.logo {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.appName {
+/* Hamburger menu (visible on all screen sizes) */
+.hamburger {
+  display: none; /* will be shown via media query */
   font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin: 0;
-}
-
-.closeButton {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: var(--text-secondary);
   cursor: pointer;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
 }
 
-.userInfo {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@media (max-width: 1024px) {
+  .hamburger {
+    display: block;
+  }
 }
 
+/* Avatar */
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   background: var(--primary-color);
   border-radius: 50%;
   display: flex;
@@ -78,30 +48,28 @@
   justify-content: center;
   color: white;
   font-weight: 600;
+  margin-bottom: 1rem;
 }
 
-.userDetails {
+.userInfo {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .userName {
   font-weight: 600;
-  color: var(--text-color);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--text-primary);
 }
 
 .userEmail {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
+/* Navigation */
 .nav {
   display: flex;
   flex-direction: column;
@@ -110,54 +78,42 @@
 }
 
 .navItem {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 12px;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
-  width: 100%;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .navItem:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
+  color: var(--text-primary);
 }
 
 .active {
   background: rgba(102, 126, 234, 0.15);
   color: var(--primary-color);
-  border-color: rgba(102, 126, 234, 0.3);
   font-weight: 600;
 }
 
+/* Footer (logout) */
 .footer {
   margin-top: auto;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-color);
 }
 
 .logoutButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
   width: 100%;
+  padding: 0.75rem 1rem;
   border: none;
   background: transparent;
   color: #ef4444;
   cursor: pointer;
   border-radius: 12px;
-  transition: all 0.2s ease;
-  font-size: 1rem;
+  transition: background 0.2s ease;
   font-weight: 500;
 }
 
@@ -165,6 +121,7 @@
   background: rgba(239, 68, 68, 0.1);
 }
 
+/* Backdrop for mobile overlay */
 .backdrop {
   display: none;
   position: fixed;
@@ -182,7 +139,7 @@
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
-    background: white; /* Solid background for mobile */
+    background: white; /* solid for mobile */
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   }
 
@@ -197,9 +154,5 @@
   .backdrop.open {
     opacity: 1;
     pointer-events: auto;
-  }
-
-  .closeButton {
-    display: block;
   }
 }

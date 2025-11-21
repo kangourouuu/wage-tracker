@@ -10,6 +10,15 @@
   --error-color: #f56565;
   --error-color-rgb: 245, 101, 101;
   --success-color: #48bb78;
+  /* New Adaptive Variables */
+  --page-bg-light: linear-gradient(135deg, #e6f2ff 0%, #d4e7ff 50%, #c2dcff 100%);
+  --page-bg-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-tertiary: #718096;
+  --text-primary-dark: #f7fafc;
+  --text-secondary-dark: #e2e8f0;
+  --text-tertiary-dark: #cbd5e0;
 
   /* Primary Colors - Modern Blue */
   --primary-color: #667eea;
@@ -66,6 +75,15 @@
   --primary-color-rgb: 127, 156, 245;
   --primary-color-light: #a4cafe;
   --primary-color-dark: #667eea;
+  /* New Adaptive Variables */
+  --page-bg-light: linear-gradient(135deg, #e6f2ff 0%, #d4e7ff 50%, #c2dcff 100%);
+  --page-bg-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-tertiary: #718096;
+  --text-primary-dark: #f7fafc;
+  --text-secondary-dark: #e2e8f0;
+  --text-tertiary-dark: #cbd5e0;
 
   /* Glassmorphism - Dark Mode */
   --glass-bg: rgba(255, 255, 255, 0.08);

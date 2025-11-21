@@ -37,6 +37,14 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         aria-hidden="true"
       />
       <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
+        {/* Hamburger menu for collapse */}
+        <button
+          className={styles.hamburger}
+          onClick={onClose}
+          aria-label="Toggle sidebar"
+        >
+          ☰
+        </button>
         <div className={styles.logoContainer}>
           <button
             onClick={onClose}
