@@ -1,0 +1,40 @@
+.container {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 4px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+
+.segment {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+}
+
+.segment:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.active {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 480px) {
+  .segment {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}

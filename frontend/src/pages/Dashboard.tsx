@@ -1,8 +1,8 @@
 import { useAuthStore } from "../store/authStore";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import api, { analyticsApi } from "../services/api";
-import type { WorkEntry } from "../types/work-entry";
+import type { WorkEntry, CreateWorkEntryDto } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
 import styles from "./Dashboard.module.css";
@@ -22,6 +22,8 @@ import { SummaryCardWithTrend } from "../features/analytics/components/SummaryCa
 import type { SummaryData } from "../features/analytics/types/analytics.types";
 import { exportToCSV } from "../utils/exportUtils";
 import { Skeleton } from "../shared/components/feedback";
+import { RecentEntries } from "../components/RecentEntries";
+import toast from "react-hot-toast";
 
 const fetchWorkEntries = async (): Promise<WorkEntry[]> => {
   const { data } = await api.get("/work-entries");
@@ -49,7 +51,8 @@ const calculateSummary = (entries: WorkEntry[]) => {
 
   const totalEntries = entries.length;
   const averageHoursPerEntry = totalEntries > 0 ? totalHours / totalEntries : 0;
-  const averageEarningsPerEntry = totalEntries > 0 ? totalEarnings / totalEntries : 0;
+  const averageEarningsPerEntry =
+    totalEntries > 0 ? totalEarnings / totalEntries : 0;
 
   return {
     totalHours: totalHours.toFixed(2),
@@ -64,11 +67,14 @@ export const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { toggle: toggleAssistant } = useAiAssistantStore();
 
-  const { data: workEntries } = useQuery<WorkEntry[]>({
+  const { data: workEntries, isLoading: isLoadingEntries } = useQuery<
+    WorkEntry[]
+  >({
     queryKey: ["workEntries"],
     queryFn: fetchWorkEntries,
     refetchInterval: 30000, // Poll every 30 seconds
@@ -86,6 +92,31 @@ export const Dashboard = () => {
       refetchOnWindowFocus: true,
     });
 
+  const deleteWorkEntryMutation = useMutation({
+    mutationFn: (id: string) => api.delete(`/work-entries/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workEntries"] });
+      queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      toast.success(t("entryDeleted", "Entry deleted successfully"));
+    },
+    onError: () => {
+      toast.error(t("failedToDeleteWorkEntry"));
+    },
+  });
+
+  const duplicateEntryMutation = useMutation({
+    mutationFn: (newEntry: CreateWorkEntryDto) =>
+      api.post("/work-entries", newEntry),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workEntries"] });
+      queryClient.invalidateQueries({ queryKey: ["analyticsSummary"] });
+      toast.success(t("entryDuplicated", "Entry duplicated successfully"));
+    },
+    onError: () => {
+      toast.error(t("failedToDuplicateEntry", "Failed to duplicate entry"));
+    },
+  });
+
   useKeyboardShortcut("n", () => setIsModalOpen(true));
   useKeyboardShortcut("/", () => toggleAssistant());
 
@@ -96,6 +127,50 @@ export const Dashboard = () => {
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
     setIsModalOpen(true);
+  };
+
+  const handleDeleteEntry = (id: string) => {
+    if (window.confirm(t("confirmDelete"))) {
+      deleteWorkEntryMutation.mutate(id);
+    }
+  };
+
+  const handleEditEntry = (entry: WorkEntry) => {
+    setSelectedDate(new Date(entry.startTime));
+    setIsModalOpen(true);
+  };
+
+  const handleDuplicateEntry = (entry: WorkEntry) => {
+    if (!selectedDate) return;
+
+    const originalStart = new Date(entry.startTime);
+    const originalEnd = new Date(entry.endTime);
+
+    // Create new dates based on selectedDate but keeping the original time
+    const newStart = new Date(selectedDate);
+    newStart.setHours(
+      originalStart.getHours(),
+      originalStart.getMinutes(),
+      0,
+      0
+    );
+
+    const newEnd = new Date(selectedDate);
+    newEnd.setHours(originalEnd.getHours(), originalEnd.getMinutes(), 0, 0);
+
+    // Handle overnight shifts if necessary (if end < start, add 1 day)
+    if (newEnd < newStart) {
+      newEnd.setDate(newEnd.getDate() + 1);
+    }
+
+    const newEntry: CreateWorkEntryDto = {
+      jobId: entry.job.id,
+      startTime: newStart.toISOString(),
+      endTime: newEnd.toISOString(),
+      breakDuration: entry.breakDuration,
+    };
+
+    duplicateEntryMutation.mutate(newEntry);
   };
 
   const changeLanguage = (lng: string) => {
@@ -160,8 +235,8 @@ export const Dashboard = () => {
             </header>
 
             <div className={styles.mainContent}>
-              <div className={styles.centerColumn}>
-                {/* Analytics Button */}
+              {/* Analytics Button - Mobile Only or Top Bar */}
+              <div className={styles.topBar}>
                 <button
                   className={styles.analyticsButton}
                   onClick={() => navigate("/analytics")}
@@ -170,11 +245,14 @@ export const Dashboard = () => {
                   <span className={styles.analyticsIcon}>📈</span>
                   <span>{t("analytics", "Analytics")}</span>
                 </button>
+              </div>
 
-                {!workEntries || workEntries.length === 0 ? (
-                  <EmptyState onAction={() => setIsModalOpen(true)} />
-                ) : (
-                  <>
+              {!workEntries || workEntries.length === 0 ? (
+                <EmptyState onAction={() => setIsModalOpen(true)} />
+              ) : (
+                <div className={styles.dashboardGrid}>
+                  {/* Left Column: Calendar */}
+                  <div className={styles.leftColumn}>
                     <div className={styles.calendarWrapper}>
                       <Calendar
                         onChange={(value) => {
@@ -203,40 +281,58 @@ export const Dashboard = () => {
                         }}
                         tileContent={({ date, view }) => {
                           if (view === "month" && workEntries) {
-                            const hasEntry = workEntries.some((entry) => {
-                              const entryDate = new Date(entry.startTime);
+                            const entriesForDay = workEntries.filter(
+                              (entry) => {
+                                const entryDate = new Date(entry.startTime);
+                                return (
+                                  entryDate.getFullYear() ===
+                                    date.getFullYear() &&
+                                  entryDate.getMonth() === date.getMonth() &&
+                                  entryDate.getDate() === date.getDate()
+                                );
+                              }
+                            );
+
+                            if (entriesForDay.length > 0) {
+                              // Check if multiple jobs or high hours
+                              const isHighWorkload =
+                                entriesForDay.length > 1 ||
+                                entriesForDay.some((e) => {
+                                  const duration =
+                                    new Date(e.endTime).getTime() -
+                                    new Date(e.startTime).getTime();
+                                  return duration > 8 * 60 * 60 * 1000;
+                                });
+
                               return (
-                                entryDate.getFullYear() ===
-                                  date.getFullYear() &&
-                                entryDate.getMonth() === date.getMonth() &&
-                                entryDate.getDate() === date.getDate()
+                                <div
+                                  className={`${styles.entryDot} ${
+                                    isHighWorkload ? styles.entryDotHigh : ""
+                                  }`}
+                                ></div>
                               );
-                            });
-                            return hasEntry ? (
-                              <div className={styles.entryDot}></div>
-                            ) : null;
+                            }
+                            return null;
                           }
                           return null;
                         }}
                       />
                     </div>
+                  </div>
 
+                  {/* Right Column: Summary & Recent Activity */}
+                  <div className={styles.rightColumn}>
                     <div className={styles.summaryCardsContainer}>
                       {isLoadingSummary ? (
                         <>
                           <Skeleton
-                            height="120px"
-                            width="200px"
+                            height="100px"
+                            width="100%"
                             borderRadius="var(--border-radius-md)"
                           />
                           <Skeleton
-                            height="120px"
-                            width="200px"
-                            borderRadius="var(--border-radius-md)"
-                          />
-                          <Skeleton
-                            height="120px"
-                            width="200px"
+                            height="100px"
+                            width="100%"
                             borderRadius="var(--border-radius-md)"
                           />
                         </>
@@ -278,9 +374,19 @@ export const Dashboard = () => {
                         </>
                       )}
                     </div>
-                  </>
-                )}
-              </div>
+
+                    <div className={styles.recentActivityWrapper}>
+                      <RecentEntries
+                        entries={workEntries}
+                        onEdit={handleEditEntry}
+                        onDelete={handleDeleteEntry}
+                        onDuplicate={handleDuplicateEntry}
+                        isLoading={isLoadingEntries}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

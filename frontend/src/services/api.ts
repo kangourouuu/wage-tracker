@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { useAuthStore } from '../store/authStore';
+import axios from "axios";
+import { useAuthStore } from "../store/authStore";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
 });
 
 api.interceptors.request.use(
@@ -63,15 +63,15 @@ api.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return api(originalRequest);
         } else {
-          processQueue(new Error('Token refresh failed'), null);
+          processQueue(new Error("Token refresh failed"), null);
           useAuthStore.getState().logout();
-          window.location.href = '/login';
+          window.location.href = "/login";
           return Promise.reject(error);
         }
       } catch (refreshError) {
         processQueue(refreshError, null);
         useAuthStore.getState().logout();
-        window.location.href = '/login';
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
@@ -91,12 +91,16 @@ export const deleteJob = (id: string) => {
 };
 
 export const getTotalWorkEntriesCount = () => {
-  return api.get('/work-entries/count/total');
+  return api.get("/work-entries/count/total");
 };
 
 // Analytics API
 export const analyticsApi = {
-  getEarningsTrend: (period: string = "month", startDate?: string, endDate?: string) => {
+  getEarningsTrend: (
+    period: string = "month",
+    startDate?: string,
+    endDate?: string
+  ) => {
     const params = new URLSearchParams({ period });
     if (startDate) params.append("startDate", startDate);
     if (endDate) params.append("endDate", endDate);
@@ -117,7 +121,11 @@ export const analyticsApi = {
     return api.get(`/analytics/weekly-pattern?${params}`);
   },
 
-  getSummary: (period: string = "week", startDate?: string, endDate?: string) => {
+  getSummary: (
+    period: string = "week",
+    startDate?: string,
+    endDate?: string
+  ) => {
     const params = new URLSearchParams({ period });
     if (startDate) params.append("startDate", startDate);
     if (endDate) params.append("endDate", endDate);

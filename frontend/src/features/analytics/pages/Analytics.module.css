@@ -1,391 +1,128 @@
 .pageWrapper {
-  display: flex;
+  min-height: 100vh;
   width: 100%;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-}
-
-.analyticsWrapper {
-  width: 100%;
-  height: 100vh;
   display: flex;
-  overflow: hidden;
-}
-
-.analyticsContainer {
+  justify-content: center;
   padding: 2rem;
+}
+
+.container {
   width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 50%, rgba(240, 147, 251, 0.15) 100%);
-  height: 100vh;
-  position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.analyticsContainer::-webkit-scrollbar {
-  width: 8px;
-}
-
-.analyticsContainer::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-.analyticsContainer::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-.analyticsContainer::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.analyticsContainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 40% 10%, rgba(79, 195, 247, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  animation: backgroundPulse 15s ease-in-out infinite;
-}
-
-@keyframes backgroundPulse {
-
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-  position: relative;
-  z-index: 1;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .headerLeft {
   display: flex;
   align-items: center;
   gap: 1rem;
-  animation: slideInLeft 0.6s ease-out;
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 .backButton {
-  padding: 0.5rem 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px) saturate(180%);
-  color: #ffffff;
-  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.2s;
 }
 
 .backButton:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(-2px);
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-size: 1.8rem;
+  color: var(--text-color);
   margin: 0;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  letter-spacing: -0.5px;
+  font-weight: 700;
 }
 
-.periodSelector {
+.content {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  animation: slideInRight 0.6s ease-out;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.periodSelector label {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #ffffff;
-}
-
-.select {
-  padding: 0.5rem 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px) saturate(180%);
-  color: #ffffff;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.select:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-.select:focus {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
-}
-
-.select option {
-  background: #667eea;
-  color: #ffffff;
-}
-
-.summarySection {
+.summaryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
-  margin-top: 1rem;
-  position: relative;
-  z-index: 10;
-  animation: fadeInUp 0.8s ease-out;
+}
+
+.chartsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.trendChart {
   width: 100%;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.chartsSection {
+.secondaryCharts {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
-  position: relative;
-  z-index: 1;
-  animation: fadeInUp 1s ease-out;
-  padding-bottom: 2rem;
-  /* Add padding at bottom for better scroll experience */
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .secondaryCharts {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .chartCard {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 24px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.chartCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-  border-color: rgba(102, 126, 234, 0.6);
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.chartHeader {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
-.loading {
-  padding: 3rem;
-  text-align: center;
-  color: var(--text-secondary, #6b7280);
-  font-size: 1.1rem;
-}
-
-.emptyState {
-  padding: 3rem;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.emptyState p {
-  margin: 0;
-  font-size: 1.1rem;
+  width: 100%;
+  min-width: 0; /* Prevent grid overflow */
 }
 
 @media (max-width: 768px) {
   .pageWrapper {
-    position: fixed;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .analyticsWrapper {
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .analyticsContainer {
     padding: 1rem;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
   }
 
   .header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-    margin-bottom: 1.5rem;
   }
 
   .headerLeft {
     width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
   }
 
-  .periodSelector {
+  .controls {
     width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
   }
 
-  .title {
-    font-size: 1.5rem;
-  }
-
-  .summarySection {
-    grid-template-columns: repeat(2, 1fr);
+  .summaryGrid {
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  .chartCard {
-    padding: 1.5rem;
-    border-radius: 16px;
-    overflow-x: auto;
-  }
-
-  .chartsSection {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .pageWrapper {
-    position: fixed;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .analyticsWrapper {
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .analyticsContainer {
-    padding: 0.75rem;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .title {
-    font-size: 1.25rem;
-  }
-
-  .backButton,
-  .select {
-    padding: 0.4rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .summarySection {
+  .summaryGrid {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
-  }
-
-  .chartCard {
-    padding: 1rem;
-  }
-
-  .chartsSection {
-    gap: 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .chartsSection {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1440px) {
-  .analyticsContainer {
-    padding: 3rem;
-  }
-
-  .chartsSection {
-    gap: 2.5rem;
   }
 }

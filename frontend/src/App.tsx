@@ -3,6 +3,7 @@ import { lazy, Suspense, useState, useEffect } from "react";
 import { AuthForm } from "./components/AuthForm";
 import { ResponsiveProvider } from "./contexts/ResponsiveProvider";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AppLayout } from "./components/AppLayout";
 import { PWAInstallPrompt } from "./shared/components/ui/PWAInstallPrompt";
 import { ShortcutsModal } from "./components/ShortcutsModal";
 
@@ -71,54 +72,43 @@ function AppContent() {
         </Canvas>
       )}
 
-      <div className="mainContainer">
-        <ErrorBoundary>
-          <Suspense
-            fallback={
-              <div
-                style={{
-                  padding: "2rem",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Skeleton height="400px" width="90%" />
-              </div>
-            }
-          >
-            <Routes>
-              <Route path="/" element={<Root />} />
-              <Route path="/login" element={<AuthForm isLogin />} />
-              <Route path="/register" element={<AuthForm isLogin={false} />} />
-              <Route path="/analytics-demo" element={<AnalyticsDemo />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/analytics"
-                element={
-                  <ProtectedRoute>
-                    <Analytics />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/settings"
-                element={
-                  <ProtectedRoute>
-                    <Settings />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-      </div>
+      <ErrorBoundary>
+        <Suspense
+          fallback={
+            <div
+              style={{
+                padding: "2rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            >
+              <Skeleton height="400px" width="90%" />
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<Root />} />
+            <Route path="/login" element={<AuthForm isLogin />} />
+            <Route path="/register" element={<AuthForm isLogin={false} />} />
+            <Route path="/analytics-demo" element={<AnalyticsDemo />} />
+
+            {/* Protected Routes with AppLayout */}
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }
