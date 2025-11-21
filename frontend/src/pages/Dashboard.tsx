@@ -1,6 +1,5 @@
 import { useAuthStore } from "../store/authStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import api, { analyticsApi } from "../services/api";
 import type { WorkEntry, CreateWorkEntryDto } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
@@ -67,7 +66,6 @@ const calculateSummary = (entries: WorkEntry[]) => {
 export const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
