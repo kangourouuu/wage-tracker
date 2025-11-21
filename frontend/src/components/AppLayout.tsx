@@ -91,17 +91,19 @@ export const AppLayout = () => {
                 </button>
               ))}
               <DarkModeToggle />
-              <select
-                onChange={(e) => changeLanguage(e.target.value)}
-                value={i18n.language}
-                className={styles.languageSwitcher}
-              >
-                <option value="en">English</option>
-                <option value="vn">Tiếng Việt</option>
-              </select>
-              <button onClick={handleLogout} className={styles.logoutButton}>
-                {t("logout")}
-              </button>
+              <div className={styles.desktopOnly}>
+                <select
+                  onChange={(e) => changeLanguage(e.target.value)}
+                  value={i18n.language}
+                  className={styles.languageSwitcher}
+                >
+                  <option value="en">English</option>
+                  <option value="vn">Tiếng Việt</option>
+                </select>
+                <button onClick={handleLogout} className={styles.logoutButton}>
+                  {t("logout")}
+                </button>
+              </div>
             </div>
           </header>
           <div className={styles.mainContent}>

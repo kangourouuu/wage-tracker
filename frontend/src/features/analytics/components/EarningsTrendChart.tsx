@@ -45,7 +45,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+import { useChartTheme } from "../hooks/useChartTheme";
+
 export const EarningsTrendChart = ({ data }: EarningsTrendChartProps) => {
+  const theme = useChartTheme();
+
   return (
     <div className={styles.chartContainer}>
       <h3 className={styles.title}>💰 Earnings Trend Over Time</h3>
@@ -53,41 +57,57 @@ export const EarningsTrendChart = ({ data }: EarningsTrendChartProps) => {
         <AreaChart data={data}>
           <defs>
             <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.1} />
+              <stop
+                offset="5%"
+                stopColor={theme.earnings.fill}
+                stopOpacity={theme.earnings.gradientStart}
+              />
+              <stop
+                offset="95%"
+                stopColor={theme.earnings.fill}
+                stopOpacity={theme.earnings.gradientEnd}
+              />
             </linearGradient>
             <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
+              <stop
+                offset="5%"
+                stopColor={theme.hours.fill}
+                stopOpacity={theme.hours.gradientStart}
+              />
+              <stop
+                offset="95%"
+                stopColor={theme.hours.fill}
+                stopOpacity={theme.hours.gradientEnd}
+              />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.grid} />
           <XAxis
             dataKey="date"
-            stroke="#6b7280"
+            stroke={theme.text}
             style={{ fontSize: "12px", fontWeight: 500 }}
           />
           <YAxis
             yAxisId="left"
-            stroke="#8b5cf6"
+            stroke={theme.earnings.stroke}
             style={{ fontSize: "12px", fontWeight: 500 }}
             label={{
               value: "Earnings",
               angle: -90,
               position: "insideLeft",
-              style: { fill: "#8b5cf6", fontWeight: 600 },
+              style: { fill: theme.earnings.stroke, fontWeight: 600 },
             }}
           />
           <YAxis
             yAxisId="right"
             orientation="right"
-            stroke="#10b981"
+            stroke={theme.hours.stroke}
             style={{ fontSize: "12px", fontWeight: 500 }}
             label={{
               value: "Hours",
               angle: 90,
               position: "insideRight",
-              style: { fill: "#10b981", fontWeight: 600 },
+              style: { fill: theme.hours.stroke, fontWeight: 600 },
             }}
           />
           <Tooltip content={<CustomTooltip />} />
@@ -96,13 +116,14 @@ export const EarningsTrendChart = ({ data }: EarningsTrendChartProps) => {
               paddingTop: "20px",
               fontSize: "14px",
               fontWeight: 600,
+              color: theme.text,
             }}
           />
           <Area
             yAxisId="left"
             type="monotone"
             dataKey="earnings"
-            stroke="#8b5cf6"
+            stroke={theme.earnings.stroke}
             strokeWidth={3}
             fill="url(#colorEarnings)"
             name="Earnings"
@@ -113,7 +134,7 @@ export const EarningsTrendChart = ({ data }: EarningsTrendChartProps) => {
             yAxisId="right"
             type="monotone"
             dataKey="hours"
-            stroke="#10b981"
+            stroke={theme.hours.stroke}
             strokeWidth={3}
             fill="url(#colorHours)"
             name="Hours"

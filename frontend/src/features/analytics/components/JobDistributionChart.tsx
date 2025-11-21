@@ -61,8 +61,11 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
+import { useChartTheme } from "../hooks/useChartTheme";
+
 export const JobDistributionChart = ({ data }: JobDistributionChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number | undefined>(undefined);
+  const theme = useChartTheme();
 
   const chartData = data.map((item) => ({
     name: item.jobName,
@@ -108,6 +111,8 @@ export const JobDistributionChart = ({ data }: JobDistributionChartProps) => {
                   cursor: "pointer",
                   filter: activeIndex === index ? "brightness(1.1)" : "none",
                 }}
+                stroke={theme.tooltipBg}
+                strokeWidth={2}
               />
             ))}
           </Pie>
@@ -117,6 +122,7 @@ export const JobDistributionChart = ({ data }: JobDistributionChartProps) => {
               paddingTop: "20px",
               fontSize: "13px",
               fontWeight: 600,
+              color: theme.text,
             }}
             iconType="circle"
           />

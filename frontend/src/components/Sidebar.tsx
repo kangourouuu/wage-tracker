@@ -9,7 +9,7 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { logout, user } = useAuthStore();
 
@@ -60,6 +60,15 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         </nav>
 
         <div className={styles.footer}>
+          <select
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            value={i18n.language}
+            className={styles.languageSwitcher}
+            style={{ marginBottom: "1rem", width: "100%" }}
+          >
+            <option value="en">English</option>
+            <option value="vn">Tiếng Việt</option>
+          </select>
           <button onClick={handleLogout} className={styles.logoutButton}>
             {t("logout", "Logout")}
           </button>

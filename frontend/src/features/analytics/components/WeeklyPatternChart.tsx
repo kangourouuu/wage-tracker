@@ -60,9 +60,12 @@ const getHoursColor = (value: number, maxValue: number) => {
   return "#6ee7b7"; // Very light green for low
 };
 
+import { useChartTheme } from "../hooks/useChartTheme";
+
 export const WeeklyPatternChart = ({ data }: WeeklyPatternChartProps) => {
   const maxEarnings = Math.max(...data.map((d) => d.earnings));
   const maxHours = Math.max(...data.map((d) => d.hours));
+  const theme = useChartTheme();
 
   return (
     <div className={styles.chartContainer}>
@@ -79,33 +82,33 @@ export const WeeklyPatternChart = ({ data }: WeeklyPatternChartProps) => {
               <stop offset="100%" stopColor="#6ee7b7" stopOpacity={0.8} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.grid} />
           <XAxis
             dataKey="day"
-            stroke="#6b7280"
+            stroke={theme.text}
             style={{ fontSize: "12px", fontWeight: 500 }}
           />
           <YAxis
             yAxisId="left"
-            stroke="#8b5cf6"
+            stroke={theme.earnings.stroke}
             style={{ fontSize: "12px", fontWeight: 500 }}
             label={{
               value: "Earnings",
               angle: -90,
               position: "insideLeft",
-              style: { fill: "#8b5cf6", fontWeight: 600 },
+              style: { fill: theme.earnings.stroke, fontWeight: 600 },
             }}
           />
           <YAxis
             yAxisId="right"
             orientation="right"
-            stroke="#10b981"
+            stroke={theme.hours.stroke}
             style={{ fontSize: "12px", fontWeight: 500 }}
             label={{
               value: "Hours",
               angle: 90,
               position: "insideRight",
-              style: { fill: "#10b981", fontWeight: 600 },
+              style: { fill: theme.hours.stroke, fontWeight: 600 },
             }}
           />
           <Tooltip content={<CustomTooltip />} />
@@ -114,6 +117,7 @@ export const WeeklyPatternChart = ({ data }: WeeklyPatternChartProps) => {
               paddingTop: "20px",
               fontSize: "14px",
               fontWeight: 600,
+              color: theme.text,
             }}
           />
           <Bar

@@ -15,13 +15,13 @@
 }
 
 /* Dark mode - AuthForm style background */
-.dark .layout {
+:global(.dark) .layout {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   background-attachment: fixed;
 }
 
 /* Dark mode animated radial gradient overlay */
-.dark .layout::before {
+:global(.dark) .layout::before {
   content: "";
   position: fixed; /* Fixed to viewport to prevent scrolling issues */
   width: 150vw;
@@ -39,7 +39,7 @@
 }
 
 /* Dark mode pattern overlay */
-.dark .layout::after {
+:global(.dark) .layout::after {
   content: "";
   position: fixed; /* Fixed to viewport */
   width: 100%;
@@ -303,4 +303,14 @@
     min-width: 36px;
     min-height: 36px;
   }
+
+  .desktopOnly {
+    display: none;
+  }
+}
+
+.desktopOnly {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
