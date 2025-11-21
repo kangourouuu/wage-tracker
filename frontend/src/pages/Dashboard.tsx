@@ -190,6 +190,13 @@ export const Dashboard = () => {
           <div className={styles.dashboardContainer}>
             <header className={styles.header}>
               <div className={styles.welcomeSection}>
+                <button
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                  className={styles.menuButton}
+                  aria-label="Toggle menu"
+                >
+                  ☰
+                </button>
                 <div className={styles.assistantToggleContainer}>
                   <div
                     onClick={(e) => {
