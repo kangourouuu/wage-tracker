@@ -1,40 +1,55 @@
 .inputGroup {
   position: relative;
+  width: 100%;
 }
 
 .input {
   width: 100%;
-  padding: 0.85rem 1rem;
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--border-color);
-  background: transparent; /* Changed to transparent */
-  color: var(--text-color);
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  font-family: var(--font-family);
+  transition: all 0.3s ease;
+  font-family: "Be Vietnam Pro", sans-serif;
   font-size: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.input:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .label {
   position: absolute;
   top: 50%;
-  left: 1rem;
+  left: 1.25rem;
   transform: translateY(-50%);
-  color: var(--text-light-color);
+  color: rgba(255, 255, 255, 0.5);
   pointer-events: none;
-  transition: all 0.2s ease-out;
-  background-color: transparent; /* Changed to transparent */
-  padding: 0 0.25rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: transparent;
+  padding: 0;
+  font-size: 1rem;
 }
 
 .input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.25);
+  border-color: rgba(99, 102, 241, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
 .input:focus + .label,
 .input:not(:placeholder-shown) + .label {
   top: 0;
-  font-size: 0.8rem;
-  color: var(--primary-color);
+  left: 1rem;
+  transform: translateY(-50%) scale(0.85);
+  color: rgba(99, 102, 241, 0.9);
+  font-weight: 600;
+  background: #1a1a2e; /* Matches the dark background to hide the line behind label */
+  padding: 0 0.5rem;
+  border-radius: 4px;
 }
+

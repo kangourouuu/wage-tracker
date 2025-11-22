@@ -101,40 +101,42 @@ export const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
           <p className={styles.description}>{t("authDescription")}</p>
 
           <form onSubmit={handleSubmit}>
-            {!isLogin && (
-              <>
-                <Input
-                  id="register-name"
-                  label={t("name")}
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-                {/* Inline validation example (can be expanded with real logic) */}
-                {name.length > 0 && name.length < 2 && (
-                  <p className={styles.inlineError}>
-                    {t("nameTooShort", "Name must be at least 2 characters")}
-                  </p>
-                )}
-              </>
-            )}
-            <Input
-              id={isLogin ? "login-email" : "register-email"}
-              label={t("email")}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <Input
-              id={isLogin ? "login-password" : "register-password"}
-              label={t("password")}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className={styles.inputsContainer}>
+              {!isLogin && (
+                <>
+                  <Input
+                    id="register-name"
+                    label={t("name")}
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                  {/* Inline validation example (can be expanded with real logic) */}
+                  {name.length > 0 && name.length < 2 && (
+                    <p className={styles.inlineError}>
+                      {t("nameTooShort", "Name must be at least 2 characters")}
+                    </p>
+                  )}
+                </>
+              )}
+              <Input
+                id={isLogin ? "login-email" : "register-email"}
+                label={t("email")}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Input
+                id={isLogin ? "login-password" : "register-password"}
+                label={t("password")}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
             {!isLogin && (
               <div className={styles.jobsSection}>
                 <h3>{t("yourJobs")}</h3>

@@ -188,7 +188,7 @@ export const AppLayout = () => {
           {/* Main Content */}
           <div
             ref={mainContentRef}
-            className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-24 md:pb-8 scroll-smooth"
+            className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-32 md:pb-8 scroll-smooth"
           >
             <div className="max-w-7xl mx-auto w-full">
               <Outlet />
