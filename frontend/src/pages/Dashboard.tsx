@@ -3,7 +3,7 @@ import api, { analyticsApi } from "../services/api";
 import type { WorkEntry, CreateWorkEntryDto } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
@@ -12,8 +12,6 @@ import { GlassPanel } from "../shared/components/ui/GlassPanel";
 import { RecentEntries } from "../components/RecentEntries";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
-import { useKeyboardShortcut } from "../shared/hooks";
-import { exportToCSV } from "../utils/exportUtils";
 import toast from "react-hot-toast";
 import { useHeaderActions } from "../components/AppLayout";
 import {
@@ -33,8 +31,8 @@ export const Dashboard = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const { toggle: toggleAssistant } = useAiAssistantStore();
-  const { setHeaderActions } = useHeaderActions();
+  useAiAssistantStore();
+  useHeaderActions();
 
   // Queries
   const { data: workEntries, isLoading: isLoadingEntries } = useQuery<
@@ -80,33 +78,6 @@ export const Dashboard = () => {
       toast.error(t("failedToDuplicateEntry", "Failed to duplicate entry")),
   });
 
-  // Shortcuts
-  useKeyboardShortcut("n", () => setIsModalOpen(true));
-  useKeyboardShortcut("/", () => toggleAssistant());
-
-  // Header Actions
-  useEffect(() => {
-    setHeaderActions([
-      {
-        icon: "📥",
-        onClick: () => exportToCSV(workEntries || [], "work-entries.csv"),
-        title: t("exportCSV", "Export to CSV"),
-      },
-      {
-        icon: "➕",
-        onClick: () => setIsModalOpen(true),
-        title: t("addEntry", "Add Entry"),
-      },
-    ]);
-    return () => setHeaderActions([]);
-  }, [workEntries, setHeaderActions]);
-
-  // Handlers
-  const handleDateClick = (date: Date) => {
-    setSelectedDate(date);
-    setIsModalOpen(true);
-  };
-
   const handleDeleteEntry = (id: string) => {
     if (window.confirm(t("confirmDelete"))) {
       deleteWorkEntryMutation.mutate(id);
@@ -115,6 +86,11 @@ export const Dashboard = () => {
 
   const handleEditEntry = (entry: WorkEntry) => {
     setSelectedDate(new Date(entry.startTime));
+    setIsModalOpen(true);
+  };
+
+  const handleDateClick = (date: Date) => {
+    setSelectedDate(date);
     setIsModalOpen(true);
   };
 
@@ -193,7 +169,6 @@ export const Dashboard = () => {
           />
         </div>
 
-        {/* Charts Grid Removed - Moved to Analytics Page */}
         <div
           className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up"
           style={{ animationDelay: "200ms", animationFillMode: "backwards" }}

@@ -32,7 +32,12 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["'Be Vietnam Pro'", "sans-serif"],
+      },
+      borderRadius: {
+        lg: "1rem",
+        xl: "1.5rem",
+        "2xl": "2rem",
       },
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",

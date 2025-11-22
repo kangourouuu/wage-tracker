@@ -1,6 +1,12 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
+import {
+  PencilIcon,
+  TrashIcon,
+  DocumentDuplicateIcon,
+} from "@heroicons/react/24/outline";
 import type { WorkEntry } from "../types/work-entry";
+import { useTranslation } from "react-i18next";
 import styles from "./RecentEntries.module.css";
 
 interface RecentEntriesProps {
@@ -8,27 +14,27 @@ interface RecentEntriesProps {
   onEdit: (entry: WorkEntry) => void;
   onDelete: (id: string) => void;
   onDuplicate: (entry: WorkEntry) => void;
-  isLoading?: boolean;
+  isLoading: boolean;
 }
 
-export const RecentEntries: React.FC<RecentEntriesProps> = ({
+export const RecentEntries = ({
   entries,
   onEdit,
   onDelete,
   onDuplicate,
   isLoading,
-}) => {
+}: RecentEntriesProps) => {
   const { t } = useTranslation();
 
   if (isLoading) {
-    return <div className={styles.loading}>{t("loadingEntries")}</div>;
+    return <div className="text-text-secondary">{t("loadingEntries")}</div>;
   }
 
-  if (!entries || entries.length === 0) {
-    return null; // Or an empty state if preferred, but Dashboard handles empty state globally
+  if (entries.length === 0) {
+    return <div className="text-text-secondary">{t("noEntriesFound")}</div>;
   }
 
-  // Take only the last 5 entries
+  // Sort entries by date (newest first) and take top 5
   const recentEntries = [...entries]
     .sort(
       (a, b) =>
@@ -37,51 +43,48 @@ export const RecentEntries: React.FC<RecentEntriesProps> = ({
     .slice(0, 5);
 
   return (
-    <div className={styles.container}>
-      <h3 className={styles.title}>{t("recentActivity", "Recent Activity")}</h3>
-      <div className={styles.list}>
-        {recentEntries.map((entry) => {
-          const start = new Date(entry.startTime);
-          const end = new Date(entry.endTime);
-          const durationMs = end.getTime() - start.getTime();
-          const breakMs = entry.breakDuration * 60 * 1000;
-          const hours = (durationMs - breakMs) / (1000 * 60 * 60);
+    <div className="space-y-3">
+      {recentEntries.map((entry) => (
+        <div
+          key={entry.id}
+          className="group flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-200"
+        >
+          <div className="flex flex-col">
+            <span className="font-medium text-text-primary">
+              {entry.job.name}
+            </span>
+            <span className="text-sm text-text-secondary">
+              {format(new Date(entry.startTime), "MMM d, yyyy")} •{" "}
+              {format(new Date(entry.startTime), "HH:mm")} -{" "}
+              {format(new Date(entry.endTime), "HH:mm")}
+            </span>
+          </div>
 
-          return (
-            <div key={entry.id} className={styles.entryItem}>
-              <div className={styles.entryInfo}>
-                <div className={styles.jobName}>{entry.job.name}</div>
-                <div className={styles.entryDate}>
-                  {start.toLocaleDateString()} • {hours.toFixed(2)}h
-                </div>
-              </div>
-              <div className={styles.actions}>
-                <button
-                  onClick={() => onDuplicate(entry)}
-                  className={styles.actionButton}
-                  title={t("duplicate", "Duplicate")}
-                >
-                  📋
-                </button>
-                <button
-                  onClick={() => onEdit(entry)}
-                  className={styles.actionButton}
-                  title={t("edit")}
-                >
-                  ✏️
-                </button>
-                <button
-                  onClick={() => onDelete(entry.id)}
-                  className={`${styles.actionButton} ${styles.deleteButton}`}
-                  title={t("delete")}
-                >
-                  🗑️
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <button
+              onClick={() => onDuplicate(entry)}
+              className="p-1.5 rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 transition-colors"
+              title={t("common.duplicate")}
+            >
+              <DocumentDuplicateIcon className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => onEdit(entry)}
+              className="p-1.5 rounded-lg text-text-secondary hover:text-secondary hover:bg-secondary/10 transition-colors"
+              title={t("common.edit")}
+            >
+              <PencilIcon className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => onDelete(entry.id)}
+              className="p-1.5 rounded-lg text-text-secondary hover:text-danger hover:bg-danger/10 transition-colors"
+              title={t("common.delete")}
+            >
+              <TrashIcon className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
