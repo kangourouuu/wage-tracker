@@ -13,10 +13,10 @@ import { GlassPanel } from "../shared/components/ui/GlassPanel";
 export const Settings = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
   const { isDark, toggleTheme } = useThemeStore();
   const [activeTab, setActiveTab] = useState<
-    "profile" | "preferences" | "jobs" | "data"
+    "profile" | "preferences" | "jobs"
   >("profile");
   const [isAddJobModalOpen, setIsAddJobModalOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -65,7 +65,6 @@ export const Settings = () => {
     { id: "profile", label: "Profile" },
     { id: "preferences", label: "Preferences" },
     { id: "jobs", label: "Manage Jobs" },
-    { id: "data", label: "Data" },
   ] as const;
 
   return (
@@ -192,20 +191,6 @@ export const Settings = () => {
                 isUpdating={isUpdatingJob}
               />
             )}
-          </div>
-        )}
-
-        {activeTab === "data" && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-text-primary mb-4">
-              Data Management
-            </h2>
-            <button
-              className="w-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-4 py-3 rounded-lg transition-all duration-300 font-medium"
-              onClick={logout}
-            >
-              Logout
-            </button>
           </div>
         )}
       </GlassPanel>

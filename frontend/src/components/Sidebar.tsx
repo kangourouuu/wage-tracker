@@ -1,20 +1,29 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   HomeIcon,
   ChartBarIcon,
   Cog6ToothIcon,
+  ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
+import { useAuthStore } from "../store/authStore";
 
 export const Sidebar = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { logout } = useAuthStore();
 
   const navItems = [
     { path: "/dashboard", icon: HomeIcon, label: t("nav.home") },
     { path: "/analytics", icon: ChartBarIcon, label: t("nav.analytics") },
     { path: "/settings", icon: Cog6ToothIcon, label: t("nav.settings") },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <GlassPanel className="hidden md:flex flex-col w-64 h-[calc(100vh-2rem)] m-4 sticky top-4">
@@ -41,11 +50,18 @@ export const Sidebar = () => {
             <span className="font-medium">{item.label}</span>
           </NavLink>
         ))}
+
+        {/* Logout Button - Desktop Only */}
+        <button
+          onClick={handleLogout}
+          className="flex items-center w-full px-4 py-3 rounded-xl text-text-secondary hover:bg-danger/10 hover:text-danger transition-all duration-300"
+        >
+          <ArrowRightOnRectangleIcon className="w-6 h-6 mr-3" />
+          <span className="font-medium">{t("logout")}</span>
+        </button>
       </nav>
 
-      <div className="p-4">
-        {/* User profile summary or logout could go here */}
-      </div>
+      <div className="p-4">{/* User profile summary could go here */}</div>
     </GlassPanel>
   );
 };

@@ -57,10 +57,7 @@ export const MiniAnalytics = () => {
                 boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               }}
               itemStyle={{ color: "var(--primary-color)", fontWeight: 600 }}
-              formatter={(value: number) => [
-                `$${value.toFixed(2)}`,
-                "Earnings",
-              ]}
+              formatter={(value: number) => [value.toFixed(2), "Earnings"]}
               labelStyle={{ color: "#666", marginBottom: "0.25rem" }}
             />
             <Area

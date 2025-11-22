@@ -49,6 +49,12 @@
   text-transform: uppercase !important;
 }
 
+/* Dark mode - High contrast for weekdays */
+.dark .react-calendar__month-view__weekdays__weekday abbr {
+  color: #e2e8f0 !important; /* Much lighter for better contrast */
+  font-weight: 700 !important;
+}
+
 /* Day tiles - fill grid cell completely */
 .react-calendar__tile {
   display: flex !important;
@@ -83,14 +89,29 @@
 .react-calendar__navigation button {
   color: #1a1a1a;
   font-weight: bold;
-  transition: background-color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   min-height: 44px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+}
+
+/* Dark mode navigation - High contrast */
+.dark .react-calendar__navigation button {
+  color: #f1f5f9 !important; /* Very light for better contrast */
+  font-weight: 700 !important;
 }
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-  background-color: var(--glass-bg);
-  border-radius: var(--border-radius-sm);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+/* Dark mode hover states */
+.dark .react-calendar__navigation button:enabled:hover,
+.dark .react-calendar__navigation button:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Desktop adjustments - Large screens */
@@ -230,7 +251,62 @@
     height: 30px !important;
   }
 
-  .react-calendar__month-view__weekdays__weekday abbr {
+.react-calendar__month-view__weekdays__weekday abbr {
     font-size: 0.55rem !important;
   }
+}
+
+/* Day tile text styling */
+.react-calendar__tile abbr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* Dark mode - Day tiles with high contrast */
+.dark .react-calendar__tile abbr {
+  color: #e2e8f0 !important;
+  font-weight: 600 !important;
+}
+
+/* Today highlight - Modern style */
+.react-calendar__tile--now abbr {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white !important;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* Hover state - Clean and modern */
+.react-calendar__tile:enabled:hover abbr,
+.react-calendar__tile:enabled:focus abbr {
+  background-color: rgba(99, 102, 241, 0.1);
+  transform: scale(1.05);
+}
+
+.dark .react-calendar__tile:enabled:hover abbr,
+.dark .react-calendar__tile:enabled:focus abbr {
+  background-color: rgba(99, 102, 241, 0.2);
+}
+
+/* Active/selected date */
+.react-calendar__tile--active abbr {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white !important;
+  font-weight: 700;
+}
+
+/* Weekend styling - subtle difference */
+.react-calendar__month-view__days__day--weekend abbr {
+  color: #6366f1;
+}
+
+.dark .react-calendar__month-view__days__day--weekend abbr {
+  color: #a5b4fc;
 }

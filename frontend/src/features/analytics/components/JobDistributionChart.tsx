@@ -1,12 +1,5 @@
 import type { FC } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { GlassCard } from "../../../shared/components/ui/GlassCard";
 import { useTranslation } from "react-i18next";
 
@@ -68,20 +61,7 @@ export const JobDistributionChart: FC<JobDistributionChartProps> = ({
                 borderRadius: "12px",
                 color: "#f9fafb",
               }}
-              formatter={(value: number) => [
-                `$${value.toFixed(2)}`,
-                "Earnings",
-              ]}
-            />
-            <Legend
-              verticalAlign="bottom"
-              height={36}
-              iconType="circle"
-              formatter={(value) => (
-                <span className="text-text-secondary text-sm ml-1">
-                  {value}
-                </span>
-              )}
+              formatter={(value: number) => [value.toFixed(2), "Earnings"]}
             />
           </PieChart>
         </ResponsiveContainer>
