@@ -1,5 +1,5 @@
 import { useState, createContext, useContext } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { BottomNav } from "./BottomNav";
 import { useAuthStore } from "../store/authStore";
@@ -7,6 +7,7 @@ import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantS
 import TimeOfDayIcon from "./TimeOfDayIcon";
 import { DarkModeToggle } from "../shared/components/ui";
 import { useTranslation } from "react-i18next";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 interface HeaderAction {
   icon: string;
@@ -30,23 +31,30 @@ export const useHeaderActions = () => {
 
 export const AppLayout = () => {
   const [headerActions, setHeaderActions] = useState<HeaderAction[]>([]);
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const { toggle: toggleAssistant } = useAiAssistantStore();
   const { t, i18n } = useTranslation();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <HeaderContext.Provider value={{ setHeaderActions }}>
-      <div className="min-h-screen flex bg-background text-text-primary relative overflow-hidden">
+      <div className="min-h-screen flex bg-transparent text-text-primary relative overflow-hidden">
         {/* Desktop Sidebar */}
         <Sidebar />
 
-        <main className="flex-1 flex flex-col min-w-0 relative z-10">
+        <main className="flex-1 flex flex-col min-w-0 relative z-10 h-screen overflow-hidden">
           {/* Header */}
-          <header className="h-20 flex items-center justify-between px-6 md:px-8">
+          <header className="h-20 flex-none flex items-center justify-between px-6 md:px-8">
             <div className="flex items-center gap-4">
               <div
                 onClick={toggleAssistant}
@@ -55,11 +63,11 @@ export const AppLayout = () => {
                 <TimeOfDayIcon />
               </div>
               <div>
-                <h2 className="text-xl font-bold">
+                <h2 className="text-xl font-bold shadow-black/50 drop-shadow-md">
                   {t("dashboard.greeting")}{" "}
                   <span className="text-primary">{user?.name}</span>
                 </h2>
-                <p className="text-sm text-text-secondary hidden md:block">
+                <p className="text-sm text-text-secondary hidden md:block font-medium shadow-black/20 drop-shadow-sm">
                   {new Date().toLocaleDateString(undefined, {
                     weekday: "long",
                     year: "numeric",
@@ -82,7 +90,7 @@ export const AppLayout = () => {
                 </button>
               ))}
 
-              <div className="hidden md:flex items-center gap-2 bg-white/5 rounded-lg p-1">
+              <div className="hidden md:flex items-center gap-2 bg-white/5 rounded-lg p-1 backdrop-blur-sm">
                 <button
                   onClick={() => changeLanguage("en")}
                   className={`px-2 py-1 rounded text-xs font-medium transition-all ${
@@ -107,15 +115,73 @@ export const AppLayout = () => {
 
               <DarkModeToggle />
 
-              <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold shadow-neon">
-                {user?.name?.charAt(0) || "U"}
+              {/* Profile Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold shadow-neon hover:scale-105 transition-transform"
+                >
+                  {user?.name?.charAt(0) || "U"}
+                </button>
+
+                {isProfileOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setIsProfileOpen(false)}
+                    />
+                    <div className="absolute right-0 mt-2 w-48 py-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-xl shadow-xl border border-white/20 z-50 animate-fade-in">
+                      <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                        <p className="text-sm font-medium text-text-primary">
+                          {user?.name}
+                        </p>
+                        <p className="text-xs text-text-secondary truncate">
+                          {user?.email}
+                        </p>
+                      </div>
+
+                      <div className="md:hidden px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex gap-2">
+                        <button
+                          onClick={() => changeLanguage("en")}
+                          className={`flex-1 px-2 py-1 rounded text-xs font-medium transition-all ${
+                            i18n.language === "en"
+                              ? "bg-primary text-white"
+                              : "bg-gray-100 dark:bg-gray-700 text-text-secondary"
+                          }`}
+                        >
+                          EN
+                        </button>
+                        <button
+                          onClick={() => changeLanguage("vi")}
+                          className={`flex-1 px-2 py-1 rounded text-xs font-medium transition-all ${
+                            i18n.language === "vi"
+                              ? "bg-primary text-white"
+                              : "bg-gray-100 dark:bg-gray-700 text-text-secondary"
+                          }`}
+                        >
+                          VN
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-danger hover:bg-danger/10 transition-colors flex items-center"
+                      >
+                        <ArrowRightOnRectangleIcon className="w-4 h-4 mr-2" />
+                        {t("logout")}
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </header>
 
           {/* Main Content */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-8 pb-20 md:pb-8">
-            <Outlet />
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-24 md:pb-8 scroll-smooth">
+            <div className="max-w-7xl mx-auto w-full">
+              <Outlet />
+            </div>
           </div>
 
           {/* Mobile Bottom Nav */}

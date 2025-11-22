@@ -8,6 +8,8 @@
   z-index: 2;
   margin: 0 auto !important;
   box-sizing: border-box !important;
+  border-radius: 1.5rem; /* Match rounded-3xl */
+  overflow: hidden;
 }
 
 /* Fixed 7-column CSS Grid for weekdays */

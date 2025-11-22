@@ -178,7 +178,7 @@ export const Dashboard = () => {
         >
           {/* Calendar & Recent Entries */}
           <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <GlassPanel className="p-6 min-h-[350px]">
+            <GlassPanel className="p-6 min-h-[350px] rounded-3xl">
               <h3 className="text-lg font-semibold mb-4">
                 {t("dashboard.calendar")}
               </h3>
@@ -211,8 +211,8 @@ export const Dashboard = () => {
               </div>
             </GlassPanel>
 
-            {/* Recent Activity - No background */}
-            <div className="p-6 min-h-[350px] flex flex-col">
+            {/* Recent Activity */}
+            <GlassPanel className="p-6 min-h-[350px] flex flex-col rounded-3xl">
               <h3 className="text-lg font-semibold mb-4">
                 {t("dashboard.recentActivity")}
               </h3>
@@ -225,7 +225,7 @@ export const Dashboard = () => {
                   isLoading={isLoadingEntries}
                 />
               </div>
-            </div>
+            </GlassPanel>
           </div>
         </div>
       </div>

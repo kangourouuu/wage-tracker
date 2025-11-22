@@ -80,42 +80,44 @@
 
   /* Modern Mesh Gradient Background */
   .dark body {
-    background-image: radial-gradient(
-        at 0% 0%,
-        rgba(99, 102, 241, 0.15) 0px,
-        transparent 50%
-      ),
-      radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(5, 150, 105, 0.1) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(239, 68, 68, 0.1) 0px, transparent 50%);
+    background-image: url("/src/assets/dark-background.jpg");
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
+    background-repeat: no-repeat;
   }
 
-  /* Light Mode Background - Softer */
+  /* Light Mode Background */
   :root:not(.dark) body {
-    background-image: radial-gradient(
-        at 0% 0%,
-        rgba(99, 102, 241, 0.05) 0px,
-        transparent 50%
-      ),
-      radial-gradient(
-        at 100% 100%,
-        rgba(139, 92, 246, 0.05) 0px,
-        transparent 50%
-      );
+    background-image: url("/src/assets/light-backgroundjpg.jpg");
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  /* Mobile Backgrounds */
+  @media (max-width: 768px) {
+    .dark body {
+      background-image: url("/src/assets/mobile-dark-background.jpg");
+    }
+
+    :root:not(.dark) body {
+      background-image: url("/src/assets/mobile-light-background.jpg");
+    }
   }
 }
 
 @layer components {
   .glass-panel {
     @apply backdrop-blur-xl border border-white/10 shadow-glass transition-all duration-300;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(20, 20, 30, 0.4); /* Increased transparency for dark mode */
   }
 
   /* Light mode specific glass */
   :root:not(.dark) .glass-panel {
-    @apply border-gray-200/60 bg-white/60 backdrop-blur-xl shadow-sm;
+    @apply border-white/40 shadow-sm backdrop-blur-md;
+    background: rgba(255, 255, 255, 0.4); /* Increased transparency for light mode */
   }
 
   .glass-card {

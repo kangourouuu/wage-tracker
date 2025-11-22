@@ -42,7 +42,7 @@ export const Sidebar = () => {
               `flex items-center px-4 py-3 rounded-xl transition-all duration-300 group ${
                 isActive
                   ? "bg-primary/20 text-primary shadow-neon border border-primary/20"
-                  : "text-text-secondary hover:bg-white/5 hover:text-text-primary"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-white/10 hover:text-text-primary"
               }`
             }
           >
