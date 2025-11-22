@@ -3,7 +3,7 @@ import api, { analyticsApi } from "../services/api";
 import type { WorkEntry, CreateWorkEntryDto } from "../types/work-entry";
 import "react-calendar/dist/Calendar.css";
 import "../styles/Calendar.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
@@ -33,11 +33,6 @@ export const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   useAiAssistantStore();
   useHeaderActions();
-
-  // Scroll to top when component mounts
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   // Queries
   const { data: workEntries, isLoading: isLoadingEntries } = useQuery<

@@ -1,5 +1,5 @@
-import { useState, createContext, useContext } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useState, createContext, useContext, useRef, useEffect } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { BottomNav } from "./BottomNav";
 import { useAuthStore } from "../store/authStore";
@@ -36,6 +36,14 @@ export const AppLayout = () => {
   const { t, i18n } = useTranslation();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
+  const mainContentRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (mainContentRef.current) {
+      mainContentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [location.pathname]);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -178,7 +186,10 @@ export const AppLayout = () => {
           </header>
 
           {/* Main Content */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-24 md:pb-8 scroll-smooth">
+          <div
+            ref={mainContentRef}
+            className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-24 md:pb-8 scroll-smooth"
+          >
             <div className="max-w-7xl mx-auto w-full">
               <Outlet />
             </div>
