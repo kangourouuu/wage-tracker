@@ -66,8 +66,6 @@
 .registerForm .formContent::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
-  margin-left: 0.5rem;
-}
 
 .jobsSection {
   margin-top: 1.5rem;

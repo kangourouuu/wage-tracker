@@ -1,4 +1,3 @@
-import React from "react";
 import { format } from "date-fns";
 import {
   PencilIcon,
@@ -7,7 +6,6 @@ import {
 } from "@heroicons/react/24/outline";
 import type { WorkEntry } from "../types/work-entry";
 import { useTranslation } from "react-i18next";
-import styles from "./RecentEntries.module.css";
 
 interface RecentEntriesProps {
   entries: WorkEntry[];
