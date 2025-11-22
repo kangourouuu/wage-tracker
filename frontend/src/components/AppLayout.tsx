@@ -60,7 +60,7 @@ export const AppLayout = () => {
         {/* Desktop Sidebar */}
         <Sidebar />
 
-        <main className="flex-1 flex flex-col min-w-0 relative z-10 h-screen overflow-hidden">
+        <main className="flex-1 flex flex-col min-w-0 relative z-10 h-[100dvh] overflow-hidden">
           {/* Header */}
           <header className="h-20 flex-none flex items-center justify-between px-6 md:px-8">
             <div className="flex items-center gap-4">

@@ -26,7 +26,7 @@ export const Sidebar = () => {
   };
 
   return (
-    <GlassPanel className="hidden md:flex flex-col w-64 h-[calc(100vh-2rem)] m-4 sticky top-4 overflow-y-auto custom-scrollbar">
+    <GlassPanel className="!hidden md:!flex flex-col w-64 h-[calc(100vh-2rem)] m-4 sticky top-4 overflow-y-auto custom-scrollbar">
       <div className="p-6">
         <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
           WageTracker
