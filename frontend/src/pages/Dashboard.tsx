@@ -121,10 +121,9 @@ export const Dashboard = () => {
     <>
       <AssistantPanel isDropdown={true} />
 
-      <div className="container mx-auto bg-opacity-0 flex flex-col justify-center min-h-[calc(100vh-100px)]">
-        <div className="space-y-6 animate-fade-in w-full max-w-7xl mx-auto">
-          {/* Summary Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="space-y-6 animate-fade-in">
+        {/* Summary Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <SummaryCard
               title={t("dashboard.summary.totalEarnings")}
               value={summaryData?.current.totalEarnings.toFixed(2) || "0.00"}
@@ -220,18 +219,6 @@ export const Dashboard = () => {
                     onDelete={handleDeleteEntry}
                     onDuplicate={handleDuplicateEntry}
                     isLoading={isLoadingEntries}
-                  />
-                </div>
-              </GlassPanel>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <AddEntryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        selectedDate={selectedDate}
       />
     </>
   );
