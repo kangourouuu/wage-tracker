@@ -14,37 +14,72 @@ import type { Period } from "../types/analytics.types";
 export const Analytics = () => {
   const { t } = useTranslation();
   const [period, setPeriod] = useState<Period>("week");
+  const [customDateRange, setCustomDateRange] = useState<{
+    start: string;
+    end: string;
+  }>({
+    start: new Date().toISOString().split("T")[0],
+    end: new Date().toISOString().split("T")[0],
+  });
+
+  const getQueryParams = () => {
+    if (period === "custom") {
+      return {
+        startDate: customDateRange.start,
+        endDate: customDateRange.end,
+      };
+    }
+    return {};
+  };
 
   const { data: summaryData, isLoading: isLoadingSummary } = useQuery({
-    queryKey: ["analyticsSummary", period],
+    queryKey: ["analyticsSummary", period, customDateRange],
     queryFn: async () => {
-      const { data } = await analyticsApi.getSummary(period);
+      const params = getQueryParams();
+      const { data } = await analyticsApi.getSummary(
+        period,
+        params.startDate,
+        params.endDate
+      );
       return data;
     },
   });
 
   const { data: trendData, isLoading: isLoadingTrend } = useQuery({
-    queryKey: ["earningsTrend", period],
+    queryKey: ["earningsTrend", period, customDateRange],
     queryFn: async () => {
-      const { data } = await analyticsApi.getEarningsTrend(period);
+      const params = getQueryParams();
+      const { data } = await analyticsApi.getEarningsTrend(
+        period,
+        params.startDate,
+        params.endDate
+      );
       return data;
     },
   });
 
   const { data: distributionData, isLoading: isLoadingDistribution } = useQuery(
     {
-      queryKey: ["jobDistribution", period],
+      queryKey: ["jobDistribution", period, customDateRange],
       queryFn: async () => {
-        const { data } = await analyticsApi.getJobDistribution(period);
+        const params = getQueryParams();
+        const { data } = await analyticsApi.getJobDistribution(
+          params.startDate,
+          params.endDate
+        );
         return data;
       },
     }
   );
 
   const { data: patternData, isLoading: isLoadingPattern } = useQuery({
-    queryKey: ["weeklyPattern", period],
+    queryKey: ["weeklyPattern", period, customDateRange],
     queryFn: async () => {
-      const { data } = await analyticsApi.getWeeklyPattern(period);
+      const params = getQueryParams();
+      const { data } = await analyticsApi.getWeeklyPattern(
+        params.startDate,
+        params.endDate
+      );
       return data;
     },
   });
@@ -64,6 +99,7 @@ export const Analytics = () => {
     { value: "week", label: t("week", "Week") },
     { value: "month", label: t("month", "Month") },
     { value: "year", label: t("year", "Year") },
+    { value: "custom", label: t("analytics.custom", "Custom") },
   ];
 
   return (
@@ -72,12 +108,41 @@ export const Analytics = () => {
         <h1 className="text-2xl font-bold text-text-primary">
           {t("analytics", "Analytics")}
         </h1>
-        <div className="w-full md:w-auto">
-          <SegmentedControl
-            options={periodOptions}
-            value={period}
-            onChange={(val) => setPeriod(val as Period)}
-          />
+        <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto items-end sm:items-center">
+          {period === "custom" && (
+            <div className="flex items-center gap-2 bg-white/5 p-1 rounded-lg backdrop-blur-sm border border-white/10">
+              <input
+                type="date"
+                value={customDateRange.start}
+                onChange={(e) =>
+                  setCustomDateRange((prev) => ({
+                    ...prev,
+                    start: e.target.value,
+                  }))
+                }
+                className="bg-transparent border-none text-sm text-text-primary focus:ring-0 px-2 py-1"
+              />
+              <span className="text-text-secondary">-</span>
+              <input
+                type="date"
+                value={customDateRange.end}
+                onChange={(e) =>
+                  setCustomDateRange((prev) => ({
+                    ...prev,
+                    end: e.target.value,
+                  }))
+                }
+                className="bg-transparent border-none text-sm text-text-primary focus:ring-0 px-2 py-1"
+              />
+            </div>
+          )}
+          <div className="w-full md:w-auto">
+            <SegmentedControl
+              options={periodOptions}
+              value={period}
+              onChange={(val) => setPeriod(val as Period)}
+            />
+          </div>
         </div>
       </header>
 

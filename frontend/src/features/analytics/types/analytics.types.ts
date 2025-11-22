@@ -42,4 +42,4 @@ export interface ComparisonData {
   previous: Stats;
 }
 
-export type Period = "day" | "week" | "month" | "year";
+export type Period = "day" | "week" | "month" | "year" | "custom";
