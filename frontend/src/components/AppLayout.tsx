@@ -8,6 +8,7 @@ import TimeOfDayIcon from "./TimeOfDayIcon";
 import { DarkModeToggle } from "../shared/components/ui";
 import { useTranslation } from "react-i18next";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import { AssistantPanel } from "./AssistantPanel";
 
 interface HeaderAction {
   icon: string;
@@ -64,11 +65,14 @@ export const AppLayout = () => {
           {/* Header */}
           <header className="h-20 flex-none flex items-center justify-between px-6 md:px-8">
             <div className="flex items-center gap-4">
-              <div
-                onClick={toggleAssistant}
-                className="cursor-pointer hover:scale-110 transition-transform"
-              >
-                <TimeOfDayIcon />
+              <div className="relative">
+                <div
+                  onClick={toggleAssistant}
+                  className="cursor-pointer hover:scale-110 transition-transform"
+                >
+                  <TimeOfDayIcon />
+                </div>
+                <AssistantPanel isDropdown={true} />
               </div>
               <div>
                 <h2 className="text-xl font-bold shadow-black/50 drop-shadow-md">

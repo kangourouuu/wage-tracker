@@ -11,7 +11,7 @@ import { SummaryCard } from "../shared/components/ui/SummaryCard";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
 import { RecentEntries } from "../components/RecentEntries";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
-import { AssistantPanel } from "../components/AssistantPanel";
+
 import toast from "react-hot-toast";
 import { useHeaderActions } from "../components/AppLayout";
 import {
@@ -119,8 +119,6 @@ export const Dashboard = () => {
 
   return (
     <>
-      <AssistantPanel isDropdown={true} />
-
       <div className="flex-1 flex flex-col">
         <div className="w-full max-w-7xl mx-auto my-auto space-y-6 animate-fade-in">
           {/* Summary Cards Grid */}
