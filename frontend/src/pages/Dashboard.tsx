@@ -9,9 +9,6 @@ import Calendar from "react-calendar";
 import AddEntryModal from "../components/AddEntryModal";
 import { SummaryCard } from "../shared/components/ui/SummaryCard";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
-import { EarningsTrendChart } from "../features/analytics/components/EarningsTrendChart";
-import { JobDistributionChart } from "../features/analytics/components/JobDistributionChart";
-import { WeeklyActivityChart } from "../features/analytics/components/WeeklyActivityChart";
 import { RecentEntries } from "../components/RecentEntries";
 import { useAiAssistantStore } from "../features/ai-assistant/store/aiAssistantStore";
 import { AssistantPanel } from "../components/AssistantPanel";
@@ -54,22 +51,6 @@ export const Dashboard = () => {
     refetchInterval: 30000,
   });
 
-  const { data: earningsTrend, isLoading: isLoadingTrend } = useQuery({
-    queryKey: ["earningsTrend", "month"],
-    queryFn: () =>
-      analyticsApi.getEarningsTrend("month").then((res) => res.data),
-  });
-
-  const { data: jobDistribution, isLoading: isLoadingJobs } = useQuery({
-    queryKey: ["jobDistribution"],
-    queryFn: () => analyticsApi.getJobDistribution().then((res) => res.data),
-  });
-
-  const { data: weeklyPattern, isLoading: isLoadingWeekly } = useQuery({
-    queryKey: ["weeklyPattern"],
-    queryFn: () => analyticsApi.getWeeklyPattern().then((res) => res.data),
-  });
-
   // Mutations
   const deleteWorkEntryMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/work-entries/${id}`),
@@ -109,12 +90,12 @@ export const Dashboard = () => {
       {
         icon: "📥",
         onClick: () => exportToCSV(workEntries || [], "work-entries.csv"),
-        title: "Export to CSV",
+        title: t("exportCSV", "Export to CSV"),
       },
       {
         icon: "➕",
         onClick: () => setIsModalOpen(true),
-        title: "Add Entry",
+        title: t("addEntry", "Add Entry"),
       },
     ]);
     return () => setHeaderActions([]);
@@ -212,38 +193,13 @@ export const Dashboard = () => {
           />
         </div>
 
-        {/* Charts Grid */}
-        <div
-          className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up"
-          style={{ animationDelay: "100ms", animationFillMode: "backwards" }}
-        >
-          <div className="lg:col-span-2">
-            <EarningsTrendChart
-              data={earningsTrend || []}
-              isLoading={isLoadingTrend}
-            />
-          </div>
-          <div className="lg:col-span-1">
-            <JobDistributionChart
-              data={jobDistribution || []}
-              isLoading={isLoadingJobs}
-            />
-          </div>
-        </div>
-
+        {/* Charts Grid Removed - Moved to Analytics Page */}
         <div
           className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up"
           style={{ animationDelay: "200ms", animationFillMode: "backwards" }}
         >
-          <div className="lg:col-span-1">
-            <WeeklyActivityChart
-              data={weeklyPattern || []}
-              isLoading={isLoadingWeekly}
-            />
-          </div>
-
           {/* Calendar & Recent Entries */}
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
             <GlassPanel className="p-6 min-h-[350px]">
               <h3 className="text-lg font-semibold mb-4">
                 {t("dashboard.calendar")}
@@ -265,7 +221,7 @@ export const Dashboard = () => {
                         );
                       });
                       return hasEntry ? (
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mx-auto mt-1" />
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1" />
                       ) : null;
                     }
                     return null;

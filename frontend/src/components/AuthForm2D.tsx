@@ -96,101 +96,104 @@ export const AuthForm2D: React.FC<AuthForm2DProps> = (props) => {
             <option value="vn">Tiếng Việt</option>
           </select>
         </div>
-        <h2 className={styles.title}>
-          {props.isLogin ? t("login") : t("register")}
-        </h2>
-        <p className={styles.description}>{t("authDescription")}</p>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {!props.isLogin && (
+
+        <div className={styles.form}>
+          <h2 className={styles.title}>
+            {props.isLogin ? t("login") : t("register")}
+          </h2>
+          <p className={styles.description}>{t("authDescription")}</p>
+          <form onSubmit={handleSubmit}>
+            {!props.isLogin && (
+              <Input
+                id="register-name-2d"
+                label={t("name")}
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            )}
             <Input
-              id="register-name-2d"
-              label={t("name")}
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              id={props.isLogin ? "login-email-2d" : "register-email-2d"}
+              label={t("email")}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
-          )}
-          <Input
-            id={props.isLogin ? "login-email-2d" : "register-email-2d"}
-            label={t("email")}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Input
-            id={props.isLogin ? "login-password-2d" : "register-password-2d"}
-            label={t("password")}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {!props.isLogin && (
-            <div className={styles.jobsSection}>
-              <h3>{t("yourJobs")}</h3>
-              {jobs.map((job, index) => (
-                <div key={index} className={styles.jobEntry}>
-                  <Input
-                    id={`register-jobName-2d-${index}`}
-                    label={t("jobName")}
-                    type="text"
-                    value={job.name}
-                    onChange={(e) =>
-                      handleJobChange(index, "name", e.target.value)
-                    }
-                    required
-                  />
-                  <Input
-                    id={`register-wagePerHour-2d-${index}`}
-                    label={t("wagePerHour")}
-                    type="number"
-                    value={job.wagePerHour}
-                    onChange={(e) =>
-                      handleJobChange(index, "wagePerHour", e.target.value)
-                    }
-                    required
-                  />
-                  {jobs.length > 2 && (
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveJob(index)}
-                      className={styles.removeJobButton}
-                    >
-                      <span className={styles.removeJobSymbol}>-</span>
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={handleAddJob}
-                className={styles.addJobButton}
-              >
-                {t("addJob")}
-              </button>
-            </div>
-          )}
+            <Input
+              id={props.isLogin ? "login-password-2d" : "register-password-2d"}
+              label={t("password")}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {!props.isLogin && (
+              <div className={styles.jobsSection}>
+                <h3>{t("yourJobs")}</h3>
+                {jobs.map((job, index) => (
+                  <div key={index} className={styles.jobEntry}>
+                    <Input
+                      id={`register-jobName-2d-${index}`}
+                      label={t("jobName")}
+                      type="text"
+                      value={job.name}
+                      onChange={(e) =>
+                        handleJobChange(index, "name", e.target.value)
+                      }
+                      required
+                    />
+                    <Input
+                      id={`register-wagePerHour-2d-${index}`}
+                      label={t("wagePerHour")}
+                      type="number"
+                      value={job.wagePerHour}
+                      onChange={(e) =>
+                        handleJobChange(index, "wagePerHour", e.target.value)
+                      }
+                      required
+                    />
+                    {jobs.length > 2 && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveJob(index)}
+                        className={styles.removeJobButton}
+                      >
+                        <span className={styles.removeJobSymbol}>-</span>
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={handleAddJob}
+                  className={styles.addJobButton}
+                >
+                  {t("addJob")}
+                </button>
+              </div>
+            )}
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending
+                ? t("submitting")
+                : props.isLogin
+                ? t("loginButton")
+                : t("registerButton")}
+            </button>
+            {error && <p className={styles.error}>{error}</p>}
+          </form>
           <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={mutation.isPending}
+            onClick={() => navigate(props.isLogin ? "/register" : "/login")}
+            className={styles.switchButton}
           >
-            {mutation.isPending
-              ? t("submitting")
-              : props.isLogin
-              ? t("loginButton")
-              : t("registerButton")}
+            {props.isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
           </button>
-          {error && <p className={styles.error}>{error}</p>}
-        </form>
-        <button
-          onClick={() => navigate(props.isLogin ? "/register" : "/login")}
-          className={styles.switchButton}
-        >
-          {props.isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
-        </button>
+        </div>
       </div>
     </div>
   );

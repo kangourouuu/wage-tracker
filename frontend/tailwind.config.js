@@ -5,39 +5,38 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#1f2937", // Dark gray/blue background
-        surface: "#374151", // Slightly lighter for cards
+        background: "rgb(var(--color-background) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
         primary: {
-          DEFAULT: "#6366f1", // Indigo
-          dark: "#4f46e5",
-          light: "#818cf8",
+          DEFAULT: "rgb(var(--color-primary) / <alpha-value>)",
+          dark: "rgb(var(--color-primary-dark) / <alpha-value>)",
+          light: "rgb(var(--color-primary-light) / <alpha-value>)",
         },
         secondary: {
-          DEFAULT: "#8b5cf6", // Purple
-          dark: "#7c3aed",
-          light: "#a78bfa",
+          DEFAULT: "rgb(var(--color-secondary) / <alpha-value>)",
+          dark: "rgb(var(--color-secondary-dark) / <alpha-value>)",
+          light: "rgb(var(--color-secondary-light) / <alpha-value>)",
         },
         success: {
-          DEFAULT: "#10b981", // Emerald
-          dark: "#059669",
+          DEFAULT: "rgb(var(--color-success) / <alpha-value>)",
+          dark: "rgb(var(--color-success-dark) / <alpha-value>)",
         },
         danger: {
-          DEFAULT: "#ef4444", // Red
-          dark: "#dc2626",
+          DEFAULT: "rgb(var(--color-danger) / <alpha-value>)",
+          dark: "rgb(var(--color-danger-dark) / <alpha-value>)",
         },
         text: {
-          primary: "#f9fafb",
-          secondary: "#9ca3af",
-          muted: "#6b7280",
+          primary: "rgb(var(--color-text-primary) / <alpha-value>)",
+          secondary: "rgb(var(--color-text-secondary) / <alpha-value>)",
+          muted: "rgb(var(--color-text-muted) / <alpha-value>)",
         },
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
       },
       backgroundImage: {
-        "gradient-primary": "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
-        "gradient-surface":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)",
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-surface": "var(--gradient-surface)",
       },
       boxShadow: {
         glass: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
