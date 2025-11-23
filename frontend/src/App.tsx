@@ -33,6 +33,9 @@ const AnalyticsDemo = lazy(() =>
 const Settings = lazy(() =>
   import("./pages/Settings").then((m) => ({ default: m.Settings }))
 );
+const ClockPage = lazy(() =>
+  import("./pages/ClockPage").then((m) => ({ default: m.ClockPage }))
+);
 
 function Root() {
   return <Navigate to="/dashboard" />;
@@ -71,7 +74,6 @@ function AppContent() {
           <ThreeScene />
         </Canvas>
       )}
-
       <ErrorBoundary>
         <Suspense
           fallback={
@@ -95,15 +97,10 @@ function AppContent() {
             <Route path="/analytics-demo" element={<AnalyticsDemo />} />
 
             {/* Protected Routes with AppLayout */}
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
+            <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/clock" element={<ClockPage />} />
               <Route path="/settings" element={<Settings />} />
             </Route>
           </Routes>

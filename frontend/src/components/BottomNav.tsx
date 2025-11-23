@@ -1,38 +1,57 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   HomeIcon,
   ChartBarIcon,
   Cog6ToothIcon,
+  ClockIcon,
 } from "@heroicons/react/24/outline";
+import { useState, useEffect, useRef } from "react";
+import styles from "./BottomNav.module.css";
 
 export const BottomNav = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const navRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
     { path: "/dashboard", icon: HomeIcon, label: t("nav.home") },
+    { path: "/clock", icon: ClockIcon, label: "Clock" },
     { path: "/analytics", icon: ChartBarIcon, label: t("nav.analytics") },
     { path: "/settings", icon: Cog6ToothIcon, label: t("nav.settings") },
   ];
 
+  useEffect(() => {
+    const index = navItems.findIndex((item) => item.path === location.pathname);
+    if (index !== -1) {
+      setActiveIndex(index);
+    }
+  }, [location.pathname]);
+
   return (
-    <nav className="glass-nav">
+    <nav className={styles.navContainer} ref={navRef}>
+      {/* Animated Background */}
+      <div
+        className={styles.activeBackground}
+        style={{
+            transform: `translateX(${activeIndex * 68}px)` // 60px width + 8px gap
+        }}
+      />
+
       {navItems.map((item) => (
         <NavLink
           key={item.path}
           to={item.path}
           className={({ isActive }) =>
-            `flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${
-              isActive
-                ? "text-primary bg-primary/10 scale-110"
-                : "text-text-secondary hover:text-primary hover:bg-white/5"
-            }`
+            `${styles.navItem} ${isActive ? styles.active : ""}`
           }
         >
-          <item.icon className="w-6 h-6" />
-          <span className="text-xs font-medium">{item.label}</span>
+          <item.icon className={styles.icon} />
+          <span className={styles.label}>{item.label}</span>
         </NavLink>
       ))}
     </nav>
   );
 };
+

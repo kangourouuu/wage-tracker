@@ -5,6 +5,7 @@ import {
   ChartBarIcon,
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
+  ClockIcon,
 } from "@heroicons/react/24/outline";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
 import { useAuthStore } from "../store/authStore";
@@ -16,6 +17,7 @@ export const Sidebar = () => {
 
   const navItems = [
     { path: "/dashboard", icon: HomeIcon, label: t("nav.home") },
+    { path: "/clock", icon: ClockIcon, label: "Clock" },
     { path: "/analytics", icon: ChartBarIcon, label: t("nav.analytics") },
     { path: "/settings", icon: Cog6ToothIcon, label: t("nav.settings") },
   ];
