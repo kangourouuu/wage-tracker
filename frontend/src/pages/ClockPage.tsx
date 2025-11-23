@@ -4,8 +4,6 @@ import {
   PauseIcon,
   ArrowPathIcon,
   PlusIcon,
-  PencilIcon,
-  TrashIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
@@ -174,7 +172,7 @@ export const ClockPage = () => {
       <div
         className={`
           absolute md:relative inset-x-0 top-16 md:top-0 bottom-0 z-20 md:z-auto
-          bg-white/80 dark:bg-black/80 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none
+          bg-white/90 dark:bg-black/80 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none
           transition-all duration-300 ease-in-out
           ${isListExpanded ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 md:translate-y-0 md:opacity-100 pointer-events-none md:pointer-events-auto"}
           w-full md:w-80 flex flex-col gap-4 h-[calc(100%-4rem)] md:h-full p-6 md:p-0

@@ -81,9 +81,10 @@
 }
 
 .label {
+  position: absolute;
+  bottom: 8px;
   font-size: 10px;
   font-weight: 500;
-  margin-top: 4px;
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.3s ease;
