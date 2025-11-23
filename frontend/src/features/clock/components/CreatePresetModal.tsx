@@ -52,8 +52,8 @@ export const CreatePresetModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pb-24 md:pb-4 bg-black/60 backdrop-blur-md transition-all duration-300">
-      <GlassPanel className="w-full max-w-md p-8 relative animate-in fade-in zoom-in duration-200 rounded-3xl border border-white/20 shadow-2xl">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pb-24 md:pb-4 bg-black/20 dark:bg-black/60 backdrop-blur-md transition-all duration-300">
+      <GlassPanel className="w-full max-w-md p-8 relative animate-in fade-in zoom-in duration-200 rounded-3xl">
         <button
           onClick={onClose}
           className="absolute top-6 right-6 p-2 rounded-full hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors"

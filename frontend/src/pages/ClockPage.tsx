@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import { PlayIcon, PauseIcon, ArrowPathIcon, PlusIcon } from "@heroicons/react/24/solid";
+import {
+  PlayIcon,
+  PauseIcon,
+  ArrowPathIcon,
+  PlusIcon,
+  PencilIcon,
+  TrashIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/solid";
 import { GlassPanel } from "../shared/components/ui/GlassPanel";
 import { useClockStore, type TimerPreset } from "../store/clockStore";
 import { PresetCard } from "../features/clock/components/PresetCard";
@@ -138,17 +146,18 @@ export const ClockPage = () => {
   return (
     <div className="h-full flex flex-col md:flex-row gap-6 p-6 pb-24 md:pb-6 overflow-hidden relative">
       {/* Mobile List Toggle / Header */}
-      <div className="md:hidden flex items-center justify-between z-30 relative">
-        <h2 className="text-xl font-bold text-text-primary">
-          {isListExpanded ? "My Timers" : activePreset.name}
-        </h2>
+      <div className="md:hidden flex items-center justify-between z-30 relative mb-4">
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => setIsListExpanded(!isListExpanded)}
+        >
+          <h2 className="text-xl font-bold text-text-primary">
+            {activePreset.name}
+          </h2>
+          <ChevronDownIcon className={`w-5 h-5 text-text-secondary transition-transform duration-300 ${isListExpanded ? "rotate-180" : ""}`} />
+        </div>
+
         <div className="flex gap-2">
-           <button
-            onClick={() => setIsListExpanded(!isListExpanded)}
-            className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-text-primary transition-colors"
-          >
-            <ArrowPathIcon className={`w-5 h-5 transition-transform ${isListExpanded ? "rotate-180" : ""}`} />
-          </button>
           <button
             onClick={() => {
               setEditingPreset(undefined);
@@ -165,7 +174,7 @@ export const ClockPage = () => {
       <div
         className={`
           absolute md:relative inset-x-0 top-16 md:top-0 bottom-0 z-20 md:z-auto
-          bg-black/80 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none
+          bg-white/80 dark:bg-black/80 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none
           transition-all duration-300 ease-in-out
           ${isListExpanded ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 md:translate-y-0 md:opacity-100 pointer-events-none md:pointer-events-auto"}
           w-full md:w-80 flex flex-col gap-4 h-[calc(100%-4rem)] md:h-full p-6 md:p-0
