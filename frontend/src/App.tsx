@@ -97,7 +97,13 @@ function AppContent() {
             <Route path="/analytics-demo" element={<AnalyticsDemo />} />
 
             {/* Protected Routes with AppLayout */}
-            <Route element={<AppLayout />}>
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/clock" element={<ClockPage />} />

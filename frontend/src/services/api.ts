@@ -65,13 +65,13 @@ api.interceptors.response.use(
         } else {
           processQueue(new Error("Token refresh failed"), null);
           useAuthStore.getState().logout();
-          // window.location.href = "/login";
+          window.location.href = "/login";
           return Promise.reject(error);
         }
       } catch (refreshError) {
         processQueue(refreshError, null);
         useAuthStore.getState().logout();
-          // window.location.href = "/login";
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
